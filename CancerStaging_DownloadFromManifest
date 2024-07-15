@@ -8,3 +8,61 @@
 /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.txt
 /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.txt
 /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.txt
+
+# Filter r
+head /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/gdc_manifest.2024-07-15-TCGA-LIHC.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/gdc_manifest.2024-07-15-TCGA-LIHC.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/gdc_manifest.2024-07-15-TCGA-STAD.txt		-n 1 > /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/gdc_manifest.2024-07-15-TCGA-STAD.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/gdc_manifest.2024-07-15-TCGA-SKCM.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/gdc_manifest.2024-07-15-TCGA-SKCM.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/gdc_manifest.2024-07-15-TCGA-PRAD.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/gdc_manifest.2024-07-15-TCGA-PRAD.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/gdc_manifest.2024-07-15-TCGA-READ.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/gdc_manifest.2024-07-15-TCGA-READ.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/gdc_manifest.2024-07-15-TCGA-COAD.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/gdc_manifest.2024-07-15-TCGA-COAD.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.txt	-n 1 > /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.filtered.txt
+
+# Keep only rna_seq.augmented_star_gene_counts
+cat /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/gdc_manifest.2024-07-15-TCGA-LIHC.txt	| grep rna_seq.augmented_star_gene_counts   >> /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/gdc_manifest.2024-07-15-TCGA-LIHC.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/gdc_manifest.2024-07-15-TCGA-STAD.txt	| grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/gdc_manifest.2024-07-15-TCGA-STAD.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/gdc_manifest.2024-07-15-TCGA-SKCM.txt | grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/gdc_manifest.2024-07-15-TCGA-SKCM.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/gdc_manifest.2024-07-15-TCGA-PRAD.txt | grep rna_seq.augmented_star_gene_counts >> /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/gdc_manifest.2024-07-15-TCGA-PRAD.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/gdc_manifest.2024-07-15-TCGA-READ.txt	| grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/gdc_manifest.2024-07-15-TCGA-READ.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/gdc_manifest.2024-07-15-TCGA-COAD.txt | grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/gdc_manifest.2024-07-15-TCGA-COAD.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.txt	| grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.txt	| grep rna_seq.augmented_star_gene_counts  >> /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.txt	| grep rna_seq.augmented_star_gene_counts >> /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.filtered.txt
+
+# Create sub-sub folder for Prostate sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/tables/
+
+# Create sub-sub folder for Prostate sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/tables/
+
+# Create sub-sub folder for Prostate sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/tables/	
+
+# Create sub-sub folder for Prostate sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/tables/	
+	
+# Create sub-sub folder for Rectum sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/tables/	
+
+# Create sub-sub folder for colon sub-type 
+mkdir /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/tables/
+
+# Create sub-sub folder for lung cancer sub-type
+mkdir /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/tables/
+mkdir /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/tables/
+
+# Create sub-sub folder for breast sub-type
+mkdir /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/tables/
+
+# Download all files
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/gdc_manifest.2024-07-15-TCGA-LIHC.filtered.txt -d /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/gdc_manifest.2024-07-15-TCGA-STAD.filtered.txt -d /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/gdc_manifest.2024-07-15-TCGA-SKCM.filtered.txt -d /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/gdc_manifest.2024-07-15-TCGA-PRAD.filtered.txt -d /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/gdc_manifest.2024-07-15-TCGA-READ.filtered.txt -d /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/gdc_manifest.2024-07-15-TCGA-COAD.filtered.txt -d /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/gdc_manifest.2024-07-15-TCGA-LUAD.filtered.txt -d /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/gdc_manifest.2024-07-15-TCGA-LUSC.filtered.txt -d /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/gdc_manifest.2024-07-15-TCGA-BRCA.filtered.txt -d /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/tables/
