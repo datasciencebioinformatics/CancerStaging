@@ -1,16 +1,16 @@
 # Download project proposal data (direct to google driver)
 # Create folder for project
-/home/felipe/googledrive/Cancer_staging/
+mkdir /home/felipe/googledrive/Cancer_staging/
 	
 # Create sub-folder for each tissue
-/home/felipe/googledrive/Cancer_staging/breast/
-/home/felipe/googledrive/Cancer_staging/lung/
-/home/felipe/googledrive/Cancer_staging/colon/
-/home/felipe/googledrive/Cancer_staging/rectum/
-/home/felipe/googledrive/Cancer_staging/prostate/
-/home/felipe/googledrive/Cancer_staging/skin/
-/home/felipe/googledrive/Cancer_staging/stomach/
-/home/felipe/googledrive/Cancer_staging/liver/
+mkdir /home/felipe/googledrive/Cancer_staging/breast/
+mkdir /home/felipe/googledrive/Cancer_staging/lung/
+mkdir /home/felipe/googledrive/Cancer_staging/colon/
+mkdir /home/felipe/googledrive/Cancer_staging/rectum/
+mkdir /home/felipe/googledrive/Cancer_staging/prostate/
+mkdir /home/felipe/googledrive/Cancer_staging/skin/
+mkdir /home/felipe/googledrive/Cancer_staging/stomach/
+mkdir /home/felipe/googledrive/Cancer_staging/liver/
 
 # Create sub-sub folder for Prostate sub-type 
 mkdir /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/	
