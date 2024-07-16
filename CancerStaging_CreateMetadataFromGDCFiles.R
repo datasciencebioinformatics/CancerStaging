@@ -7,7 +7,9 @@
 # merged_data_patient_info_"database".txt.tsv
 ##########################################################################################################################################################################################################
 # Reading the contents of TSV file using read_tsv() method
-gdc_sample_sheet_file<-"/home/felipe/Documentos/LungPortal/gdc_sample_sheet.2024-04-04.tsv"
+Breast_Invasive_Carcinoma_TCGA_BRCA_sheet_file<-"/home/felipe/Documentos/LungPortal/gdc_sample_sheet.2024-04-04.tsv"
+
+
 
 # Read data
 gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', header = TRUE,fill=TRUE)  
