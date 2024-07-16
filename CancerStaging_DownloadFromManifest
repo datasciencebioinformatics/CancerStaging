@@ -11,4 +11,4 @@ cat /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.txt	| grep r
 mkdir /home/felipe/googledrive/Cancer_staging/tables/
 
 # Download all files
-gdc-client download -m /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.txt -d /home/felipe/googledrive/Cancer_staging/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.filtered.txt -d /home/felipe/googledrive/Cancer_staging/tables/
