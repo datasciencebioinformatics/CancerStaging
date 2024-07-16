@@ -3,36 +3,4 @@
 mkdir /home/felipe/googledrive/Cancer_staging/
 	
 # Create sub-folder for each tissue
-mkdir /home/felipe/googledrive/Cancer_staging/breast/
-mkdir /home/felipe/googledrive/Cancer_staging/lung/
-mkdir /home/felipe/googledrive/Cancer_staging/colon/
-mkdir /home/felipe/googledrive/Cancer_staging/rectum/
-mkdir /home/felipe/googledrive/Cancer_staging/prostate/
-mkdir /home/felipe/googledrive/Cancer_staging/skin/
-mkdir /home/felipe/googledrive/Cancer_staging/stomach/
-mkdir /home/felipe/googledrive/Cancer_staging/liver/
-
-# Create sub-sub folder for Prostate sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/liver/Liver_Hepatocellular_Carcinoma_TCGA_LIHC/	
-
-# Create sub-sub folder for Prostate sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/stomach/Stomach_Adenocarcinoma_TCGA_STAD/	
-
-# Create sub-sub folder for Prostate sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/skin/Skin_Cutaneous_Melanoma_TCGA_SKCM/	
-
-# Create sub-sub folder for Prostate sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/prostate/Prostate_Adenocarcinoma_TCGA_PRAD/	
-	
-# Create sub-sub folder for Rectum sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/rectum/Rectum_Adenocarcinoma_TCGA_READ/	
-
-# Create sub-sub folder for colon sub-type 
-mkdir /home/felipe/googledrive/Cancer_staging/colon/Colon_Adenocarcinoma_TCGA_COAD/
-
-# Create sub-sub folder for lung cancer sub-type
-mkdir /home/felipe/googledrive/Cancer_staging/lung/Lung_Adenocarcinoma_TCGA_LUAD/
-mkdir /home/felipe/googledrive/Cancer_staging/lung/Lung_Squamous_Cell_Carcinoma_TCGA_LUSC/
-
-# Create sub-sub folder for breast sub-type
-mkdir /home/felipe/googledrive/Cancer_staging/breast/Breast_Invasive_Carcinoma_TCGA_BRCA/
+mkdir /home/felipe/googledrive/Cancer_staging/tables
