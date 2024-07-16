@@ -2,7 +2,8 @@
 cp /home/felipe/Downloads/biospecimen.project-tcga-brca.2024-07-16.tar.gz /home/felipe/googledrive/Cancer_staging/
 cp /home/felipe/Downloads/clinical.project-tcga-brca.2024-07-16.tar.gz /home/felipe/googledrive/Cancer_staging/
 cp /home/felipe/Downloads/gdc_manifest.2024-07-16.txt /home/felipe/googledrive/Cancer_staging/
-cp /home/felipe/Downloads/gdc_manifest.2024-07-16.txt /home/felipe/googledrive/Cancer_staging/
+cp /home/felipe/Downloads/gdc_sample_sheet.2024-07-16.txt /home/felipe/googledrive/Cancer_staging/
+cp /home/felipe/Downloads/metadata.cohort.2024-07-16.txt /home/felipe/googledrive/Cancer_staging/
 
 
 # Untar the zip files
