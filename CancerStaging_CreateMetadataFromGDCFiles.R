@@ -7,7 +7,7 @@
 # merged_data_patient_info_"database".txt.tsv
 ##########################################################################################################################################################################################################
 # Reading the contents of TSV file using read_tsv() method
-gdc_sample_sheet_file<-"/home/felipe/googledrive/Cancer_staging/gdc_sample_sheet.2024-07-16.tsv"
+gdc_sample_sheet_file<-"/home/felipe/googledrive/Cancer_staging/gdc_sample_sheet.2024-07-18.tsv"
 
 # Read data
 gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', header = TRUE,fill=TRUE)  
