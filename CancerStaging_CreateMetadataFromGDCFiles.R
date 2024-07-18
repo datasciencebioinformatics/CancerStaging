@@ -84,3 +84,6 @@ table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III"
 # mean(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+#####################################################################################################################
+write_tsv(data.frame(merged_data_patient_info$File.Name), "/home/felipe/googledrive/Cancer_staging/used_file_names.tsv")
+#####################################################################################################################
