@@ -1,14 +1,12 @@
 # Manifest files
-/home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.txt	
-
 # Filter r
-head /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.txt -n 1 > /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.filtered.txt
+head /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-18.txt -n 1 > /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-18.filtered.txt
 
 # Keep only rna_seq.augmented_star_gene_counts
-cat /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.txt	| grep rna_seq.augmented_star_gene_counts >> /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.filtered.txt
+cat /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-18.txt	| grep rna_seq.augmented_star_gene_counts >> /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-18.filtered.txt
 
 # Create sub-sub folder for Prostate sub-type 
 mkdir /home/felipe/googledrive/Cancer_staging/tables/
 
 # Download all files
-gdc-client download -m /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.filtered.txt -d /home/felipe/googledrive/Cancer_staging/tables/
+gdc-client download -m /home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-18.filtered.txt -d /home/felipe/googledrive/Cancer_staging/tables/
