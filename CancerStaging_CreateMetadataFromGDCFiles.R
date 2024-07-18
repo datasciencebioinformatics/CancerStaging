@@ -49,7 +49,7 @@ merged_sample_clinical_data<-merge(sample_data,clinical_data,by="case_id")
 merged_sample_clinical_data<-merge(merged_sample_clinical_data,exposure_data,by="case_id")
 
 # Merge tables
-merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by.x="sample_submitter_id.x",by.y="sample_submitter_id" )
+merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by.x="sample_submitter_id",by.y="sample_submitter_id" )
 #####################################################################################################################
 sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Primary Tumor") # Number of Primary Tumor
 sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Solid Tissue Normal") # Number of Solid Tissue Normal
