@@ -38,7 +38,7 @@ sample_file="/home/felipe/googledrive/Cancer_staging/sample.txt"
 exposure_file="/home/felipe/googledrive/Cancer_staging/exposure.txt"                                                  
 
 # Load data
-clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
+#clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
 sample_data<-read.table(file = sample_file, sep = '\t', header = TRUE,fill=TRUE)                                    
 exposure_data<-read.table(file = exposure_file, sep = '\t', header = TRUE,fill=TRUE)                                #
 
@@ -64,7 +64,7 @@ merged_data_patient_info$stages<-gsub("Stage IB", "Stage I", merged_data_patient
 merged_data_patient_info$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
+merged_data_patient_info$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info$stages)
@@ -76,18 +76,8 @@ table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_pa
 # Cases per stage
 table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
 
-# table(unique(merged_data_patient_info[,c("sample_id","ethnicity")])$ethnicity)
-# table(unique(merged_data_patient_info[,c("sample_id","gender")])$gender)
-# table(unique(merged_data_patient_info[,c("sample_id","vital_status")])$vital_status)
-# min(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
-# max(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
-# mean(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
 #####################################################################################################################
 write_tsv(data.frame(merged_data_patient_info$File.Name), "/home/felipe/googledrive/Cancer_staging/used_file_names.tsv")
 #####################################################################################################################
-merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","treatment_or_therapy"]
-
-# table_stages_treatment_or_therapy
-table_stages_treatment_or_therapy<-table(merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","treatment_or_therapy"],merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","stages"])
