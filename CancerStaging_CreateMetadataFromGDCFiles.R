@@ -89,8 +89,6 @@ write_tsv(data.frame(merged_data_patient_info$File.Name), "/home/felipe/googledr
 #####################################################################################################################
 merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","treatment_or_therapy"]
 
+# table_stages_treatment_or_therapy
+table_stages_treatment_or_therapy<-table(merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","treatment_or_therapy"],merged_data_patient_info[merged_data_patient_info$project_id=="TCGA-BRCA","stages"])
 
-merged_data_patient_info$treatment_or_therapy
-merged_data_patient_info$treatment_type
-
-", "treatment_duration", "treatment_effect", "treatment_effect_indicator", "treatment_frequency", "treatment_intent_type", "treatment_or_therapy", "treatment_outcome", "treatment_outcome_duration", "treatment_type")]
