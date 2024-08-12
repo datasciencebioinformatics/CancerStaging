@@ -93,3 +93,4 @@ write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/mer
 #####################################################################################################################
 write_tsv(data.frame(merged_data_patient_info$File.Name), "/home/felipe/googledrive/Cancer_staging/used_file_names.tsv")
 #####################################################################################################################
+table(merged_data_patient_info$project_id, merged_data_patient_info$treatment_or_therapy)
