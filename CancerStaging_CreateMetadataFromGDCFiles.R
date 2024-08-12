@@ -23,6 +23,8 @@ gdc_sample_sheet_data<-gdc_sample_sheet_data[which(grepl(pattern="*.rna_seq.augm
 
 # From the File.ID, only the ID is kept in the variable sample_id
 gdc_sample_sheet_data$sample_id<-gsub(".rna_seq.augmented_star_gene_counts.tsv", "", gdc_sample_sheet_data$File.Name)
+
+
 #####################################################################################################################
 # Set path to files                                                                                                 
 # Check ajcc_pathologic_stage
@@ -41,6 +43,12 @@ exposure_file="/home/felipe/googledrive/Cancer_staging/exposure.txt"
 clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
 sample_data<-read.table(file = sample_file, sep = '\t', header = TRUE,fill=TRUE)                                    
 exposure_data<-read.table(file = exposure_file, sep = '\t', header = TRUE,fill=TRUE)                                #
+
+#####################################################################################################################
+# Create field merge_id
+gdc_sample_sheet_data$merge_id<-gdc_sample_sheet_data$Case.ID 
+clinical_file$merge_id        <-clinical_file$case_submitter_id
+#####################################################################################################################
 
 # Merge data
 merged_sample_clinical_data<-merge(sample_data,clinical_data,by="case_id")
