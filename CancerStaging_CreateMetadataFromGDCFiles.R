@@ -46,40 +46,44 @@ exposure_data<-read.table(file = exposure_file, sep = '\t', header = TRUE,fill=T
 
 #####################################################################################################################
 # Create field merge_id
-gdc_sample_sheet_data$merge_id<-gdc_sample_sheet_data$Case.ID 
-clinical_file$merge_id        <-clinical_file$case_submitter_id
+gdc_sample_sheet_data$merge_id   <-gdc_sample_sheet_data$Case.ID 
+clinical_data$merge_id           <-clinical_data$case_submitter_id
+sample_data$merge_id             <-sample_data$case_submitter_id
+exposure_data$merge_id           <-exposure_data$case_submitter_id
 #####################################################################################################################
-
 # Merge data
-merged_sample_clinical_data<-merge(sample_data,clinical_data,by="case_id")
+merged_sample_clinical_data<-merge(sample_data,clinical_data,by="merge_id")
 
 # Merge all
-merged_sample_clinical_data<-merge(merged_sample_clinical_data,exposure_data,by="case_id")
+merged_sample_clinical_data<-merge(merged_sample_clinical_data,exposure_data,by="merge_id")
 
 # Merge tables
-merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by.x="sample_submitter_id",by.y="sample_submitter_id" )
+merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by="merge_id")
 #####################################################################################################################
+# merged_data_patient_info_count
+merged_data_patient_info_count<-unique(merged_data_patient_info[,c("project_id.x","case_id.x","sample_id.x","ajcc_pathologic_stage")])
+			
 sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Primary Tumor") # Number of Primary Tumor
 sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Solid Tissue Normal") # Number of Solid Tissue Normal
 sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Metastatic") # Number of Solid Tissue Normal
 
 # A field to store 
-merged_data_patient_info$stages<-merged_data_patient_info$ajcc_pathologic_stage
+merged_data_patient_info_count$stages<-merged_data_patient_info_count$ajcc_pathologic_stage
 
 # Group stages I,II,III and IV
-merged_data_patient_info$stages<-gsub("Stage IA", "Stage I", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IB", "Stage I", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info$stages)
-merged_data_patient_info$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info$stages)
-merged_data_patient_info$stages<-gsub("Stage IVB", "Stage IV", merged_data_patient_info$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IA", "Stage I", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IB", "Stage I", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info_count$stages)
+merged_data_patient_info_count$stages<-gsub("Stage IVB", "Stage IV", merged_data_patient_info_count$stages)
 
 # Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_patient_info$stages)
+table_cases_per_stage<-table(merged_data_patient_info_count$project_id, merged_data_patient_info_count$stages)
 
 # Cases per stage
 table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
