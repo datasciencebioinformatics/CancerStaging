@@ -38,7 +38,7 @@ sample_file="/home/felipe/googledrive/Cancer_staging/sample.txt"
 exposure_file="/home/felipe/googledrive/Cancer_staging/exposure.txt"                                                  
 
 # Load data
-#clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
+clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
 sample_data<-read.table(file = sample_file, sep = '\t', header = TRUE,fill=TRUE)                                    
 exposure_data<-read.table(file = exposure_file, sep = '\t', header = TRUE,fill=TRUE)                                #
 
