@@ -1,7 +1,7 @@
 # Construnction of 3d coordinates
 # X=stages
 # Y=connectivity
-# Z=expression
+# Z=expression       
 
 # Input X and Z.
 # Table with expression of each gene in stages I, stage II and stage III
