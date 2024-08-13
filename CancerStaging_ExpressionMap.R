@@ -12,3 +12,6 @@
 # Conectivity 
 # The number of interaction-partners a gene has in the interactome
 
+# Contourplot
+# Contourplot with ggplot2
+
