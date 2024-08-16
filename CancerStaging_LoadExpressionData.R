@@ -37,3 +37,19 @@ for (project in rownames(table_cases_per_stage))
     reads_count_per_project[[project]]<-project_data    
 }
 #####################################################################################################################
+dim(reads_count_per_project[["TCGA-BRCA"]])
+dim(reads_count_per_project[["TCGA-LIHC"]])
+dim(reads_count_per_project[["TCGA-LUAD"]])
+dim(reads_count_per_project[["TCGA-LUSC"]])
+dim(reads_count_per_project[["TCGA-PRAD"]])
+dim(reads_count_per_project[["TCGA-READ"]])
+dim(reads_count_per_project[["TCGA-SKCM"]])
+dim(reads_count_per_project[["TCGA-STAD"]])
+
+# Check the number of samples per stage
+# Cases per stage
+table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_patient_info$stages)
+
+# Cases per stage
+table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
+
