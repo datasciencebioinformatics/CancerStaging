@@ -58,7 +58,7 @@ merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
 
 # Population demographic
 # table(unique(merged_data_patient_info[,c("sample_id","primary_diagnosis")])$primary_diagnosis)
-merged_data_patient_info<-merged_data_patient_info[merged_data_patient_info$primary_diagnosis=="Squamous cell carcinoma, NOS",]
+#merged_data_patient_info<-merged_data_patient_info[merged_data_patient_info$primary_diagnosis=="Squamous cell carcinoma, NOS",]
 
 # Filter tumor and normal samples
 primary_tumor<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Primary Tumor",]
