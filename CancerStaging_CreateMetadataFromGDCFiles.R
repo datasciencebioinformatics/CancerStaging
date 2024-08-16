@@ -73,3 +73,31 @@ merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
 # mean(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+#####################################################################################################################
+# Summary of counts of samples per stage
+# Number of Primary Tumor
+# Number of Solid Tissue Normal
+sum(unique(merged_data_patient_info[,c("sample_id","Sample.Type")])[,2]=="Primary Tumor") # Number of Primary Tumor
+sum(unique(merged_data_patient_info[,c("sample_id","Sample.Type")])[,2]=="Solid Tissue Normal") # Number of Solid Tissue Normal
+
+# A field to store 
+merged_data_patient_info$stages<-merged_data_patient_info$ajcc_pathologic_stage
+
+# Group stages I,II,III and IV
+merged_data_patient_info$stages<-gsub("Stage IA", "Stage I", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IB", "Stage I", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info$stages)
+merged_data_patient_info$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IVB", "Stage IV", merged_data_patient_info$stages)
+
+# Cases per stage
+table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_patient_info$stages)
+
+# Cases per stage
+table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
+#####################################################################################################################
