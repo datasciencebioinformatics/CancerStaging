@@ -7,7 +7,7 @@
 # merged_data_patient_info_"database".txt.tsv
 ##########################################################################################################################################################################################################
 # Reading the contents of TSV file using read_tsv() method
-gdc_sample_sheet_file<-"/home/felipe/googledrive/Cancer_staging/gdc_manifest.2024-07-16.filtered.txt"
+gdc_sample_sheet_file<-"/home/felipe/googledrive/Cancer_staging/gdc_sample_sheet.2024-07-18.tsv"
 
 # Read data
 gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', header = TRUE,fill=TRUE)  
@@ -15,25 +15,6 @@ gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', head
 # Add collumn sample_id
 gdc_sample_sheet_data$sample_submitter_id<-gdc_sample_sheet_data$Sample.ID
 #####################################################################################################################
-# Set file name variable 
-gdc_sample_sheet_data<-gdc_sample_sheet_data[gdc_sample_sheet_data$Data.Category=="Transcriptome Profiling",]
-
-# Check which entries contains the words .rna_seq.augmented_star_gene_counts.tsv
-gdc_sample_sheet_data<-gdc_sample_sheet_data[which(grepl(pattern="*.rna_seq.augmented_star_gene_counts.tsv", x=gdc_sample_sheet_data$File.Name)),]
-
-# From the File.ID, only the ID is kept in the variable sample_id
-gdc_sample_sheet_data$sample_id<-gsub(".rna_seq.augmented_star_gene_counts.tsv", "", gdc_sample_sheet_data$File.Name)
-
-
-#####################################################################################################################
-# Set path to files                                                                                                 
-# Check ajcc_pathologic_stage
-# primary_diagnosis
-# site_of_resection_or_biopsy
-#cat /home/felipe/googledrive/Cancer_staging/clinical.tsv | sed "s/'--/ /g" > /home/felipe/googledrive/Cancer_staging/clinical.txt
-#cat /home/felipe/googledrive/Cancer_staging/sample.tsv | sed "s/'--/ /g" > /home/felipe/googledrive/Cancer_staging/sample.txt
-#cat /home/felipe/googledrive/Cancer_staging/exposure.tsv | sed "s/'--/ /g" > /home/felipe/googledrive/Cancer_staging/exposure.txt
-
 # Set path to files                                                                                                 
 clinical_file="/home/felipe/googledrive/Cancer_staging/clinical.txt" 
 sample_file="/home/felipe/googledrive/Cancer_staging/sample.txt"    
@@ -44,53 +25,51 @@ clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=T
 sample_data<-read.table(file = sample_file, sep = '\t', header = TRUE,fill=TRUE)                                    
 exposure_data<-read.table(file = exposure_file, sep = '\t', header = TRUE,fill=TRUE)                                #
 
-#####################################################################################################################
-# Create field merge_id
-gdc_sample_sheet_data$merge_id   <-gdc_sample_sheet_data$Case.ID 
-clinical_data$merge_id           <-clinical_data$case_submitter_id
-sample_data$merge_id             <-sample_data$case_submitter_id
-exposure_data$merge_id           <-exposure_data$case_submitter_id
-#####################################################################################################################
 # Merge data
-merged_sample_clinical_data<-merge(sample_data,clinical_data,by="merge_id")
+merged_sample_clinical_data<-merge(sample_data,clinical_data,by="case_id")
 
 # Merge all
-merged_sample_clinical_data<-merge(merged_sample_clinical_data,exposure_data,by="merge_id")
+merged_sample_clinical_data<-merge(merged_sample_clinical_data,exposure_data,by="case_id")
 
 # Merge tables
-merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by="merge_id")
+merged_data_patient_info<-merge(merged_sample_clinical_data,gdc_sample_sheet_data,by="sample_submitter_id")
 #####################################################################################################################
-# merged_data_patient_info_count
-merged_data_patient_info_count<-unique(merged_data_patient_info[,c("project_id.x","case_id.x","sample_id.x","ajcc_pathologic_stage")])
-			
-sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Primary Tumor") # Number of Primary Tumor
-sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Solid Tissue Normal") # Number of Solid Tissue Normal
-sum(unique(merged_data_patient_info[,c("sample_id.x","Sample.Type")])[,2]=="Metastatic") # Number of Solid Tissue Normal
+# Set file name variable 
+merged_data_patient_info<-merged_data_patient_info[merged_data_patient_info$Data.Category=="Transcriptome Profiling",]
 
-# A field to store 
-merged_data_patient_info_count$stages<-merged_data_patient_info_count$ajcc_pathologic_stage
+# Check which entries contains the words .rna_seq.augmented_star_gene_counts.tsv
+merged_data_patient_info<-merged_data_patient_info[which(grepl(pattern="*.rna_seq.augmented_star_gene_counts.tsv", x=merged_data_patient_info$File.Name)),]
 
-# Group stages I,II,III and IV
-merged_data_patient_info_count$stages<-gsub("Stage IA", "Stage I", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IB", "Stage I", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info_count$stages)
-merged_data_patient_info_count$stages<-gsub("Stage IVB", "Stage IV", merged_data_patient_info_count$stages)
+# From the File.ID, only the ID is kept in the variable sample_id
+merged_data_patient_info$sample_id<-gsub(".rna_seq.augmented_star_gene_counts.tsv", "", merged_data_patient_info$File.Name)
+#####################################################################################################################
+# length(unique(merged_data_patient_info$case_id)) # Number of cases
+# length(unique(merged_data_patient_info$sample_id)) # Number of samples
+# sum(unique(merged_data_patient_info[,c("sample_id","Sample.Type")])[,2]=="Primary Tumor") # Number of Primary Tumor
+# sum(unique(merged_data_patient_info[,c("sample_id","Sample.Type")])[,2]=="Solid Tissue Normal") # Number of Solid Tissue Normal
 
-# Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info_count$project_id, merged_data_patient_info_count$stages)
+# Filter tumor and normal samples
+primary_tumor<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Primary Tumor",]
+solid_tissue<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Solid Tissue Normal",]
+merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
 
-# Cases per stage
-table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
+# length(unique(primary_tumor$sample_id))
+# length(unique(solid_tissue$sample_id))
 
+# Population demographic
+# table(unique(merged_data_patient_info[,c("sample_id","primary_diagnosis")])$primary_diagnosis)
+merged_data_patient_info<-merged_data_patient_info[merged_data_patient_info$primary_diagnosis=="Squamous cell carcinoma, NOS",]
+
+# Filter tumor and normal samples
+primary_tumor<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Primary Tumor",]
+solid_tissue<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Solid Tissue Normal",]
+merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
+
+# table(unique(merged_data_patient_info[,c("sample_id","ethnicity")])$ethnicity)
+# table(unique(merged_data_patient_info[,c("sample_id","gender")])$gender)
+# table(unique(merged_data_patient_info[,c("sample_id","vital_status")])$vital_status)
+# min(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
+# max(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
+# mean(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
-#####################################################################################################################
-write_tsv(data.frame(merged_data_patient_info$File.Name), "/home/felipe/googledrive/Cancer_staging/used_file_names.tsv")
-#####################################################################################################################
-table(merged_data_patient_info$project_id, merged_data_patient_info$treatment_or_therapy)
