@@ -21,3 +21,18 @@ rownames_data<-read.table(file = rownames_file, sep = '\t', header = FALSE,fill=
 rownames(unstranded_data)<-rownames_data[,1]
 colnames(unstranded_data)<-colnames_data[,1]
 #####################################################################################################################
+# A list to store the datasets
+reads_count_per_project<-list()
+
+# for each project 
+for (project in rownames(table_cases_per_stage))
+{
+    # Set project ids
+    project_ids <-merged_data_patient_info[merged_data_patient_info$project_id==project,"sample_id"]  
+
+    # Set project data
+    project_data<-unstranded_data[,which(colnames(unstranded_data) %in% project_ids)]
+
+    # Store dataset
+    reads_count_per_project[[project]]<-project_data    
+}
