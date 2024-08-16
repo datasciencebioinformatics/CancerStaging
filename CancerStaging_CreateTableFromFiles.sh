@@ -44,6 +44,7 @@ done
 paste /home/felipe/googledrive/Cancer_staging/tables/*/*."gene_id.txt"  > /home/felipe/googledrive/Cancer_staging/tables/gene_id.order.txt
 
 # I stopped here 
+ulimit -n 999999
 ls /home/felipe/googledrive/Cancer_staging/tables/*/*.rna_seq.augmented_star_gene_counts.tsv | sed 's/\// /g' | sed 's/.rna_seq.augmented_star_gene_counts.tsv/ /g' | awk '{print $7}'  | sed -e 's/ \t/\t/g'  > /home/felipe/googledrive/Cancer_staging/tables/header.txt
 paste /home/felipe/googledrive/Cancer_staging/tables/*/*."gene_id.txt" | awk '{print $1}' >   /home/felipe/googledrive/Cancer_staging/tables/gene_ids.txt
 paste /home/felipe/googledrive/Cancer_staging/tables/*/*."gene_name.txt" | awk '{print $1}' > /home/felipe/googledrive/Cancer_staging/tables/gene_name.txt
