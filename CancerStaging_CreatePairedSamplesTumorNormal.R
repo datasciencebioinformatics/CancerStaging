@@ -11,6 +11,9 @@
 # Output : merged_data_patient_info.tsv
 ###########################################################################################################################
 merged_data_patient_info_file       <- "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv"             #
+# How many samples ids?
+# How many samples cases ids?
+# How many samples cases File.Ids?
 ###########################################################################################################################
 merged_data_patient_info_data      <-read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE)#
 ###########################################################################################################################
@@ -31,9 +34,6 @@ for (case in unique(merged_data_patient_info_data$Case.ID))
     tumor_sampĺes <-case_samples[case_samples$tissue_type=="Tumor",]
     normal_sampĺes<-case_samples[case_samples$tissue_type=="Normal",]
 
-    # Take the project id
-    stored_project_id<-unique(case_samples$project_id)
-
     # if vector contains at least one tumor and one normal
     if(length(unique(normal_sampĺes$sample_id))>0 && length(unique(tumor_sampĺes$sample_id))>0)
     {            
@@ -44,11 +44,16 @@ for (case in unique(merged_data_patient_info_data$Case.ID))
                 for (normal_samples_id in normal_sampĺes$patient_id)
                 {                  
                     # Contatenate                     
-                    paired_sample_df<-rbind(data.frame(normal=c(normal_samples_id),tumor=c(tumor_solid_sample_id),case=case, project=stored_project_id),paired_sample_df)
+                    paired_sample_df<-rbind(data.frame(normal=c(normal_samples_id),tumor=c(tumor_solid_sample_id),case=case),paired_sample_df)
                 }
             }                
     }
 }
+
+paired_sample_df<-unique(paired_sample_df)
+#######################################################################################################################################
+#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-STAD 
+#      476       200       280       204       216        36       132
 #######################################################################################################################################
 # Verify paired sample
 # Verifgy paired samples
