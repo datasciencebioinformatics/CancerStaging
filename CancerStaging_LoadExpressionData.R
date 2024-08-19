@@ -47,6 +47,9 @@ dim(reads_count_per_project[["TCGA-READ"]])
 dim(reads_count_per_project[["TCGA-SKCM"]])
 dim(reads_count_per_project[["TCGA-STAD"]])
 
+# Count total number of samples
+dim(reads_count_per_project[["TCGA-BRCA"]])[2]+dim(reads_count_per_project[["TCGA-LIHC"]])[2]+dim(reads_count_per_project[["TCGA-LUAD"]])[2]+dim(reads_count_per_project[["TCGA-LUSC"]])[2]+dim(reads_count_per_project[["TCGA-PRAD"]])[2]+dim(reads_count_per_project[["TCGA-READ"]])[2]+dim(reads_count_per_project[["TCGA-SKCM"]])[2]+dim(reads_count_per_project[["TCGA-STAD"]])[2]
+
 merged_data_patient_info_BRCA<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-BRCA",]
 merged_data_patient_info_LIHC<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-LIHC",]
 merged_data_patient_info_LUAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-LUAD",]
@@ -56,17 +59,26 @@ merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info
 merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
 merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]
 
-merged_data_patient_info_BRCA<-unique(merged_data_patient_info_BRCA[which( merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
-merged_data_patient_info_LIHC<-unique(merged_data_patient_info_LIHC[which( merged_data_patient_info_LIHC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LIHC"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_LUAD<-unique(merged_data_patient_info_LUAD[which( merged_data_patient_info_LUAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUAD"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_LUSC<-unique(merged_data_patient_info_LUSC[which( merged_data_patient_info_LUSC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUSC"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_PRAD<-unique(merged_data_patient_info_PRAD[which( merged_data_patient_info_PRAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-PRAD"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_READ<-unique(merged_data_patient_info_READ[which( merged_data_patient_info_READ$sample_id %in%  colnames(reads_count_per_project[["TCGA-READ"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_SKCM<-unique(merged_data_patient_info_SKCM[which( merged_data_patient_info_SKCM$sample_id %in%  colnames(reads_count_per_project[["TCGA-SKCM"]])),c("project_id","stages", "Sample.ID")])   
-merged_data_patient_info_STAD<-unique(merged_data_patient_info_STAD[which( merged_data_patient_info_STAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-STAD"]])),c("project_id","stages", "Sample.ID")])    
+data.frame(colnames(reads_count_per_project[["TCGA-BRCA"]]), project="TCGA-BRCA")
+data.frame(colnames(reads_count_per_project[["TCGA-LIHC"]]), project="TCGA-LIHC")
+data.frame(colnames(reads_count_per_project[["TCGA-LUAD"]]), project="TCGA-LUAD")
+data.frame(colnames(reads_count_per_project[["TCGA-LUSC"]]), project="TCGA-LUSC")
+data.frame(colnames(reads_count_per_project[["TCGA-PRAD"]]), project="TCGA-PRAD")
+data.frame(colnames(reads_count_per_project[["TCGA-READ"]]), project="TCGA-READ")
+data.frame(colnames(reads_count_per_project[["TCGA-SKCM"]]), project="TCGA-SKCM")
+data.frame(colnames(reads_count_per_project[["TCGA-STAD"]]), project="TCGA-STAD")
 
+
+# I am checckin here, number of samples - 19-08-2024
 # Save table
 merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM)
+
+# Take unique entries
+merged_data_patient_info_merged_unique<-unique(merged_data_patient_info_merged[,c("project_id","stages", "Sample.ID")])
+
+merged_data_patient_info_merged_unique$Sample.ID %in% 
+
+merged_data_patient_info_merged<-unique(merged_data_patient_info_BRCA[which( merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
 
 # Cases per stage
 table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
