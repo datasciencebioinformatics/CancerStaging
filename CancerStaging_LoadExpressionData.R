@@ -59,15 +59,14 @@ merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info
 merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
 merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]
 
-data.frame(colnames(reads_count_per_project[["TCGA-BRCA"]]), project="TCGA-BRCA")
-data.frame(colnames(reads_count_per_project[["TCGA-LIHC"]]), project="TCGA-LIHC")
-data.frame(colnames(reads_count_per_project[["TCGA-LUAD"]]), project="TCGA-LUAD")
-data.frame(colnames(reads_count_per_project[["TCGA-LUSC"]]), project="TCGA-LUSC")
-data.frame(colnames(reads_count_per_project[["TCGA-PRAD"]]), project="TCGA-PRAD")
-data.frame(colnames(reads_count_per_project[["TCGA-READ"]]), project="TCGA-READ")
-data.frame(colnames(reads_count_per_project[["TCGA-SKCM"]]), project="TCGA-SKCM")
-data.frame(colnames(reads_count_per_project[["TCGA-STAD"]]), project="TCGA-STAD")
-
+all_samples<-c(colnames(reads_count_per_project[["TCGA-BRCA"]]),
+colnames(reads_count_per_project[["TCGA-LIHC"]]),
+colnames(reads_count_per_project[["TCGA-LUAD"]]),
+colnames(reads_count_per_project[["TCGA-LUSC"]]),
+colnames(reads_count_per_project[["TCGA-PRAD"]]),
+colnames(reads_count_per_project[["TCGA-READ"]]),
+colnames(reads_count_per_project[["TCGA-SKCM"]]),
+colnames(reads_count_per_project[["TCGA-STAD"]]))
 
 # I am checckin here, number of samples - 19-08-2024
 # Save table
@@ -76,7 +75,8 @@ merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data
 # Take unique entries
 merged_data_patient_info_merged_unique<-unique(merged_data_patient_info_merged[,c("project_id","stages", "Sample.ID")])
 
-merged_data_patient_info_merged<-unique(merged_data_patient_info_BRCA[which( merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
+# Use only data that has read counts
+merged_data_patient_info_merged<-unique(merged_data_patient_info_merged[which( merged_data_patient_info_merged$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID")])   
 
 # Cases per stage
 table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
@@ -86,5 +86,6 @@ table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
 
 # I have 7 project and 4 stages. 3522 samples
-# TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM 
+# Total number of samples
+#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM 
 #     1180       411       579       536       545       167       104 
