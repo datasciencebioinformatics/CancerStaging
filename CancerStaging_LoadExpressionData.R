@@ -75,3 +75,7 @@ merged_data_patient_info_merged<-table(merged_data_patient_info_merged$project_i
 # Cases per stage
 merged_data_patient_info_merged<-merged_data_patient_info_merged[,c("Stage I","Stage II","Stage III","Stage IV")]
 
+#####################################################################################################################
+# Organize how to send to Carles
+write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+
