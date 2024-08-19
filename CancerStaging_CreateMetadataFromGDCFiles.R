@@ -93,11 +93,15 @@ merged_data_patient_info$stages<-gsub("Stage IIIC", "Stage III", merged_data_pat
 merged_data_patient_info$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IVB", "Stage IV", merged_data_patient_info$stages)
 
-# Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_patient_info$stages)
+# Count samples
+merged_data_patient_count<-unique(merged_data_patient_info[,c("sample_id","Sample.Type","project_id","stages")])
 
 # Cases per stage
-table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
+table_cases_per_stage<-table(merged_data_patient_count$project_id, merged_data_patient_count$stages)
+
+# Total of 4075 samples
+#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
+#     1223       421       598       553       553       175       104       448
 #####################################################################################################################
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
