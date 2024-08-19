@@ -18,10 +18,10 @@ https://github.com/datasciencebioinformatics/CancerStaging/blob/main/CancerStagi
 https://github.com/datasciencebioinformatics/CancerStaging/blob/main/CancerStaging_CreateTableFromFiles.sh
 
 #### 3- Load all R packages
-source("https://github.com/datasciencebioinformatics/CancerStaging/blob/main/CancerStaging_LoadRPackages.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
 
 #### 4- Create metadata CancerStaging_CreateMetadataFromGDCFiles
-source("https://github.com/datasciencebioinformatics/CancerStaging/blob/main/CancerStaging_CreateMetadataFromGDCFiles.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
 
 #### 5- Load expression data CancerStaging_LoadExpressionData
-source("https://github.com/datasciencebioinformatics/CancerStaging/edit/main/CancerStaging_LoadExpressionData.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
