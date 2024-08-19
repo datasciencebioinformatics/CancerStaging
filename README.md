@@ -21,6 +21,7 @@ https://github.com/datasciencebioinformatics/CancerStaging/blob/main/CancerStagi
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
 
 #### 4- Create metadata CancerStaging_CreateMetadataFromGDCFiles
+# The following files were downloaded from GDC portal, clinical.tsv (information for each patient), sample.tsv (information for each sample) and exposure.tsv (data about patient life-style). These three tables were merged by the "case_id" value. Additionally, gdc_sample_sheet.2024-07-18.tsv were also downloaded (infomation about the experimental files). Then, the gdc_sample_sheet.2024-07-18.tsv was merge with the formed merged table, relating the "Sample ID" to "sample_submitter_id", respectivelly. 
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
 
 #### 5- Load expression data CancerStaging_LoadExpressionData
