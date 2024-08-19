@@ -87,7 +87,7 @@ merged_data_patient_info$stages<-gsub("Stage IB", "Stage I", merged_data_patient
 merged_data_patient_info$stages<-gsub("Stage IIA", "Stage II", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIB", "Stage II", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIC", "Stage II", merged_data_patient_info$stages)
-merged_data_patient_info$stage<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
+merged_data_patient_info$stages<-gsub("Stage IIIA", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIIB", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IIIC", "Stage III", merged_data_patient_info$stages)
 merged_data_patient_info$stages<-gsub("Stage IVA", "Stage IV", merged_data_patient_info$stages)
