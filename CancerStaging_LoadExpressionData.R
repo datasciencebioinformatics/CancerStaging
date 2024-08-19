@@ -76,8 +76,6 @@ merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data
 # Take unique entries
 merged_data_patient_info_merged_unique<-unique(merged_data_patient_info_merged[,c("project_id","stages", "Sample.ID")])
 
-merged_data_patient_info_merged_unique$Sample.ID %in% 
-
 merged_data_patient_info_merged<-unique(merged_data_patient_info_BRCA[which( merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
 
 # Cases per stage
