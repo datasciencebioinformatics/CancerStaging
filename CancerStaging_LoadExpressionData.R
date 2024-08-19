@@ -56,28 +56,21 @@ merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info
 merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
 merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]
 
-merged_data_patient_info_BRCA<-unique(merged_data_patient_info_BRCA[which(merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
-merged_data_patient_info_LIHC<-unique(merged_data_patient_info_LIHC[which(merged_data_patient_info_LIHC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LIHC"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_LUAD<-unique(merged_data_patient_info_LUAD[which(merged_data_patient_info_LUAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUAD"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_LUSC<-unique(merged_data_patient_info_LUSC[which(merged_data_patient_info_LUSC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUSC"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_PRAD<-unique(merged_data_patient_info_PRAD[which(merged_data_patient_info_PRAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-PRAD"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_READ<-unique(merged_data_patient_info_READ[which(merged_data_patient_info_READ$sample_id %in%  colnames(reads_count_per_project[["TCGA-READ"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_SKCM<-unique(merged_data_patient_info_SKCM[which(merged_data_patient_info_SKCM$sample_id %in%  colnames(reads_count_per_project[["TCGA-SKCM"]])),c("project_id","stages", "Sample.ID")])   
-merged_data_patient_info_SKCM<-unique(merged_data_patient_info_STAD[which(merged_data_patient_info_STAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-STAD"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_BRCA<-unique(merged_data_patient_info_BRCA[which( merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "Sample.ID")])   
+merged_data_patient_info_LIHC<-unique(merged_data_patient_info_LIHC[which( merged_data_patient_info_LIHC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LIHC"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_LUAD<-unique(merged_data_patient_info_LUAD[which( merged_data_patient_info_LUAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUAD"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_LUSC<-unique(merged_data_patient_info_LUSC[which( merged_data_patient_info_LUSC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUSC"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_PRAD<-unique(merged_data_patient_info_PRAD[which( merged_data_patient_info_PRAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-PRAD"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_READ<-unique(merged_data_patient_info_READ[which( merged_data_patient_info_READ$sample_id %in%  colnames(reads_count_per_project[["TCGA-READ"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_SKCM<-unique(merged_data_patient_info_SKCM[which( merged_data_patient_info_SKCM$sample_id %in%  colnames(reads_count_per_project[["TCGA-SKCM"]])),c("project_id","stages", "Sample.ID")])   
+merged_data_patient_info_STAD<-unique(merged_data_patient_info_STAD[which( merged_data_patient_info_STAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-STAD"]])),c("project_id","stages", "Sample.ID")])    
 
 # Save table
 merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM)
 
-
-# Check the number of samples per stage
-# Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info_merged$project_id, merged_data_patient_info_merged$stages)
-
 # Cases per stage
 table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
 
-# Cases per stage
-#table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
 #####################################################################################################################
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
@@ -85,5 +78,3 @@ write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/mer
 # I have 7 project and 4 stages. 3522 samples
 # TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM 
 #     1180       411       579       536       545       167       104 
-
-
