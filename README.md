@@ -26,3 +26,6 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadata
 
 #### 5- Load expression data CancerStaging_LoadExpressionData
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
+
+#### 6- Create Paired Samples Tumor Normal
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
