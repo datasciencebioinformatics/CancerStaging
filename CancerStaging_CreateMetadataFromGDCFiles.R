@@ -97,7 +97,7 @@ merged_data_patient_info$stages<-gsub("Stage IVB", "Stage IV", merged_data_patie
 merged_data_patient_count<-unique(merged_data_patient_info[,c("sample_id","Sample.Type","project_id","stages")])
 
 # Cases per stage
-table_cases_per_stage<-table(merged_data_patient_count$project_id, merged_data_patient_count$stages)
+table_cases_per_stage<-table(merged_data_patient_count$project_id)
 
 # Total of 4075 samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
