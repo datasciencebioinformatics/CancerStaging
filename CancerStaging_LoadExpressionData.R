@@ -62,7 +62,8 @@ merged_data_patient_info_LUAD<-unique(merged_data_patient_info_LUAD[which(merged
 merged_data_patient_info_LUSC<-unique(merged_data_patient_info_LUSC[which(merged_data_patient_info_LUSC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUSC"]])),c("project_id","stages", "Sample.ID")])    
 merged_data_patient_info_PRAD<-unique(merged_data_patient_info_PRAD[which(merged_data_patient_info_PRAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-PRAD"]])),c("project_id","stages", "Sample.ID")])    
 merged_data_patient_info_READ<-unique(merged_data_patient_info_READ[which(merged_data_patient_info_READ$sample_id %in%  colnames(reads_count_per_project[["TCGA-READ"]])),c("project_id","stages", "Sample.ID")])    
-merged_data_patient_info_SKCM<-unique(merged_data_patient_info_SKCM[which(merged_data_patient_info_SKCM$sample_id %in%  colnames(reads_count_per_project[["TCGA-SKCM"]])),c("project_id","stages", "Sample.ID")])    
+merged_data_patient_info_SKCM<-unique(merged_data_patient_info_SKCM[which(merged_data_patient_info_SKCM$sample_id %in%  colnames(reads_count_per_project[["TCGA-SKCM"]])),c("project_id","stages", "Sample.ID")])   
+merged_data_patient_info_SKCM<-unique(merged_data_patient_info_STAD[which(merged_data_patient_info_STAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-STAD"]])),c("project_id","stages", "Sample.ID")])    
 
 # Save table
 merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM)
