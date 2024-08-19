@@ -73,10 +73,16 @@ merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data
 table_cases_per_stage<-table(merged_data_patient_info_merged$project_id, merged_data_patient_info_merged$stages)
 
 # Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info_merged$project_id, merged_data_patient_info_merged$stages)
+table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
 
 # Cases per stage
-table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
+#table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
 #####################################################################################################################
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+
+# I have 7 project and 4 stages. 3522 samples
+# TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM 
+#     1180       411       579       536       545       167       104 
+
+
