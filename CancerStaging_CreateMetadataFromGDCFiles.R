@@ -71,8 +71,6 @@ merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
 # min(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # max(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
 # mean(merged_data_patient_info[!is.na(merged_data_patient_info$age_at_index),"age_at_index"])
-# Organize how to send to Carles
-write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
 #####################################################################################################################
 # Summary of counts of samples per stage
 # Number of Primary Tumor
@@ -101,3 +99,5 @@ table_cases_per_stage<-table(merged_data_patient_info$project_id, merged_data_pa
 # Cases per stage
 table_cases_per_stage<-table_cases_per_stage[,c("Stage I","Stage II","Stage III","Stage IV")]
 #####################################################################################################################
+# Organize how to send to Carles
+write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
