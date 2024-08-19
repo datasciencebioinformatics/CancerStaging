@@ -56,7 +56,7 @@ merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info
 merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
 merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]
 
-merged_data_patient_info_BRCA<-unique(merged_data_patient_info_BRCA[which(merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("project_id","stages", "sample_id")])   
+merged_data_patient_info_BRCA<-unique(merged_data_patient_info_BRCA[which(merged_data_patient_info_BRCA$sample_id %in%  colnames(reads_count_per_project[["TCGA-BRCA"]])),c("Project.ID","stages", "Sample.ID")])   
 merged_data_patient_info_LIHC<-unique(merged_data_patient_info_LIHC[which(merged_data_patient_info_LIHC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LIHC"]])),c("project_id","stages", "sample_id")])    
 merged_data_patient_info_LUAD<-unique(merged_data_patient_info_LUAD[which(merged_data_patient_info_LUAD$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUAD"]])),c("project_id","stages", "sample_id")])    
 merged_data_patient_info_LUSC<-unique(merged_data_patient_info_LUSC[which(merged_data_patient_info_LUSC$sample_id %in%  colnames(reads_count_per_project[["TCGA-LUSC"]])),c("project_id","stages", "sample_id")])    
