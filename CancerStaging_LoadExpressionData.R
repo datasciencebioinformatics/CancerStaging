@@ -79,3 +79,4 @@ merged_data_patient_info_merged<-merged_data_patient_info_merged[,c("Stage I","S
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
 
+
