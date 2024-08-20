@@ -73,10 +73,10 @@ colnames(reads_count_per_project[["TCGA-STAD"]]))
 merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM, merged_data_patient_info_STAD)
 
 # Use only data that has read counts
-merged_data_patient_info_merged<-unique(merged_data_patient_info_merged[which( merged_data_patient_info_merged$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID")])   
+merged_data_patient_info_count<-unique(merged_data_patient_info_merged[which( merged_data_patient_info_merged$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID")])   
 
 # Cases per stage
-table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
+table_cases_per_stage<-table(merged_data_patient_info_count$project_id)
 
 #####################################################################################################################
 # Organize how to send to Carles
