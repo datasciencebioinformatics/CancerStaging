@@ -101,7 +101,7 @@ table_cases_per_stage<-table(merged_data_patient_count$project_id)
 
 #####################################################################################################################
 # Total of 4075 samples
-#$TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
+#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
 #     1223       421       598       553       553       175       104       448
 #####################################################################################################################
 # Organize how to send to Carles
