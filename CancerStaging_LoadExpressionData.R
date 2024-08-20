@@ -87,7 +87,7 @@ write_tsv(merged_data_patient_info_merged, "/home/felipe/googledrive/Cancer_stag
 #     1180       411       579       536       545       167       104       440 
 
 # Count the number of reads per project
-reads_count_all_projects<-rbind(reads_count_per_project[["TCGA-BRCA"]],
+reads_count_all_projects<-cbind(reads_count_per_project[["TCGA-BRCA"]],
 reads_count_per_project[["TCGA-LIHC"]],
 reads_count_per_project[["TCGA-LUAD"]],
 reads_count_per_project[["TCGA-LUSC"]],
