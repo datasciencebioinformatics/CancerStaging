@@ -70,7 +70,7 @@ colnames(reads_count_per_project[["TCGA-STAD"]]))
 
 # I am checckin here, number of samples - 19-08-2024
 # Save table
-merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM)
+merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM, merged_data_patient_info_STAD)
 
 # Take unique entries
 merged_data_patient_info_merged_unique<-unique(merged_data_patient_info_merged[,c("project_id","stages", "Sample.ID")])
@@ -83,9 +83,8 @@ table_cases_per_stage<-table(merged_data_patient_info_merged$project_id)
 
 #####################################################################################################################
 # Organize how to send to Carles
-write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+write_tsv(merged_data_patient_info_merged, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
 
-# I have 7 project and 4 stages. 3522 samples
 # Total number of samples
-#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM 
-#     1180       411       579       536       545       167       104 
+#TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
+#     1180       411       579       536       545       167       104       440 
