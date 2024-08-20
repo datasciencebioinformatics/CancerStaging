@@ -85,3 +85,13 @@ write_tsv(merged_data_patient_info_merged, "/home/felipe/googledrive/Cancer_stag
 # Total number of samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
 #     1180       411       579       536       545       167       104       440 
+
+# Count the number of reads per project
+reads_count_all_projects<-rbind(reads_count_per_project[["TCGA-BRCA"]],
+reads_count_per_project[["TCGA-LIHC"]],
+reads_count_per_project[["TCGA-LUAD"]],
+reads_count_per_project[["TCGA-LUSC"]],
+reads_count_per_project[["TCGA-PRAD"]],
+reads_count_per_project[["TCGA-READ"]],
+reads_count_per_project[["TCGA-SKCM"]],
+reads_count_per_project[["TCGA-STAD"]])
