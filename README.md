@@ -30,3 +30,6 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpression
 #### 6- Create Paired Samples Tumor Normal
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
 
+#### 7- Create Paired Samples Tumor Normal
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
+
