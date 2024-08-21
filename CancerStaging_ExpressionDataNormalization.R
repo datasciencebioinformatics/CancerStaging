@@ -1,16 +1,18 @@
 ####################################################################################################################
 # A script to normalize reads count to RPKM                                                                        #
 ####################################################################################################################
-# 
-# Compute gene length with xDb.Hsapiens.UCSC.hg19.knownGene
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
-tx_by_gene <- transcriptsBy(txdb, by="gene")
-gene_lens <- max(width(tx_by_gene))
-
-# Compute gene getGeneLengthAndGCContent
-getGeneLengthAndGCContent("ENSG00000012048", "hsa")
-
+# Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene and getGeneLengthAndGCContent.                                #
+# Plot correlation of length among the two.                                                                        #
+####################################################################################################################
+# Compute gene length with xDb.Hsapiens.UCSC.hg19.knownGene                                                        #
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)                                                                         # 
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene                                                                          #
+tx_by_gene <- transcriptsBy(txdb, by="gene")                                                                       #
+gene_lens <- max(width(tx_by_gene))                                                                                #
+                                                                                                                   #
+# Compute gene getGeneLengthAndGCContent                                                                           #
+getGeneLengthAndGCContent("ENSG00000012048", "hsa")                                                                #
+####################################################################################################################
 # edgeR rpkm
 y <- DGEList(counts=counts,genes=data.frame(Length=GeneLength))
 y <- calcNormFactors(y)
