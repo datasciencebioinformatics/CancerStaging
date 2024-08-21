@@ -1,5 +1,10 @@
 library("readr")
 library(AnnotationHub)
+library (edgeR)
+library (EDASeq)
+library("biomaRt")
+
+library(AnnotationHub)
 library("biomaRt")
 library(data.table)
 library(DescTools)
