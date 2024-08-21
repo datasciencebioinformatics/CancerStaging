@@ -38,6 +38,6 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSa
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
 
 #### 9- Create Expression maps ExpressionMaps
-source("/home/felipe/Documents/github/CancerStaging/source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
 
 
