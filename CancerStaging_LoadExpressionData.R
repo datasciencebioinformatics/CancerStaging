@@ -95,3 +95,6 @@ reads_count_per_project[["TCGA-PRAD"]],
 reads_count_per_project[["TCGA-READ"]],
 reads_count_per_project[["TCGA-SKCM"]],
 reads_count_per_project[["TCGA-STAD"]])
+#####################################################################################################################
+write_tsv(reads_count_all_projects, "/home/felipe/googledrive/Cancer_staging/reads_count_all_projects.tsv")
+#####################################################################################################################
