@@ -5,7 +5,7 @@
 # Plot correlation of length among the two.                                                                        #
 ####################################################################################################################
 # Compute gene length with xDb.Hsapiens.UCSC.hg19.knownGene                                                        #
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)                                                                         # 
+                                                                         # 
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene                                                                          #
 tx_by_gene <- transcriptsBy(txdb, by="gene")                                                                       #
 gene_lens <- max(width(tx_by_gene))                                                                                #
@@ -17,8 +17,6 @@ getGeneLengthAndGCContent("ENSG00000012048", "hsa")                             
 y <- DGEList(counts=counts,genes=data.frame(Length=GeneLength))
 y <- calcNormFactors(y)
 RPKM <- rpkm(y)
-
-
 
 # deseq2 fpkm
 dds <- DESeqDataSetFromMatrix(countData = cts, colData = NULL, design= ~ 1)
