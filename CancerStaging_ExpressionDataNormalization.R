@@ -1,21 +1,6 @@
 ####################################################################################################################
 # A script to normalize reads count to RPKM                                                                        #
 ####################################################################################################################
-# Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene and getGeneLengthAndGCContent.                                #
-# Plot correlation of length among the two.                                                                        #
-####################################################################################################################
-# Compute gene length with xDb.Hsapiens.UCSC.hg19.knownGene                                                        #
-                                                                         # 
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene                                                                          #
-tx_by_gene <- transcriptsBy(txdb, by="gene")                                                                       #
-gene_lens <- max(width(tx_by_gene))                                                                                #
-                                                                                                                   #
-# Compute gene getGeneLengthAndGCContent                                                                           #
-getGeneLengthAndGCContent("ENSG00000012048", "hsa")                                                                #
-####################################################################################################################
-
-
-####################################################################################################################
 # RPKM normalization                                                                                               #
 # The normalization is done for each 1000 genes duo to limitation in the biomart connection                        #
 # First, gene length and gc content for all genes in the reads count table                                         #
@@ -25,7 +10,7 @@ df_gene_ids<-data.frame(gene_id=c(),gene_id_cp=c())                             
 for (gene_id in rownames(unstranded_data))                                                                         #
 {                                                                                                                  #
     # Store gene ids                                                                                               #
-    print(gene_id)
+    print(gene_id)                                                                                                 #
     gene_ids<-strsplit(gene_id,".",fixed=T)[[1]][[1]]                                                              #                                                  
                                                                                                                    #
     # Contatenate gene lists                                                                                       #
@@ -45,6 +30,16 @@ for (index in names(gene_ids_vector) )                                          
 }                                                                                                                         #
 rownames(df_geneLengthAndGCContent)[!grepl(".", rownames(df_geneLengthAndGCContent), fixed=TRUE)]                         #
 ###########################################################################################################################
+# Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene and getGeneLengthAndGCContent.                                #
+# Plot correlation of length among the two.                                                                        #
+####################################################################################################################                                                                       # 
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene                                                                          #
+tx_by_gene <- transcriptsBy(rownames(df_geneLengthAndGCContent), by="gene")                                                                       #
+gene_lens <- max(width(tx_by_gene))                                                                                #
+                                                                                                                   #
+# Compute gene getGeneLengthAndGCContent                                                                           #
+getGeneLengthAndGCContent("ENSG00000012048", "hsa")                                                                #
+####################################################################################################################
 
 
 
