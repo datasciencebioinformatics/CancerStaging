@@ -12,7 +12,7 @@ Liver/Liver Hepatocellular Carcinoma/TCGA-LIHC/
 
 These cancer types were selected for having greatest incidence by 2020, acording to WHO: https://www.who.int/news-room/fact-sheets/detail/cancer. Sub--types of lung cancer LUSC and LUAD were selected because our interest and comparing sub-types and different tissue.
 
-#### Pre-configuration mount rclone to access google cloud server
+#### 0- Pre-configuration mount rclone to access google cloud server
 rclone config                                       
 
 rclone mount googledrive: /home/felipe/googledrive/ 
