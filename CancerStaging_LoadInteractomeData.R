@@ -4,10 +4,10 @@
 #######################################################################################################################################
 # Path to input files
 # Interactome file
-interactome_file<-"/home/felipe/Documents/github/CancerStaging/Full_Interactome_Flavia.txt"
+interactome_file<-"/home/felipe/Documents/Cancer_staging/Full_Interactome_Flavia.txt"
 
 # EnsemblToUniprotKBconversionList file
-EnsemblToUniprotKBconversionList_file<-"/home/felipe/Documents/github/CancerStaging/EnsemblToUniprotKBconversionList.txt"
+EnsemblToUniprotKBconversionList_file<-"/home/felipe/Documents/Cancer_staging/EnsemblToUniprotKBconversionList.txt"
 #######################################################################################################################################
 # Read input table
 # Gene table
