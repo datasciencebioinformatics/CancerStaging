@@ -7,7 +7,7 @@
 # merged_data_patient_info_"database".txt.tsv
 ##########################################################################################################################################################################################################
 # Reading the contents of TSV file using read_tsv() method
-gdc_sample_sheet_file<-"/home/felipe/googledrive/Cancer_staging/gdc_sample_sheet.2024-07-18.tsv"
+gdc_sample_sheet_file<-"/home/felipe/Documents/Cancer_staging/gdc_sample_sheet.2024-07-18.tsv"
 
 # Read data
 gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', header = TRUE,fill=TRUE)  
@@ -16,9 +16,9 @@ gdc_sample_sheet_data<-read.table(file = gdc_sample_sheet_file, sep = '\t', head
 gdc_sample_sheet_data$sample_submitter_id<-gdc_sample_sheet_data$Sample.ID
 #####################################################################################################################
 # Set path to files                                                                                                 
-clinical_file="/home/felipe/googledrive/Cancer_staging/clinical.txt" 
-sample_file="/home/felipe/googledrive/Cancer_staging/sample.txt"    
-exposure_file="/home/felipe/googledrive/Cancer_staging/exposure.txt"                                                  
+clinical_file="/home/felipe/Documents/Cancer_staging/clinical.txt" 
+sample_file="/home/felipe/Documents/Cancer_staging/sample.txt"    
+exposure_file="/home/felipe/Documents/Cancer_staging/exposure.txt"                                                  
 
 # Load data
 clinical_data<-read.table(file = clinical_file, sep = '\t', header = TRUE,fill=TRUE)    
