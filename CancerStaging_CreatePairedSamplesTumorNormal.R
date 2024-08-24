@@ -10,7 +10,7 @@
 # /home/felipe/Documentos/LungPortal/exposure.txt
 # Output : merged_data_patient_info.tsv
 ###########################################################################################################################
-merged_data_patient_info_file       <- "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv"             #
+merged_data_patient_info_file       <- "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"             #
 # How many samples ids?
 # How many samples cases ids?
 # How many samples cases File.Ids?
