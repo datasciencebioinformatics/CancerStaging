@@ -2,15 +2,15 @@
 # This script will take the TSV file (metadata), unstranded.rna_seq.augmented_star_gene_counts (rna-seq count data), 
 #####################################################################################################################
 # Reading the contents of TSV file using read_tsv() method
-merged_data_patient_info_file<- "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv"
+merged_data_patient_info_file<- "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"
 
 # Load metadata table
 merged_data_patient_info     <-read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE)   
 #####################################################################################################################
 # A script to load cancer data base in R
-unstranded_file       <- "/home/felipe/googledrive/Cancer_staging/tables/unstranded.rna_seq.augmented_star_gene_counts.tsv"
-colnames_file         <- "/home/felipe/googledrive/Cancer_staging/tables/header.txt"
-rownames_file         <- "/home/felipe/googledrive/Cancer_staging/tables/gene_ids.txt"
+unstranded_file       <- "/home/felipe/Documents/Cancer_staging/tables/unstranded.rna_seq.augmented_star_gene_counts.tsv"
+colnames_file         <- "/home/felipe/Documents/Cancer_staging/tables/header.txt"
+rownames_file         <- "/home/felipe/Documents/Cancer_staging/tables/gene_ids.txt"
 
 # Load data
 unstranded_data<-read.table(file = unstranded_file, sep = '\t', header = FALSE,fill=TRUE)    
@@ -80,7 +80,7 @@ table_cases_per_stage<-table(merged_data_patient_info_count$project_id)
 
 #####################################################################################################################
 # Organize how to send to Carles
-write_tsv(merged_data_patient_info_merged, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+write_tsv(merged_data_patient_info_merged, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
 
 # Total number of samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
@@ -96,5 +96,5 @@ reads_count_per_project[["TCGA-READ"]],
 reads_count_per_project[["TCGA-SKCM"]],
 reads_count_per_project[["TCGA-STAD"]])
 #####################################################################################################################
-write_tsv(reads_count_all_projects, "/home/felipe/googledrive/Cancer_staging/reads_count_all_projects.tsv")
+write_tsv(reads_count_all_projects, "/home/felipe/Documents/Cancer_staging/reads_count_all_projects.tsv")
 #####################################################################################################################
