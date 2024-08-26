@@ -1,35 +1,16 @@
 m####################################################################################################################
-# A script to normalize reads count to RPKM                                                                        #
+# A script to normalize reads count to RPKM                                                                         #
+# TxDb.Hsapiens.UCSC.hg19.knownGene is used to obtain the length of CCDS sequence data. Data for 26649 transcripts are present in the database.
+# There are 60660 entries in the gene set,and 60616 unique trancripts.
 ####################################################################################################################
-# RPKM normalization                                                                                               #
-# The normalization is done for each 1000 genes duo to limitation in the biomart connection                        #
-# First, gene length and gc content for all genes in the reads count table                                         #
-# Take the gene names, without variant identification                                                              #
-# vector to store all gene ids                                                                                     #
-df_gene_ids<-data.frame(gene_id=c(),gene_id_cp=c())                                                                #
-for (gene_id in rownames(unstranded_data))                                                                         #
-{                                                                                                                  #
-    # Store gene ids                                                                                               #
-    print(gene_id)                                                                                                 #
-    gene_ids<-strsplit(gene_id,".",fixed=T)[[1]][[1]]                                                              #                                                  
-                                                                                                                   #
-    # Contatenate gene lists                                                                                       #
-    df_gene_ids<-rbind(df_gene_ids,data.frame(gene_id=gene_ids,gene_id_cp=gene_id))                                #
-}                                                                                                                  #
-###########################################################################################################################
-# Here, use the goseq package to retrieve the gene length
-getlength_vector<-getlength(df_gene_ids$gene_id,'hg19','ensGene')
-
-# getlength_df
-getlength_df<-data.frame(ENSEMBL=df_gene_ids$gene_id,getlength=getlength_vector)
-####################################################################################################################                                                                       # 
 # Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
-tx_by_gene <- transcriptsBy(txdb, by="gene")
-gene_lens <- max(width(tx_by_gene))
+
+# Take the transcript Lengths by the with.cds_len
+Hsapiens_length <- transcriptLengths(txdb, with.cds_len=TRUE,with.utr5_len=TRUE,with.utr3_len=TRUE)
 
 # Take the gene length
-txdb_geneLength<-data.frame(ENTREZID=names(gene_lens), geneLength=as.vector(gene_lens))
+txdb_geneLength<-data.frame(ENTREZID=Hsapiens_length$gene_id, geneLength=Hsapiens_length$cds_len)
 
 # ids_stage_I - all ENSEMBL anotated using bitr
 gene_emsembl      <-bitr(txdb_geneLength$ENTREZID, fromType = "ENTREZID", toType = c("ENSEMBL","SYMBOL"), OrgDb="org.Hs.eg.db")
@@ -37,27 +18,66 @@ gene_emsembl      <-bitr(txdb_geneLength$ENTREZID, fromType = "ENTREZID", toType
 # Merge tables
 txdb_geneLength<-merge(txdb_geneLength,gene_emsembl,by="ENTREZID")
 ####################################################################################################################
-merge_geneLengh_Counts<-merge(getlength_df,txdb_geneLength,by="ENSEMBL")
+# store_gene_length
+store_gene_length<-data.frame(ENTREZID=c(),geneLength=c())
+
+# for each ENTREZID in txdb_geneLength$ENTREZID
+for (ENTREZID in unique(txdb_geneLength$ENTREZID))
+{
+    # Take the ENTREZID
+    ENTREZID_ID  <-unique(txdb_geneLength[which(txdb_geneLength$ENTREZID %in% ENTREZID),"ENTREZID"])
+   
+    # Take the maximum gene length
+    geneLength<-max(txdb_geneLength[which(txdb_geneLength$ENTREZID %in% ENTREZID_ID),"geneLength"])
+
+    # Store gene length
+    store_gene_length<-rbind(store_gene_length,data.frame(ENTREZID=ENTREZID_ID,geneLength=geneLength))
+}
 ####################################################################################################################
-# Remove NA lines
-merge_geneLengh_Counts<-na.omit(merge_geneLengh_Counts)
+# Then I will merge the dataset to obtain the ENSEMBL ids
+id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTRE-ZID, fromType = "ENTREZID", toType = c("SYMBOL","ENSEMBL"), OrgDb="org.Hs.eg.db")
+####################################################################################################################
+geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSEMBL,by="ENTREZID")
+####################################################################################################################
+# Substrintg of dataset
+reads_count_all_projects$IDS<-substring(rownames(reads_count_all_projects),1,last=15)
 
-cor(merge_geneLengh_Counts$getlength,merge_geneLengh_Counts$geneLength)
+# Keep only the first occurance
+reads_count_all_projects <- reads_count_all_projects[match(unique(reads_count_all_projects$IDS), reads_count_all_projects$IDS),]
 
+# Rename cols
+rownames(reads_count_all_projects)<-reads_count_all_projects$IDS
 
+# Read count all project
+reads_count_all_projects<-reads_count_all_projects[,!colnames(reads_count_all_projects) %in% c("IDS")]
 
+# Use only genes for which gene length is available
+reads_count_all_projects<-reads_count_all_projects[which(rownames(reads_count_all_projects) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
+####################################################################################################################
+ #Sort gene length data.frame
+# First set row names
+rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 
+# Keep only the first occurance
+geneLength_ENTREZID_ENSEMBL <- geneLength_ENTREZID_ENSEMBL[match(unique(geneLength_ENTREZID_ENSEMBL$ENSEMBL), geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
+# Now, check the row names
+rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 
+# Remove NA entries
+geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[which(!is.na(geneLength_ENTREZID_ENSEMBL$ENSEMBL)),]
+
+# Set rownames
+rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
+
+# Sort table according to count table
+geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_all_projects),]
+
+####################################################################################################################
 # edgeR rpkm
-y <- DGEList(counts=counts,genes=data.frame(Length=GeneLength))
-y <- calcNormFactors(y)
-RPKM <- rpkm(y)
+reads_count_DGEList <- DGEList(counts=reads_count_all_projects,genes= geneLength_ENTREZID_ENSEMBL)
+reads_count_DGEList <- calcNormFactors(reads_count_DGEList)
+reads_count_RPKM <- rpkm(reads_count_DGEList)
+####################################################################################################################
 
-# deseq2 fpkm
-dds <- DESeqDataSetFromMatrix(countData = cts, colData = NULL, design= ~ 1)
-dds <- DESeq(dds)
-resultsNames(dds) # lists the coefficients
-# the FPKM values
-fpkm(dds)
