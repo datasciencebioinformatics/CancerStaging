@@ -19,12 +19,11 @@ for (gene_id in rownames(unstranded_data))                                      
 # Split gene_ids vector in parts                                                                                   #
 gene_ids_vector<-split(df_gene_ids$gene_id,ceiling(seq_along(df_gene_ids$gene_id) / 1000))                         #
 ####################################################################################################################
+getGeneLengthAndGCContent(gene_ids_vector[[index]], "hsa", mode="biomart")
+
 # Data.frame to store geneLengthAndGCContent                                                                       #
 df_geneLengthAndGCContent<-data.frame(length=c(),gc=c())                                                           #
-
-# Set biomart
-mart <- useMart("ENSEMBL_MART_ENSEMBL","hsapiens_gene_ensembl", host="https://www.ensembl.org")
-                                                                                                                  #
+                                                                                                                   #
 # For each part of the vectors                                                                                     #
 for (index in names(gene_ids_vector) )                                                                             #
 {                                                                                                                  #
