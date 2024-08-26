@@ -5,6 +5,7 @@ library (EDASeq)
 library("biomaRt")
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 library("goseq")
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 
 library(AnnotationHub)
 library("biomaRt")
