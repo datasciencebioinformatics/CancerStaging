@@ -1,4 +1,4 @@
-####################################################################################################################
+m####################################################################################################################
 # A script to normalize reads count to RPKM                                                                        #
 ####################################################################################################################
 # RPKM normalization                                                                                               #
@@ -16,36 +16,33 @@ for (gene_id in rownames(unstranded_data))                                      
     # Contatenate gene lists                                                                                       #
     df_gene_ids<-rbind(df_gene_ids,data.frame(gene_id=gene_ids,gene_id_cp=gene_id))                                #
 }                                                                                                                  #
-# Split gene_ids vector in parts                                                                                   #
-gene_ids_vector<-split(df_gene_ids$gene_id,ceiling(seq_along(df_gene_ids$gene_id) / 1000))                         #
-####################################################################################################################
-getGeneLengthAndGCContent(gene_ids_vector[[index]], "hsa", mode="biomart")
-
-# Data.frame to store geneLengthAndGCContent                                                                       #
-df_geneLengthAndGCContent<-data.frame(length=c(),gc=c())                                                           #
-                                                                                                                   #
-# For each part of the vectors                                                                                     #
-for (index in names(gene_ids_vector) )                                                                             #
-{                                                                                                                  #
-    # Concatenate files                                                                                            ########
-    df_geneLengthAndGCContent<-rbind(df_geneLengthAndGCContent,getGeneLengthAndGCContent(gene_ids_vector[[index]], "hsa"))#
-}                                                                                                                         #
-rownames(df_geneLengthAndGCContent)[!grepl(".", rownames(df_geneLengthAndGCContent), fixed=TRUE)]                         #
 ###########################################################################################################################
-# Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene and getGeneLengthAndGCContent.                                #
-# Plot correlation of length among the two.                                                                        #
+# Here, use the goseq package to retrieve the gene length
+getlength_vector<-getlength(df_gene_ids$gene_id,'hg19','ensGene')
+
+# getlength_df
+getlength_df<-data.frame(ENSEMBL=df_gene_ids$gene_id,getlength=getlength_vector)
 ####################################################################################################################                                                                       # 
 # Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 tx_by_gene <- transcriptsBy(txdb, by="gene")
 gene_lens <- max(width(tx_by_gene))
 
-# gene_lens is a table with entrez ID, it must be translated to ensembl ID
+# Take the gene length
+txdb_geneLength<-data.frame(ENTREZID=names(gene_lens), geneLength=as.vector(gene_lens))
+
+# ids_stage_I - all ENSEMBL anotated using bitr
+gene_emsembl      <-bitr(txdb_geneLength$ENTREZID, fromType = "ENTREZID", toType = c("ENSEMBL","SYMBOL"), OrgDb="org.Hs.eg.db")
+
+# Merge tables
+txdb_geneLength<-merge(txdb_geneLength,gene_emsembl,by="ENTREZID")
 ####################################################################################################################
+merge_geneLengh_Counts<-merge(getlength_df,txdb_geneLength,by="ENSEMBL")
+####################################################################################################################
+# Remove NA lines
+merge_geneLengh_Counts<-na.omit(merge_geneLengh_Counts)
 
-
-
+cor(merge_geneLengh_Counts$getlength,merge_geneLengh_Counts$geneLength)
 
 
 
