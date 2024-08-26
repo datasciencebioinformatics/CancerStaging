@@ -105,4 +105,4 @@ table_cases_per_stage<-table(merged_data_patient_count$project_id)
 #     1223       421       598       553       553       175       104       448 
 #####################################################################################################################
 # Organize how to send to Carles
-write_tsv(merged_data_patient_info, "/home/felipe/googledrive/Cancer_staging/merged_data_patient_info.tsv")
+write_tsv(merged_data_patient_info, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
