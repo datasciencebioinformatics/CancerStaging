@@ -21,7 +21,10 @@ gene_ids_vector<-split(df_gene_ids$gene_id,ceiling(seq_along(df_gene_ids$gene_id
 ####################################################################################################################
 # Data.frame to store geneLengthAndGCContent                                                                       #
 df_geneLengthAndGCContent<-data.frame(length=c(),gc=c())                                                           #
-                                                                                                                   #
+
+# Set biomart
+mart <- useMart("ENSEMBL_MART_ENSEMBL","hsapiens_gene_ensembl", host="https://www.ensembl.org")
+                                                                                                                  #
 # For each part of the vectors                                                                                     #
 for (index in names(gene_ids_vector) )                                                                             #
 {                                                                                                                  #
@@ -33,13 +36,19 @@ rownames(df_geneLengthAndGCContent)[!grepl(".", rownames(df_geneLengthAndGCConte
 # Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene and getGeneLengthAndGCContent.                                #
 # Plot correlation of length among the two.                                                                        #
 ####################################################################################################################                                                                       # 
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene                                                                          #
-tx_by_gene <- transcriptsBy(rownames(df_geneLengthAndGCContent), by="gene")                                                                       #
-gene_lens <- max(width(tx_by_gene))                                                                                #
-                                                                                                                   #
-# Compute gene getGeneLengthAndGCContent                                                                           #
-getGeneLengthAndGCContent("ENSG00000012048", "hsa")                                                                #
+# Gene length with TxDb.Hsapiens.UCSC.hg19.knownGene
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+tx_by_gene <- transcriptsBy(txdb, by="gene")
+gene_lens <- max(width(tx_by_gene))
+
+# gene_lens is a table with entrez ID, it must be translated to ensembl ID
 ####################################################################################################################
+
+
+
+
+
 
 
 
