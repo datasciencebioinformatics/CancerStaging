@@ -12,50 +12,22 @@ unstranded_NOISeq_rpkm_data      <- read.table(file = unstranded_NOISeq_rpkm_fil
 unstranded_NOISeq_TMM_data       <- read.table(file = unstranded_NOISeq_TMM_file, sep = '\t', header = TRUE,fill=TRUE)    #
 merged_data_patient_info         <- read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE) #
 ###########################################################################################################################
-# Paired samples                                                                                                         
-paired_sample_df<-data.frame(normal=c(),tumor=c(),case=c())                                                              
-                                                                                                                         
-# For each case, find the pairs                                                                                          
-for (case in unique(merged_data_patient_info_data$case))                                                                 
-{                                                                                                                        
-    # All samples for case id = "case"                                                                                   
-    case_samples<-merged_data_patient_info_data[merged_data_patient_info_data$case==case,]                               
-                                                                                                                         
-    # Take the tumor samples                                                                                           
-    tumor_sampĺes <-case_samples[case_samples$tissue_type=="Tumor",]
-    normal_sampĺes<-case_samples[case_samples$tissue_type=="Normal",]
+# Paired samples only
+paired_sample_df
 
-    # if vector contains at least one tumor and one normal
-    if(length(unique(normal_sampĺes$sample_id))>0 && length(unique(tumor_sampĺes$sample_id))>0)
-    {
-            # For each tumor sample
-            for (tumor_solid_sample_id in tumor_sampĺes$patient_id)
-            {
-                # for each normal sample, compile a paired samples
-                for (normal_samples_id in normal_sampĺes$patient_id)
-                {
-                    # Contatenate                     
-                    paired_sample_df<-rbind(data.frame(normal=c(normal_samples_id),tumor=c(tumor_solid_sample_id),case=case),paired_sample_df)
-                }
-            }                
-    }
-}
-#######################################################################################################################################
-# Take control and normal samples
-samples_Tumor  <-colData[colData$tumor_normal=="Primary Tumor","patient_id"]
-samples_Normal  <-colData[colData$tumor_normal=="Solid Tissue Normal","patient_id"]
+# Store all samples 
+merged_data_patient_info_unique<-unique(merged_data_patient_info[,c("sample_id","Sample.Type")])
+
+# All tumor and control samples
+tumor_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Primary Tumor",]
+control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Solid Tissue Normal",]
 #######################################################################################################################################
 # folchange=Expr(Stage i)/Expr(Stage ii and II)
-# folchange=rowMeans(unstranded_rpkm[,paired_sample_df$tumor])-rowMeans(unstranded_rpkm[,paired_sample_df$normal])
-# folchange=rowMeans(unstranded_rpkm[,paired_sample_df$tumor])/rowMeans(unstranded_rpkm[,paired_sample_df$normal])
-# log2change=log(folchange,2)	
-# Log(FC) = mean(log2(Group1)) / mean(log2(Group2))
-# Log(FC) = log2(mean(Group1)/(mean(Group2)))
 # Paired t-test, RPKM of paired tumor/normal samples
 # Plot with 15208 genes.
 # Log2foldchange
 LOG_CONSTANT=0.001
-log2change_paired=log( (rowMeans(unstranded_rpkm[,paired_sample_df$tumor]+LOG_CONSTANT)/rowMeans(unstranded_rpkm[,paired_sample_df$normal]+LOG_CONSTANT)),2)	
+log2change_paired=log( (rowMeans(unstranded_dgelist_rpkm_data[,paired_sample_df$tumor]+LOG_CONSTANT)/rowMeans(unstranded_rpkm[,paired_sample_df$normal]+LOG_CONSTANT)),2)	
 log2change=log( (rowMeans(unstranded_rpkm[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_rpkm[,samples_Normal]+LOG_CONSTANT)),2)	
 
 # log2change data
