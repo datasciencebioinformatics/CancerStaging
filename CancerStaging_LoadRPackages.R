@@ -8,6 +8,7 @@ library("goseq")
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library("clusterProfiler")
 library("org.Hs.eg.db")
+library("DGEobj.utils")
 
 library(AnnotationHub)
 library("biomaRt")
