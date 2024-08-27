@@ -27,8 +27,7 @@ control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique
 # Plot with 15208 genes.
 # Log2foldchange
 LOG_CONSTANT=0.001
-log2change_paired=log( (rowMeans(unstranded_dgelist_rpkm_data[,paired_sample_df$tumor]+LOG_CONSTANT)/rowMeans(unstranded_rpkm[,paired_sample_df$normal]+LOG_CONSTANT)),2)	
-log2change=log( (rowMeans(unstranded_rpkm[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_rpkm[,samples_Normal]+LOG_CONSTANT)),2)	
+log2change=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
 
 # log2change data
 log2change_tumor_control=na.omit(data.frame(gene=names(log2change),log2change=log2change))
