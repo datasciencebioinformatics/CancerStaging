@@ -19,7 +19,7 @@ merged_data_patient_info_data      <-read.table(file = merged_data_patient_info_
 ###########################################################################################################################
 merged_data_patient_info_data$patient_id  <- merged_data_patient_info_data$File.ID
 merged_data_patient_info_data$case_id     <- merged_data_patient_info_data$Case.ID
-merged_data_patient_info_data$sample_id   <- merged_data_patient_info_data$Sample.ID
+#merged_data_patient_info_data$sample_id   <- merged_data_patient_info_data$Sample.ID
 ###########################################################################################################################
 # Paired samples                                                                                                         
 paired_sample_df<-data.frame(normal=c(),tumor=c(),case=c(),project=c())                                                              
@@ -41,10 +41,10 @@ for (case in unique(merged_data_patient_info_data$Case.ID))
     if(length(unique(normal_sampĺes$sample_id))>0 && length(unique(tumor_sampĺes$sample_id))>0)
     {            
             # For each tumor sample
-            for (tumor_solid_sample_id in tumor_sampĺes$patient_id)
+            for (tumor_solid_sample_id in tumor_sampĺes$sample_id)
             {
                 # for each normal sample, compile a paired samples
-                for (normal_samples_id in normal_sampĺes$patient_id)
+                for (normal_samples_id in normal_sampĺes$sample_id)
                 {                  
                     # Contatenate                     
                     paired_sample_df<-rbind(data.frame(normal=c(normal_samples_id),tumor=c(tumor_solid_sample_id),case=case, project=project_id),paired_sample_df)
