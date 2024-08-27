@@ -72,6 +72,9 @@ colnames(reads_count_per_project[["TCGA-STAD"]]))
 # Save table
 merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM, merged_data_patient_info_STAD)
 
+# Set project ids
+merged_data_patient_info_merged <-merged_data_patient_info_merged[which(merged_data_patient_info$sample_id==all_samples),]  
+
 # Use only data that has read counts
 merged_data_patient_info_count<-unique(merged_data_patient_info_merged[which( merged_data_patient_info_merged$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID")])   
 
