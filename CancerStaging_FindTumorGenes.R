@@ -25,15 +25,11 @@ paired_tumor_samples     <- paired_sample_df$tumor
 # Log2foldchange
 LOG_CONSTANT=0.001
 log2change       =log( (rowMeans(unstranded_edgeR_rpkm[,unpaired_tumor_samples]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm[,unpaired_control_samples]+LOG_CONSTANT)),2)	
-log2change_paired=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
+log2change_paired=log( (rowMeans(unstranded_edgeR_rpkm[,paired_tumor_samples]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm[,paired_normal_samples]+LOG_CONSTANT)),2)	
 
 # log2change data
 log2change_tumor_control=na.omit(data.frame(gene=names(log2change),log2change=log2change))
 log2change_tumor_control_paired=na.omit(data.frame(gene=names(log2change_paired),log2change=log2change_paired))
-
-# First, the log2foldchane tumor/normal samples is used
-log2change_tumor_control$Category<-"insignificant"
-log2change_tumor_control_paired$Category<-"insignificant"
 
 # First, the log2foldchane tumor/normal samples is used
 log2change_tumor_control$Pvalue<-1
@@ -43,14 +39,23 @@ log2change_tumor_control_paired$Pvalue<-1
 for (gene in log2change_tumor_control$gene)
 {
 	# Take p-value
-	log2change_tumor_control[gene,"Pvalue"]<-t.test(x=as.numeric(unstranded_rpkm[gene,samples_Tumor]), y=as.numeric(unstranded_rpkm[gene,samples_Normal]), paired = FALSE, alternative = "two.sided")$p.value	
-	log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=as.numeric(unstranded_rpkm[gene,paired_sample_df$tumor]), y=as.numeric(unstranded_rpkm[gene,paired_sample_df$normal]), paired = FALSE, alternative = "two.sided")$p.value	
+	log2change_tumor_control[gene,"Pvalue"]<-t.test(x=as.numeric(unstranded_rpkm[gene,unpaired_tumor_samples]), y=as.numeric(unstranded_rpkm[gene,unpaired_control_samples]), paired = FALSE, alternative = "two.sided")$p.value	
+	log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=as.numeric(unstranded_rpkm[gene,paired_tumor_samples]), y=as.numeric(unstranded_rpkm[gene,paired_normal_samples]), paired = TRUE, alternative = "two.sided")$p.value	
 }
 # FRD 
 log2change_tumor_control$FDR<-p.adjust(log2change_tumor_control$Pvalue, method="fdr")
 log2change_tumor_control_paired$FDR<-p.adjust(log2change_tumor_control_paired$Pvalue, method="fdr")
-
-# Categorize genes if log2foldchange >= threshold_tumor
-log2change_tumor_control[intersect(which(log2change_tumor_control$FDR<=threshold_FDR), which(log2change_tumor_control$log2change>=threshold_tumor)),"Category"]<-paste("Tumor genes", sep="")
-log2change_tumor_control_paired[intersect(which(log2change_tumor_control_paired$FDR<=threshold_FDR), which(log2change_tumor_control_paired$log2change>=threshold_tumor)),"Category"]<-paste("Tumor genes", sep="")
 #######################################################################################################################################
+colnames(log2change_tumor_control)       <- c("gene","log2change_all_samples","pvalue_all_samples","fdr_all_samples")                 #
+colnames(log2change_tumor_control_paired)<- c("gene","log2change_paired","pvalue_paired","fdr_paired")                                #
+#######################################################################################################################################
+logchange_tumor_control<-merge(log2change_tumor_control,log2change_tumor_control_paired,by="gene")                                    #
+#######################################################################################################################################
+
+
+
+
+
+
+
+
