@@ -68,22 +68,16 @@ colnames(reads_count_per_project[["TCGA-READ"]]),
 colnames(reads_count_per_project[["TCGA-SKCM"]]),
 colnames(reads_count_per_project[["TCGA-STAD"]]))
 
-# I am checckin here, number of samples - 19-08-2024
-# Save table
-merged_data_patient_info_merged<-rbind(merged_data_patient_info_BRCA,merged_data_patient_info_LIHC,merged_data_patient_info_LUAD,merged_data_patient_info_LUSC,merged_data_patient_info_PRAD,merged_data_patient_info_READ,merged_data_patient_info_SKCM, merged_data_patient_info_STAD)
-
-# Set project ids
-merged_data_patient_info_merged <-merged_data_patient_info_merged[which(merged_data_patient_info$sample_id==all_samples),]  
-
 # Use only data that has read counts
-merged_data_patient_info_count<-unique(merged_data_patient_info_merged[which( merged_data_patient_info_merged$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID")])   
+merged_data_patient_info      <-unique(merged_data_patient_info[which( merged_data_patient_info$sample_id %in%  all_samples),])   
+merged_data_patient_info_count<-unique(merged_data_patient_info[which( merged_data_patient_info$sample_id %in%  all_samples),c("project_id","stages", "Sample.ID","sample_id", "Sample.Type")])   
 
 # Cases per stage
 table_cases_per_stage<-table(merged_data_patient_info_count$project_id)
-
 #####################################################################################################################
 # Organize how to send to Carles
-write_tsv(merged_data_patient_info_merged, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
+write_tsv(merged_data_patient_info, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
+#####################################################################################################################
 
 # Total number of samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
@@ -101,3 +95,6 @@ reads_count_per_project[["TCGA-STAD"]])
 #####################################################################################################################
 write_tsv(reads_count_all_projects, "/home/felipe/Documents/Cancer_staging/reads_count_all_projects.tsv")
 #####################################################################################################################
+
+
+
