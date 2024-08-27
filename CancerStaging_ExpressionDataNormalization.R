@@ -1,4 +1,4 @@
-m####################################################################################################################
+####################################################################################################################
 # A script to normalize reads count to RPKM                                                                         #
 # TxDb.Hsapiens.UCSC.hg19.knownGene is used to obtain the length of CCDS sequence data. Data for 26649 transcripts are present in the database.
 # There are 60660 entries in the gene set,and 60616 unique trancripts.
@@ -35,7 +35,7 @@ for (ENTREZID in unique(txdb_geneLength$ENTREZID))
 }
 ####################################################################################################################
 # Then I will merge the dataset to obtain the ENSEMBL ids
-id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTRE-ZID, fromType = "ENTREZID", toType = c("SYMBOL","ENSEMBL"), OrgDb="org.Hs.eg.db")
+id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTREZID, fromType = "ENTREZID", toType = c("SYMBOL","ENSEMBL"), OrgDb="org.Hs.eg.db")
 ####################################################################################################################
 geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSEMBL,by="ENTREZID")
 ####################################################################################################################
@@ -55,12 +55,13 @@ reads_count_all_projects<-reads_count_all_projects[,!colnames(reads_count_all_pr
 reads_count_all_projects<-reads_count_all_projects[which(rownames(reads_count_all_projects) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
 ####################################################################################################################
- #Sort gene length data.frame
-# First set row names
-rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
+#Sort gene length data.frame
 
 # Keep only the first occurance
 geneLength_ENTREZID_ENSEMBL <- geneLength_ENTREZID_ENSEMBL[match(unique(geneLength_ENTREZID_ENSEMBL$ENSEMBL), geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+
+# First set row names
+rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 
 # Now, check the row names
 rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
@@ -79,11 +80,9 @@ geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_al
 # RPKM normalization
 # Check meticulously the DGEList normalization
 # Important to check if the gene length use is correct.
-
-reads_count_DGEList <- DGEList(counts=reads_count_all_projects,genes= geneLength_ENTREZID_ENSEMBL)
-reads_count_DGEList <- calcNormFactors(reads_count_DGEList)
-reads_count_RPKM    <- rpkm(reads_count_DGEList)
-####################################################################################################################
+# RPKM
+unstranded_rpkm<-rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
+##############################################################################################################
 # TPM normalization
 reads_count_TPM     <- apply(reads_count_RPKM, 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame()
 
