@@ -17,12 +17,11 @@ rclone config
 
 rclone mount googledrive: /home/felipe/googledrive/ 
 
-
 #### 1- Download tables from gdc_manifest.2024-07-18.txt
-/home/felipe/Documents/Cancer_staging/CancerStaging_DownloadFromManifest.sh
+/home/felipe/Documents/Cancer_staging/github/CancerStaging_DownloadFromManifest.sh
 
 #### 2- Create expression tables from file
-/home/felipe/Documents/Cancer_staging/CancerStaging_CreateTableFromFiles.sh
+/home/felipe/Documents/Cancer_staging/github/CancerStaging_CreateTableFromFiles.sh
 
 #### 3- Load all R packages
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
