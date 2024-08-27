@@ -1,33 +1,27 @@
-####################################################################################################################
-# Save normalized data                                                                                             #
-unstranded_edgeR_rpkm_file     <-         paste(output_dir,"unstranded_edgeR_rpkm.tsv",sep="")			   #
-unstranded_dgelist_rpkm_file   <-         paste(output_dir,"unstranded_dgelist_rpkm.tsv",sep="")		   #
-unstranded_NOISeq_rpkm_file    <-         paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep="")	  		   #
-unstranded_NOISeq_TMM_file     <-         paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep="")	 		   #
-merged_data_patient_info_file  <-         "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"     #
 ###########################################################################################################################
-unstranded_edgeR_rpkm_data       <- read.table(file = unstranded_edgeR_rpkm_file, sep = '\t', header = TRUE,fill=TRUE)    #
-unstranded_dgelist_rpkm_data     <- read.table(file = unstranded_dgelist_rpkm_file, sep = '\t', header = TRUE,fill=TRUE)  #
-unstranded_NOISeq_rpkm_data      <- read.table(file = unstranded_NOISeq_rpkm_file, sep = '\t', header = TRUE,fill=TRUE)   #
-unstranded_NOISeq_TMM_data       <- read.table(file = unstranded_NOISeq_TMM_file, sep = '\t', header = TRUE,fill=TRUE)    #
-merged_data_patient_info         <- read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE) #
+# Save normalized data                                                                                             
+unstranded_edgeR_rpkm       <- unstranded_rpkm
+unstranded_dgelist_rpkm     <- unstranded_dgelist_rpkm
+unstranded_NOISeq_rpkm_data <- unstranded_NOISeq_rpkm
+unstranded_NOISeq_TMM       <- unstranded_NOISeq_TMM
 ###########################################################################################################################
-# Paired samples only
-paired_sample_df
-
 # Store all samples 
 merged_data_patient_info_unique<-unique(merged_data_patient_info[,c("sample_id","Sample.Type")])
 
 # All tumor and control samples
-tumor_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Primary Tumor",]
-control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Solid Tissue Normal",]
+unpaired_tumor_samples  <-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Primary Tumor","sample_id"]
+unpaired_control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Solid Tissue Normal","sample_id"]
+
+# Paired samples only
+paired_tumor_samples    <- paired_sample_df$normal
+unpaired_tumor_samples  <- paired_sample_df$tumor
 #######################################################################################################################################
 # folchange=Expr(Stage i)/Expr(Stage ii and II)
 # Paired t-test, RPKM of paired tumor/normal samples
 # Plot with 15208 genes.
 # Log2foldchange
 LOG_CONSTANT=0.001
-log2change       =log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
+log2change       =log( (rowMeans(unstranded_edgeR_rpkm[,paired_tumor_samples]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm[,unpaired_control_samples]+LOG_CONSTANT)),2)	
 log2change_paired=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
 
 # log2change data
