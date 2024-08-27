@@ -5,12 +5,9 @@ unstranded_dgelist_rpkm     <- unstranded_dgelist_rpkm
 unstranded_NOISeq_rpkm_data <- unstranded_NOISeq_rpkm
 unstranded_NOISeq_TMM       <- unstranded_NOISeq_TMM
 ###########################################################################################################################
-# Store all samples 
-merged_data_patient_info_unique<-unique(merged_data_patient_info[,c("sample_id","Sample.Type")])
-
 # All tumor and control samples
-unpaired_tumor_samples  <-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Primary Tumor","sample_id"]
-unpaired_control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique$Sample.Type=="Solid Tissue Normal","sample_id"]
+unpaired_tumor_samples  <-merged_data_patient_info_unique[merged_data_patient_info_count$Sample.Type=="Primary Tumor","sample_id"]
+unpaired_control_samples<-merged_data_patient_info_unique[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal","sample_id"]
 
 # Paired samples only
 paired_tumor_samples    <- paired_sample_df$normal
