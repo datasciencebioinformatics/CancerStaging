@@ -28,10 +28,10 @@ reads_count_per_project<-list()
 for (project in rownames(table_cases_per_stage))
 {
     # Set project ids
-    project_ids <-merged_data_patient_info[merged_data_patient_info$project_id==project,"sample_id"]  
+    sample_ids <-merged_data_patient_info[merged_data_patient_info$project_id==project,"sample_id"]  
 
     # Set project data
-    project_data<-unstranded_data[,which(colnames(unstranded_data) %in% project_ids)]
+    project_data<-unstranded_data[,which(colnames(unstranded_data) %in% sample_ids)]
 
     # Store dataset
     reads_count_per_project[[project]]<-project_data    
