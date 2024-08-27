@@ -4,21 +4,27 @@ unstranded_edgeR_rpkm       <- unstranded_rpkm
 unstranded_dgelist_rpkm     <- unstranded_dgelist_rpkm
 unstranded_NOISeq_rpkm_data <- unstranded_NOISeq_rpkm
 unstranded_NOISeq_TMM       <- unstranded_NOISeq_TMM
+
+unstranded_edgeR_rpkm         <-unstranded_edgeR_rpkm[colnames(unstranded_edgeR_rpkm) %in% merged_data_patient_info_count$sample_id,]
+merged_data_patient_info_count<-merged_data_patient_info_count[merged_data_patient_info_count$sample_id %in% colnames(unstranded_edgeR_rpkm),]
 ###########################################################################################################################
 # All tumor and control samples
 unpaired_tumor_samples  <-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor","sample_id"]
 unpaired_control_samples<-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal","sample_id"]
 
+unpaired_tumor_samples   %in%   colnames(unstranded_edgeR_rpkm)
+unpaired_control_samples %in%   colnames(unstranded_edgeR_rpkm)
+
 # Paired samples only
-paired_tumor_samples    <- paired_sample_df$normal
-unpaired_tumor_samples  <- paired_sample_df$tumor
+paired_normal_samples    <- paired_sample_df$normal
+paired_tumor_samples     <- paired_sample_df$tumor
 #######################################################################################################################################
 # folchange=Expr(Stage i)/Expr(Stage ii and II)
 # Paired t-test, RPKM of paired tumor/normal samples
 # Plot with 15208 genes.
 # Log2foldchange
 LOG_CONSTANT=0.001
-log2change       =log( (rowMeans(unstranded_edgeR_rpkm[,paired_tumor_samples]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm[,unpaired_control_samples]+LOG_CONSTANT)),2)	
+log2change       =log( (rowMeans(unstranded_edgeR_rpkm[,unpaired_tumor_samples]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm[,unpaired_control_samples]+LOG_CONSTANT)),2)	
 log2change_paired=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
 
 # log2change data
