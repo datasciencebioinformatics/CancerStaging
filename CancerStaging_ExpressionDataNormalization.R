@@ -75,7 +75,11 @@ rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_all_projects),]
 
 ####################################################################################################################
+# TO DO tomorrow 24th-august-2024
 # RPKM normalization
+# Check meticulously the DGEList normalization
+# Important to check if the gene length use is correct.
+
 reads_count_DGEList <- DGEList(counts=reads_count_all_projects,genes= geneLength_ENTREZID_ENSEMBL)
 reads_count_DGEList <- calcNormFactors(reads_count_DGEList)
 reads_count_RPKM    <- rpkm(reads_count_DGEList)
