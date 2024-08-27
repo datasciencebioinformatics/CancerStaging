@@ -75,9 +75,26 @@ rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_all_projects),]
 
 ####################################################################################################################
-# edgeR rpkm
+# RPKM normalization
 reads_count_DGEList <- DGEList(counts=reads_count_all_projects,genes= geneLength_ENTREZID_ENSEMBL)
 reads_count_DGEList <- calcNormFactors(reads_count_DGEList)
-reads_count_RPKM <- rpkm(reads_count_DGEList)
+reads_count_RPKM    <- rpkm(reads_count_DGEList)
 ####################################################################################################################
+# TPM normalization
+reads_count_TPM     <- apply(reads_count_RPKM, 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame()
+
+# TPM
+VeroTPM <- convertCounts(reads_count_all_projects, unit       = "tpm", geneLength = geneLength_ENTREZID_ENSEMBL,  log        = FALSE, prior.count=0)
+####################################################################################################################
+# TMM normalization
+reads_count_DGEList <- calcNormFactors(reads_count_DGEList, method = "TMM")
+reads_count_TMM <- cpm(reads_count_DGEList)
+####################################################################################################################
+# Normalizaton matrix
+TP53_RPKM_TMM_TPM<-data.frame(RPKM=reads_count_RPKM["ENSG00000141510",],TPM=reads_count_TPM["ENSG00000141510",],TMM=reads_count_TMM["ENSG00000141510",])
+
+# Calclation matrix
+cor_TP53_RPKM_TMM_TPM <- cor(TP53_RPKM_TMM_TPM)
+round(cor_TP53_RPKM_TMM_TPM, 2)
+                         
 
