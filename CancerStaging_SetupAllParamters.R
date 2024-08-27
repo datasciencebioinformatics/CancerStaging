@@ -1,2 +1,2 @@
 # Set outfolder
-outfolder="/home/felipe/Documents/Cancer_staging/outputfolder/"
+output_dir="/home/felipe/Documents/Cancer_staging/outputfolder/"
