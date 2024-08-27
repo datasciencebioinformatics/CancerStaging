@@ -81,17 +81,24 @@ geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_al
 # Check meticulously the DGEList normalization
 # Important to check if the gene length use is correct.
 # RPKM
-unstranded_rpkm<-rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
+unstranded_rpkm<-edgeR::rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
 ##############################################################################################################
 unstranded_dgelist <- DGEList(counts=reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,],genes=data.frame(Length=geneLength_ENTREZID_ENSEMBL$geneLength))
 unstranded_dgelist <- calcNormFactors(unstranded_dgelist)
-unstranded_dgelist_rpkm <- rpkm(unstranded_dgelist)
+unstranded_dgelist_rpkm <- edgeR::rpkm(unstranded_dgelist)
 ####################################################################################################################
-# Normalizaton matrix
-TP53_RPKM_TMM_TPM<-data.frame(RPKM=unstranded_rpkm["ENSG00000141510",],dgelist=unstranded_dgelist_rpkm["ENSG00000141510",])
-
+# NOISeq
+unstranded_NOISeq_rpkm = NOISeq::rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], long = geneLength_ENTREZID_ENSEMBL$geneLength, lc = 1, k = 0)
+####################################################################################################################
+# TMM normalization with no length correction
+unstranded_dgelist_TMM = NOISeq::tmm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], long = geneLength_ENTREZID_ENSEMBL$geneLength, lc = 0, k = 0)
+####################################################################################################################
+## RPKM normalization
+TP53_edgeR_rpkm_dgelist<-data.frame(RPKM=unstranded_rpkm["ENSG00000141510",],dgelist=unstranded_dgelist_rpkm["ENSG00000141510",], NOISeq=unstranded_NOISeq_rpkm["ENSG00000141510",], TMM=unstranded_dgelist_TMM["ENSG00000141510",])
+####################################################################################################################
 # Calclation matrix
-cor_TP53_RPKM_TMM_TPM <- cor(TP53_RPKM_TMM_TPM)
+cor_TP53_RPKM_TMM_TPM <- cor(TP53_edgeR_rpkm_dgelist)
 round(cor_TP53_RPKM_TMM_TPM, 2)
+####################################################################################################################
                          
 
