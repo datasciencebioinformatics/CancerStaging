@@ -37,16 +37,16 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadata
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
 
 #### 7- Load expression data CancerStaging_LoadExpressionData. Raw read counts are normalized with DESeq2 package for CPM (counts per million), TPM (transcripts per kilobase million) and RPKM/FPKM (reads/fragments per kilobase of exon per million reads/fragments mapped).
-source("/home/felipe/Documents/github/Cancer_staging/CancerStaging_ExpressionDataNormalization.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization.R")
 
 #### 8- Create Paired Samples Tumor Normal
-source("/home/felipe/Documents/github/Cancer_staging/CancerStaging_CreatePairedSamplesTumorNormal.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
 
 #### 9- Load interactome data
 ##### The IntAct interactome was obtained from the intact-micluster.txt file (version updated December 2017) accessed on January 11, 2018, with 152280 interactions among 15651 gene symbols. After converting gene symbols to ENSEMBL identifiers with EnsemblToUniprotKBconversionList.txt, 148169 interactions (97.3%) and 14492 genes (92.6%) were kept. To calculate the connectivity per gene, we counted the number of times each gene appeared in the interactome. 
-source("/home/felipe/Documents/github/Cancer_staging/CancerStaging_LoadInteractomeData.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
 
 #### 10- Create Expression maps ExpressionMaps
-source("/home/felipe/Documents/github/Cancer_staging/CancerStaging_ExpressionMaps.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
 
 
