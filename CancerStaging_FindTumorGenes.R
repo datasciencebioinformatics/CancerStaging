@@ -1,9 +1,9 @@
 ####################################################################################################################
 # Save normalized data                                                                                             #
-unstranded_edgeR_rpkm_file     <-         paste(output_dir,"unstranded_edgeR_rpkm.tsv",sep="")			               #
-unstranded_dgelist_rpkm_file   <-         paste(output_dir,"unstranded_dgelist_rpkm.tsv",sep="")		               #
-unstranded_NOISeq_rpkm_file    <-         paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep="")	  		             #
-unstranded_NOISeq_TMM_file     <-         paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep="")	 		               #
+unstranded_edgeR_rpkm_file     <-         paste(output_dir,"unstranded_edgeR_rpkm.tsv",sep="")			   #
+unstranded_dgelist_rpkm_file   <-         paste(output_dir,"unstranded_dgelist_rpkm.tsv",sep="")		   #
+unstranded_NOISeq_rpkm_file    <-         paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep="")	  		   #
+unstranded_NOISeq_TMM_file     <-         paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep="")	 		   #
 merged_data_patient_info_file  <-         "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"     #
 ###########################################################################################################################
 unstranded_edgeR_rpkm_data       <- read.table(file = unstranded_edgeR_rpkm_file, sep = '\t', header = TRUE,fill=TRUE)    #
@@ -27,7 +27,8 @@ control_samples<-merged_data_patient_info_unique[merged_data_patient_info_unique
 # Plot with 15208 genes.
 # Log2foldchange
 LOG_CONSTANT=0.001
-log2change=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
+log2change       =log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
+log2change_paired=log( (rowMeans(unstranded_edgeR_rpkm_data[,samples_Tumor]+LOG_CONSTANT)/rowMeans(unstranded_edgeR_rpkm_data[,samples_Normal]+LOG_CONSTANT)),2)	
 
 # log2change data
 log2change_tumor_control=na.omit(data.frame(gene=names(log2change),log2change=log2change))
