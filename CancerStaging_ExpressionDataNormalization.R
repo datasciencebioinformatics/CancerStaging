@@ -103,7 +103,7 @@ round(cor_TP53_RPKM_TMM_TPM, 2)
 # Save normalized data                                                                                             #
 write_tsv(data.frame(unstranded_rpkm),         paste(output_dir,"unstranded_edgeR_rpkm.tsv",sep=""))			   #
 write_tsv(data.frame(unstranded_dgelist_rpkm), paste(output_dir,"unstranded_dgelist_rpkm.tsv",sep=""))			   #
-write_tsv(unstranded_NOISeq_rpkm,   paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep=""))			               #
-write_tsv(unstranded_NOISeq_TMM,   paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep=""))                           #
+write_tsv(data.frame(unstranded_NOISeq_rpkm),   paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep=""))			   #
+write_tsv(data.frame(unstranded_NOISeq_TMM),   paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep=""))               #
 ####################################################################################################################
 
