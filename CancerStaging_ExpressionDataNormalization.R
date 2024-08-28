@@ -41,32 +41,31 @@ geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSE
 ####################################################################################################################
 # Substrintg of dataset
 df_reads_count_all_projects_raw$IDS<-substring(rownames(df_reads_count_all_projects_raw),1,last=15)
-df_reads_count_per_project_fpkm$IDS<-substring(rownames(df_reads_count_per_project_fpkm),1,last=15)
-df_reads_count_per_project_tpm$IDS<-substring(rownames(df_reads_count_per_project_tpm),1,last=15)
+df_reads_count_all_projects_fpkm$IDS<-substring(rownames(df_reads_count_all_projects_fpkm),1,last=15)
+df_reads_count_all_projects_tpm$IDS<-substring(rownames(df_reads_count_all_projects_tpm),1,last=15)
 
 # Keep only the first occurance
-df_reads_count_all_projects_raw <- reads_count_all_projects[match(unique(df_reads_count_all_projects_raw$IDS), df_reads_count_all_projects_raw$IDS),]
-df_reads_count_per_project_fpkm <- reads_count_all_projects[match(unique(df_reads_count_per_project_fpkm$IDS), df_reads_count_per_project_fpkm$IDS),]
-df_reads_count_per_project_tpm <- reads_count_all_projects[match(unique(df_reads_count_per_project_tpm$IDS), df_reads_count_per_project_tpm$IDS),]
+df_reads_count_all_projects_raw <- df_reads_count_all_projects_raw[match(unique(df_reads_count_all_projects_raw$IDS), df_reads_count_all_projects_raw$IDS),]
+df_reads_count_all_projects_fpkm <- df_reads_count_all_projects_fpkm[match(unique(df_reads_count_all_projects_fpkm$IDS), df_reads_count_all_projects_fpkm$IDS),]
+df_reads_count_all_projects_tpm <- df_reads_count_all_projects_tpm[match(unique(df_reads_count_all_projects_tpm$IDS), df_reads_count_all_projects_tpm$IDS),]
 
 # Rename cols
 rownames(df_reads_count_all_projects_raw)<-df_reads_count_all_projects_raw$IDS
-rownames(df_reads_count_per_project_fpkm)<-df_reads_count_per_project_fpkm$IDS
-rownames(df_reads_count_per_project_tpm)<-df_reads_count_per_project_tpm$IDS
+rownames(df_reads_count_all_projects_fpkm)<-df_reads_count_all_projects_fpkm$IDS
+rownames(df_reads_count_all_projects_tpm)<-df_reads_count_all_projects_tpm$IDS
 
 # Read count all project
 df_reads_count_all_projects_raw<-df_reads_count_all_projects_raw[,!colnames(df_reads_count_all_projects_raw) %in% c("IDS")]
-df_reads_count_per_project_fpkm<-df_reads_count_per_project_fpkm[,!colnames(df_reads_count_per_project_fpkm) %in% c("IDS")]
-df_reads_count_per_project_tpm<-df_reads_count_per_project_tpm[,!colnames(df_reads_count_per_project_tpm) %in% c("IDS")]
+df_reads_count_all_projects_fpkm<-df_reads_count_all_projects_fpkm[,!colnames(df_reads_count_all_projects_fpkm) %in% c("IDS")]
+df_reads_count_all_projects_tpm<-df_reads_count_all_projects_tpm[,!colnames(df_reads_count_all_projects_tpm) %in% c("IDS")]
 
 # Use only genes for which gene length is available
 df_reads_count_all_projects_raw<-df_reads_count_all_projects_raw[which(rownames(df_reads_count_all_projects_raw) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
-df_reads_count_per_project_fpkm<-df_reads_count_per_project_fpkm[which(rownames(df_reads_count_per_project_fpkm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
-df_reads_count_per_project_tpm<-df_reads_count_per_project_tpm[which(rownames(df_reads_count_per_project_tpm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+df_reads_count_all_projects_fpkm<-df_reads_count_all_projects_fpkm[which(rownames(df_reads_count_all_projects_fpkm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+df_reads_count_all_projects_tpm<-df_reads_count_all_projects_tpm[which(rownames(df_reads_count_all_projects_tpm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
 ####################################################################################################################
 #Sort gene length data.frame
-
 # Keep only the first occurance
 geneLength_ENTREZID_ENSEMBL <- geneLength_ENTREZID_ENSEMBL[match(unique(geneLength_ENTREZID_ENSEMBL$ENSEMBL), geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
@@ -83,37 +82,11 @@ geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[which(!is.na(geneLength
 rownames(geneLength_ENTREZID_ENSEMBL)<-geneLength_ENTREZID_ENSEMBL$ENSEMBL
 
 # Sort table according to count table
-geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_all_projects),]
-
+geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count_all_projects_raw),]
 ####################################################################################################################
-# TO DO tomorrow 24th-august-2024
-# RPKM normalization
-# Check meticulously the DGEList normalization
-# Important to check if the gene length use is correct.
-# RPKM
-unstranded_rpkm<-edgeR::rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
-##############################################################################################################
-unstranded_dgelist <- DGEList(counts=reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,],genes=data.frame(Length=geneLength_ENTREZID_ENSEMBL$geneLength))
-unstranded_dgelist <- calcNormFactors(unstranded_dgelist, method = c("TMM")
-unstranded_dgelist_rpkm <- edgeR::rpkm(unstranded_dgelist)
-####################################################################################################################
-# NOISeq
-unstranded_NOISeq_rpkm = NOISeq::rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], long = geneLength_ENTREZID_ENSEMBL$geneLength, lc = 1, k = 0)
-####################################################################################################################
-# TMM normalization with no length correction
-unstranded_NOISeq_TMM = NOISeq::tmm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], long = geneLength_ENTREZID_ENSEMBL$geneLength, lc = 0, k = 0)
-####################################################################################################################
-## RPKM normalization
-TP53_edgeR_rpkm_dgelist_TMM_TPM<-data.frame(RPKM_edgeR=unstranded_rpkm["ENSG00000141510",],RPKM_dgelist=unstranded_dgelist_rpkm["ENSG00000141510",], RPKM_NOISeq=unstranded_NOISeq_rpkm["ENSG00000141510",], TMM_from_NoiseSeq=unstranded_NOISeq_TMM["ENSG00000141510",])
-####################################################################################################################           
-# Calclation matrix
-cor_TP53_RPKM_TMM_TPM <- cor(TP53_edgeR_rpkm_dgelist_TMM_TPM)
-round(cor_TP53_RPKM_TMM_TPM, 2)
-####################################################################################################################
-# Save normalized data                                                                                             #
-write_tsv(data.frame(unstranded_rpkm),         paste(output_dir,"unstranded_edgeR_rpkm.tsv",sep=""))			   #
-write_tsv(data.frame(unstranded_dgelist_rpkm), paste(output_dir,"unstranded_dgelist_rpkm.tsv",sep=""))			   #
-write_tsv(data.frame(unstranded_NOISeq_rpkm),   paste(output_dir,"unstranded_NOISeq_rpkm.tsv",sep=""))			   #
-write_tsv(data.frame(unstranded_NOISeq_TMM),   paste(output_dir,"unstranded_NOISeq_TMM.tsv",sep=""))               #
-####################################################################################################################
-
+unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,],genes=data.frame(Length=geneLength_ENTREZID_ENSEMBL$geneLength))
+unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
+df_reads_count_all_projects_TMM <- cpm(unstranded_dgelist)
+###########################################################################################################################
+write_tsv(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
+###########################################################################################################################
