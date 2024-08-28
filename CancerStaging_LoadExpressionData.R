@@ -8,21 +8,33 @@ merged_data_patient_info_file<- "/home/felipe/Documents/Cancer_staging/merged_da
 merged_data_patient_info     <-read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE)   
 #####################################################################################################################
 # A script to load cancer data base in R
-unstranded_file       <- "/home/felipe/Documents/Cancer_staging/tables/unstranded.rna_seq.augmented_star_gene_counts.tsv"
+unstranded_raw_file      <- "/home/felipe/Documents/Cancer_staging/tables/unstranded.rna_seq.augmented_star_gene_counts.tsv"
+unstranded_fpkm_file     <- "/home/felipe/Documents/Cancer_staging/tables/fpkm_unstranded.rna_seq.augmented_star_gene_counts.tsv"
+unstranded_tpm_file      <- "/home/felipe/Documents/Cancer_staging/tables/tpm_unstranded.rna_seq.augmented_star_gene_counts.tsv"
+
 colnames_file         <- "/home/felipe/Documents/Cancer_staging/tables/header.txt"
 rownames_file         <- "/home/felipe/Documents/Cancer_staging/tables/gene_ids.txt"
 
 # Load data
-unstranded_data<-read.table(file = unstranded_file, sep = '\t', header = FALSE,fill=TRUE)    
+unstranded_raw_data <-read.table(file = unstranded_raw_file, sep = '\t', header = FALSE,fill=TRUE)    
+unstranded_fpkm_data<-read.table(file = unstranded_fpkm_file, sep = '\t', header = FALSE,fill=TRUE)    
+unstranded_tpm_data <-read.table(file = unstranded_tpm_file, sep = '\t', header = FALSE,fill=TRUE)    
+
 colnames_data<-read.table(file = colnames_file, sep = '\t', header = FALSE,fill=TRUE)                                    
 rownames_data<-read.table(file = rownames_file, sep = '\t', header = FALSE,fill=TRUE)     
 
 # Set colnames and rownames
-rownames(unstranded_data)<-rownames_data[,1]
-colnames(unstranded_data)<-colnames_data[,1]
+rownames(unstranded_raw_data)<-rownames_data[,1]
+colnames(unstranded_raw_data)<-colnames_data[,1]
+rownames(unstranded_tpm_data)<-rownames_data[,1]
+colnames(unstranded_tpm_data)<-colnames_data[,1]
+rownames(unstranded_fpkm_data)<-rownames_data[,1]
+colnames(unstranded_fpkm_data)<-colnames_data[,1]
 #####################################################################################################################
 # A list to store the datasets
-reads_count_per_project<-list()
+reads_count_per_project_raw  <-list()
+reads_count_per_project_tpm  <-list()
+reads_count_per_project_fpkm <-list()
 
 # for each project 
 for (project in rownames(table_cases_per_stage))
@@ -31,10 +43,14 @@ for (project in rownames(table_cases_per_stage))
     sample_ids <-merged_data_patient_info[merged_data_patient_info$project_id==project,"sample_id"]  
 
     # Set project data
-    project_data<-unstranded_data[,which(colnames(unstranded_data) %in% sample_ids)]
+    project_data_raw<-reads_count_per_project_raw[,which(colnames(reads_count_per_project_raw) %in% sample_ids)]
+    project_data_tpm<-reads_count_per_project_tpm[,which(colnames(reads_count_per_project_tpm) %in% sample_ids)]
+    project_data_fpkm<-reads_count_per_project_fpkm[,which(colnames(reads_count_per_project_fpkm) %in% sample_ids)]
 
     # Store dataset
-    reads_count_per_project[[project]]<-project_data    
+    reads_count_per_project_raw[[project]]<-project_data_raw    
+    reads_count_per_project_tpm[[project]]<-project_data_tpm
+    reads_count_per_project_fpkm[[project]]<-project_data_fpkm
 }
 #####################################################################################################################
 # Count the number of reads per project
