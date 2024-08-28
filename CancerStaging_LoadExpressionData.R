@@ -97,14 +97,14 @@ merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info
 merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
 merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]
 
-all_samples<-c(colnames(reads_count_per_project[["TCGA-BRCA"]]),
-colnames(reads_count_per_project[["TCGA-LIHC"]]),
-colnames(reads_count_per_project[["TCGA-LUAD"]]),
-colnames(reads_count_per_project[["TCGA-LUSC"]]),
-colnames(reads_count_per_project[["TCGA-PRAD"]]),
-colnames(reads_count_per_project[["TCGA-READ"]]),
-colnames(reads_count_per_project[["TCGA-SKCM"]]),
-colnames(reads_count_per_project[["TCGA-STAD"]]))
+all_samples<-c(colnames(reads_count_per_project_raw[["TCGA-BRCA"]]),
+colnames(reads_count_per_project_raw[["TCGA-LIHC"]]),
+colnames(reads_count_per_project_raw[["TCGA-LUAD"]]),
+colnames(reads_count_per_project_raw[["TCGA-LUSC"]]),
+colnames(reads_count_per_project_raw[["TCGA-PRAD"]]),
+colnames(reads_count_per_project_raw[["TCGA-READ"]]),
+colnames(reads_count_per_project_raw[["TCGA-SKCM"]]),
+colnames(reads_count_per_project_raw[["TCGA-STAD"]]))
 
 # Use only data that has read counts
 merged_data_patient_info      <-unique(merged_data_patient_info[which( merged_data_patient_info$sample_id %in%  all_samples),])   
@@ -148,11 +148,11 @@ reads_count_per_project_tpm[["TCGA-PRAD"]],
 reads_count_per_project_tpm[["TCGA-READ"]],
 reads_count_per_project_tpm[["TCGA-SKCM"]],
 reads_count_per_project_tpm[["TCGA-STAD"]])
-#####################################################################################################################
-write_tsv(df_reads_count_all_projects_raw, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_raw.tsv")
-write_tsv(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_fpkm.tsv")
-write_tsv(df_reads_count_all_projects_tpm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tpm.tsv")
-#####################################################################################################################
+###########################################################################################################################
+write_tsv(df_reads_count_all_projects_raw, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_raw.tsv")   #
+write_tsv(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_fpkm.tsv") #
+write_tsv(df_reads_count_all_projects_tpm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tpm.tsv")   #
+###########################################################################################################################
 
 
 
