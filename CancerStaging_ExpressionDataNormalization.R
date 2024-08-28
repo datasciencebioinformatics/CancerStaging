@@ -112,11 +112,10 @@ df_tmm$gene<-rownames(df_reads_count_all_projects_tmm)
 # Data.frames with gene name and read counts
 df_tpm <-data.frame(as.vector(df_reads_count_all_projects_tpm))
 df_tpm$gene<-rownames(df_reads_count_all_projects_tpm)
-allall_nr
 
-merge(merge(df_fpkm,df_tpm,by="gene"),merge(df_tpm,df_tmm,by="gene"),by="gene")
+# Store all normalized values
+all_normalized_schemes<-merge(merge(df_raw,df_fpkm,by="gene"),merge(df_tpm,df_tmm,by="gene"),by="gene")
                    
-merge(df_raw,merge(df_fpkm,by="gene"),)
 
 3
 data.frame(gene=data.frame(gene=rownames(df_reads_count_all_projects_tpm),tpm,=as.vector(df_reads_count_all_projects_tpm)))
