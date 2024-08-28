@@ -84,7 +84,7 @@ geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(reads_count_al
 unstranded_rpkm<-edgeR::rpkm(reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
 ##############################################################################################################
 unstranded_dgelist <- DGEList(counts=reads_count_all_projects[geneLength_ENTREZID_ENSEMBL$ENSEMBL,],genes=data.frame(Length=geneLength_ENTREZID_ENSEMBL$geneLength))
-unstranded_dgelist <- calcNormFactors(unstranded_dgelist)
+unstranded_dgelist <- calcNormFactors(unstranded_dgelist, method = c("TMM")
 unstranded_dgelist_rpkm <- edgeR::rpkm(unstranded_dgelist)
 ####################################################################################################################
 # NOISeq
