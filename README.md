@@ -42,11 +42,14 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionData
 #### 8- Create Paired Samples Tumor Normal
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
 
-#### 9- Load interactome data
+#### 9- CancerStaging Find Tumor Genes
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes.R")
+
+#### 10- Load interactome data
 ##### The IntAct interactome was obtained from the intact-micluster.txt file (version updated December 2017) accessed on January 11, 2018, with 152280 interactions among 15651 gene symbols. After converting gene symbols to ENSEMBL identifiers with EnsemblToUniprotKBconversionList.txt, 148169 interactions (97.3%) and 14492 genes (92.6%) were kept. To calculate the connectivity per gene, we counted the number of times each gene appeared in the interactome. 
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
 
-#### 10- Create Expression maps ExpressionMaps
+#### 11- Create Expression maps ExpressionMaps
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
 
 
