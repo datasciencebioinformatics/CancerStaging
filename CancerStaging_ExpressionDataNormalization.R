@@ -100,21 +100,25 @@ tp53_tpm<-data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",])
 # Data.frames with gene name and read counts
 df_raw <-data.frame(as.vector(df_reads_count_all_projects_raw))
 df_raw$gene<-rownames(df_reads_count_all_projects_raw)
+df_raw$normalization<-"raw"
 
 # Data.frames with gene name and read counts
 df_fpkm <-data.frame(as.vector(df_reads_count_all_projects_fpkm))
 df_fpkm$gene<-rownames(df_reads_count_all_projects_fpkm)
+df_fpkm$normalization<-"fpkm"
 
 # Data.frames with gene name and read counts
 df_tmm <-data.frame(as.vector(df_reads_count_all_projects_tmm))
 df_tmm$gene<-rownames(df_reads_count_all_projects_tmm)
+df_tmm$normalization<-"tmm"
 
 # Data.frames with gene name and read counts
 df_tpm <-data.frame(as.vector(df_reads_count_all_projects_tpm))
 df_tpm$gene<-rownames(df_reads_count_all_projects_tpm)
+df_tpm$normalization<-"tpm"
 
 # Store all normalized values
-all_normalized_schemes<-merge(merge(df_raw,df_fpkm,by="gene"),merge(df_tpm,df_tmm,by="gene"),by="gene")
+all_normalized_schemes<-rbind(df_raw,df_fpkm,df_tmm,df_tpm)
 
 # Expresion of tp53
 tp53_normalized<-all_normalized_schemes[all_normalized_schemes$gene == "ENSG00000141510",]
