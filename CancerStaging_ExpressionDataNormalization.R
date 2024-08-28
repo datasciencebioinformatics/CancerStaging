@@ -125,3 +125,4 @@ pairs(~ raw + tmm + fpkm + tmm, data = as.matrix(tp53_normalized))
 
 
 
+
