@@ -149,7 +149,9 @@ reads_count_per_project_tpm[["TCGA-READ"]],
 reads_count_per_project_tpm[["TCGA-SKCM"]],
 reads_count_per_project_tpm[["TCGA-STAD"]])
 #####################################################################################################################
-write_tsv(reads_count_all_projects, "/home/felipe/Documents/Cancer_staging/reads_count_all_projects.tsv")
+write_tsv(df_reads_count_all_projects_raw, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_raw.tsv")
+write_tsv(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_fpkm.tsv")
+write_tsv(df_reads_count_all_projects_tpm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tpm.tsv")
 #####################################################################################################################
 
 
