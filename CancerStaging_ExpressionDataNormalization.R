@@ -40,19 +40,29 @@ id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTREZID, fromType = "EN
 geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSEMBL,by="ENTREZID")
 ####################################################################################################################
 # Substrintg of dataset
-reads_count_all_projects$IDS<-substring(rownames(reads_count_all_projects),1,last=15)
+df_reads_count_all_projects_raw$IDS<-substring(rownames(df_reads_count_all_projects_raw),1,last=15)
+df_reads_count_per_project_fpkm$IDS<-substring(rownames(df_reads_count_per_project_fpkm),1,last=15)
+df_reads_count_per_project_tpm$IDS<-substring(rownames(df_reads_count_per_project_tpm),1,last=15)
 
 # Keep only the first occurance
-reads_count_all_projects <- reads_count_all_projects[match(unique(reads_count_all_projects$IDS), reads_count_all_projects$IDS),]
+df_reads_count_all_projects_raw <- reads_count_all_projects[match(unique(df_reads_count_all_projects_raw$IDS), df_reads_count_all_projects_raw$IDS),]
+df_reads_count_per_project_fpkm <- reads_count_all_projects[match(unique(df_reads_count_per_project_fpkm$IDS), df_reads_count_per_project_fpkm$IDS),]
+df_reads_count_per_project_tpm <- reads_count_all_projects[match(unique(df_reads_count_per_project_tpm$IDS), df_reads_count_per_project_tpm$IDS),]
 
 # Rename cols
-rownames(reads_count_all_projects)<-reads_count_all_projects$IDS
+rownames(df_reads_count_all_projects_raw)<-df_reads_count_all_projects_raw$IDS
+rownames(df_reads_count_per_project_fpkm)<-df_reads_count_per_project_fpkm$IDS
+rownames(df_reads_count_per_project_tpm)<-df_reads_count_per_project_tpm$IDS
 
 # Read count all project
-reads_count_all_projects<-reads_count_all_projects[,!colnames(reads_count_all_projects) %in% c("IDS")]
+df_reads_count_all_projects_raw<-df_reads_count_all_projects_raw[,!colnames(df_reads_count_all_projects_raw) %in% c("IDS")]
+df_reads_count_per_project_fpkm<-df_reads_count_per_project_fpkm[,!colnames(df_reads_count_per_project_fpkm) %in% c("IDS")]
+df_reads_count_per_project_tpm<-df_reads_count_per_project_tpm[,!colnames(df_reads_count_per_project_tpm) %in% c("IDS")]
 
 # Use only genes for which gene length is available
-reads_count_all_projects<-reads_count_all_projects[which(rownames(reads_count_all_projects) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+df_reads_count_all_projects_raw<-df_reads_count_all_projects_raw[which(rownames(df_reads_count_all_projects_raw) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+df_reads_count_per_project_fpkm<-df_reads_count_per_project_fpkm[which(rownames(df_reads_count_per_project_fpkm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
+df_reads_count_per_project_tpm<-df_reads_count_per_project_tpm[which(rownames(df_reads_count_per_project_tpm) %in% geneLength_ENTREZID_ENSEMBL$ENSEMBL),]
 
 ####################################################################################################################
 #Sort gene length data.frame
