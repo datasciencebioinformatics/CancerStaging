@@ -115,15 +115,11 @@ df_tpm$gene<-rownames(df_reads_count_all_projects_tpm)
 
 # Store all normalized values
 all_normalized_schemes<-merge(merge(df_raw,df_fpkm,by="gene"),merge(df_tpm,df_tmm,by="gene"),by="gene")
-                   
 
-3
-data.frame(gene=data.frame(gene=rownames(df_reads_count_all_projects_tpm),tpm,=as.vector(df_reads_count_all_projects_tpm)))
-data.frame(gene=data.frame(gene=rownames(df_reads_count_all_projects_tmm),tmm=as.vector(df_reads_count_all_projects_tmm)))
+# Expresion of tp53
+tp53_normalized<-all_normalized_schemes[all_normalized_schemes$gene == "ENSG00000141510",]
 
-cbind(, df_reads_count_all_projects_tmm["ENSG00000141510",], df_reads_count_all_projects_fpkm["ENSG00000141510",], df_reads_count_all_projects_tmm["ENSG00000141510",])
-
-pairs(~ raw + tmm + fpkm + tmm, data = as.matrix(df_tp53_expressuion))
+pairs(~ raw + tmm + fpkm + tmm, data = as.matrix(tp53_normalized))
 
 
 
