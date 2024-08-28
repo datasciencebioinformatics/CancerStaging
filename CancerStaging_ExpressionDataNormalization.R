@@ -90,7 +90,43 @@ df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 ###########################################################################################################################
 write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
 ##########################################################################################################################
-df_reads_count_all_projects_tmm
-df_reads_count_all_projects_raw
-df_reads_count_all_projects_fpkm
-df_reads_count_all_projects_tmm
+df_tp53_expressuion<-data.frame(raw=df_reads_count_all_projects_raw["ENSG00000141510",],tmm=df_reads_count_all_projects_tmm["ENSG00000141510",], fpkm=df_reads_count_all_projects_fpkm["ENSG00000141510",], tmm=df_reads_count_all_projects_tmm["ENSG00000141510",])
+
+tp53_raw<-data.frame(df_reads_count_all_projects_raw["ENSG00000141510",])
+tp53_tmm<-data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",])
+tp53_fpkm<-data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",])
+tp53_tpm<-data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",])
+
+# Data.frames with gene name and read counts
+df_raw <-data.frame(as.vector(df_reads_count_all_projects_raw))
+df_raw$gene<-rownames(df_reads_count_all_projects_raw)
+
+# Data.frames with gene name and read counts
+df_fpkm <-data.frame(as.vector(df_reads_count_all_projects_fpkm))
+df_fpkm$gene<-rownames(df_reads_count_all_projects_fpkm)
+
+# Data.frames with gene name and read counts
+df_tmm <-data.frame(as.vector(df_reads_count_all_projects_tmm))
+df_tmm$gene<-rownames(df_reads_count_all_projects_tmm)
+
+# Data.frames with gene name and read counts
+df_tpm <-data.frame(as.vector(df_reads_count_all_projects_tpm))
+df_tpm$gene<-rownames(df_reads_count_all_projects_tpm)
+allall_nr
+
+merge(merge(df_fpkm,df_tpm,by="gene"),merge(df_tpm,df_tmm,by="gene"),by="gene")
+                   
+merge(df_raw,merge(df_fpkm,by="gene"),)
+
+3
+data.frame(gene=data.frame(gene=rownames(df_reads_count_all_projects_tpm),tpm,=as.vector(df_reads_count_all_projects_tpm)))
+data.frame(gene=data.frame(gene=rownames(df_reads_count_all_projects_tmm),tmm=as.vector(df_reads_count_all_projects_tmm)))
+
+cbind(, df_reads_count_all_projects_tmm["ENSG00000141510",], df_reads_count_all_projects_fpkm["ENSG00000141510",], df_reads_count_all_projects_tmm["ENSG00000141510",])
+
+pairs(~ raw + tmm + fpkm + tmm, data = as.matrix(df_tp53_expressuion))
+
+
+
+
+
