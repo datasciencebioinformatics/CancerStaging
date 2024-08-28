@@ -86,7 +86,11 @@ geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count
 ####################################################################################################################
 unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,],genes=data.frame(Length=geneLength_ENTREZID_ENSEMBL$geneLength))
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
-df_reads_count_all_projects_TMM <- cpm(unstranded_dgelist)
+df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 ###########################################################################################################################
-write_tsv(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
-###########################################################################################################################
+write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
+##########################################################################################################################
+df_reads_count_all_projects_tmm
+df_reads_count_all_projects_raw
+df_reads_count_all_projects_fpkm
+df_reads_count_all_projects_tmm
