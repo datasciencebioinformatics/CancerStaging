@@ -12,6 +12,9 @@ library("clusterProfiler")
 library("org.Hs.eg.db")
 library("DGEobj.utils")
 library("NOISeq")
+library("ggplot2")
+library("ggpairs")
+
 
 library(AnnotationHub)
 library("biomaRt")
