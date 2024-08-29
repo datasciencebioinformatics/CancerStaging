@@ -118,7 +118,10 @@ for (normalized_table_names in names(df_reads_count_all_projects))
   logchange_tumor_control<-merge(log2change_tumor_control,log2change_tumor_control_paired,by="gene")                                    #
   #######################################################################################################################################
   list_logchange_tumor_control[[normalized_table_names]]<-logchange_tumor_control                                                       #
-  #######################################################################################################################################
+  #######################################################################################################################################  
+  # Write TSV
+  write_tsv(data.frame(logchange_tumor_control), paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalized_table_names,".tsv",sep="")) #
+  ####################################################################################################################################### 
 }
 
 
