@@ -88,10 +88,10 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 ##########################################################################################################################
-df_reads_count_all_projects_rpkm<-edgeR::rpkm(df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
+df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
 ##########################################################################################################################
 write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv")   #
-write_tsv(df_reads_count_all_projects_rpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv") #
+write_tsv(data.frame(df_reads_count_all_projects_rpkm), "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv") #
 ##########################################################################################################################
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
@@ -102,7 +102,7 @@ tp53_rpkm<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))
 # df_normalization
 df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"],tp53_rpkm[,"ENSG00000141510"])
 ####################################################################################
-colnames(df_normalization)<-c("raw","tmm","fpkm","tpm")
+colnames(df_normalization)<-c("raw","tmm","fpkm","tpm","rpkm")
 ####################################################################################
 # FindClusters_resolution
 png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 24, height = 24, res=600, units = "cm")
