@@ -88,6 +88,8 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 ##########################################################################################################################
+df_reads_count_all_projects_rpkm<-rpkm(df_reads_count_all_projects_raw[df_gene_ids$gene_id_cp,], gene.length = data.frame(df_geneLengthAndGCContent)$length) #
+##########################################################################################################################
 write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
 ##########################################################################################################################
 df_tp53_expressuion<-data.frame(raw=df_reads_count_all_projects_raw["ENSG00000141510",],tmm=df_reads_count_all_projects_tmm["ENSG00000141510",], fpkm=df_reads_count_all_projects_fpkm["ENSG00000141510",], tmm=df_reads_count_all_projects_tmm["ENSG00000141510",])
@@ -96,14 +98,15 @@ tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
 tp53_fpkm<-t(data.frame(df_reads_count_all_projects_fpkm["ENSG00000141510",]))
 tp53_tpm<-t(data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",]))
+tp53_rpkm<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))
 
 # df_normalization
-df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"])
+df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"],tp53_rpkm[,"ENSG00000141510"])
 ####################################################################################
 colnames(df_normalization)<-c("raw","tmm","fpkm","tpm")
 ####################################################################################
 # FindClusters_resolution
-png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 20, height = 20, res=600, units = "cm")
+png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 24, height = 24, res=600, units = "cm")
   ggpairs(df_normalization)
 dev.off()
 ####################################################################################
