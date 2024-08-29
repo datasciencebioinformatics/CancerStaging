@@ -88,12 +88,11 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 ##########################################################################################################################
-df_reads_count_all_projects_rpkm<-rpkm(df_reads_count_all_projects_raw[df_gene_ids$gene_id_cp,], gene.length = data.frame(df_geneLengthAndGCContent)$length) #
+df_reads_count_all_projects_rpkm<-edgeR::rpkm(df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength) #
 ##########################################################################################################################
-write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv") #
+write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv")   #
+write_tsv(df_reads_count_all_projects_rpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv") #
 ##########################################################################################################################
-df_tp53_expressuion<-data.frame(raw=df_reads_count_all_projects_raw["ENSG00000141510",],tmm=df_reads_count_all_projects_tmm["ENSG00000141510",], fpkm=df_reads_count_all_projects_fpkm["ENSG00000141510",], tmm=df_reads_count_all_projects_tmm["ENSG00000141510",])
-
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
 tp53_fpkm<-t(data.frame(df_reads_count_all_projects_fpkm["ENSG00000141510",]))
