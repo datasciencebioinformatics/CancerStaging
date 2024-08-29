@@ -71,9 +71,6 @@ merged_data_patient_info_count<-merged_data_patient_info_count[merged_data_patie
 unpaired_tumor_samples  <-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor","sample_id"]
 unpaired_control_samples<-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal","sample_id"]
 
-unpaired_tumor_samples   %in%   colnames(df_reads_count_all_projects_fpkm)
-unpaired_control_samples %in%   colnames(df_reads_count_all_projects_fpkm)
-
 # Paired samples only
 paired_normal_samples    <- paired_sample_df$normal
 paired_tumor_samples     <- paired_sample_df$tumor
