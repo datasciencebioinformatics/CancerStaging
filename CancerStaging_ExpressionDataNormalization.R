@@ -90,6 +90,9 @@ df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
 df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
 ##########################################################################################################################
+colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
+colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
+
 write_tsv(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv")   #
 write_tsv(data.frame(df_reads_count_all_projects_rpkm), "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv") #
 ##########################################################################################################################
