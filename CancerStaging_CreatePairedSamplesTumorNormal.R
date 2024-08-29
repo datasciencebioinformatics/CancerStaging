@@ -28,7 +28,7 @@ paired_sample_df<-data.frame(normal=c(),tumor=c(),case=c(),project=c())
 for (case in unique(merged_data_patient_info_data$Case.ID))                                                                 
 {                                                                                                                        
     # All samples for case id = "case"                                                                                   
-    case_samples<-merged_data_patient_info_data[merged_data_patient_info_data$Case.ID==case,]                               
+    case_samples<-merged_data_patient_info_data[merged_data_patient_info_data$Case.ID==case,]             
                                                                                                                          
     # Take the tumor samples                                                                                           
     tumor_sampĺes <-case_samples[case_samples$tissue_type=="Tumor",]
@@ -83,6 +83,7 @@ for (normalized_table_names in names(df_reads_count_all_projects))
 {  
   # Store normalized table
   normalized_table<-df_reads_count_all_projects[[normalized_table_names]]
+
   
   # folchange=Expr(Stage i)/Expr(Stage ii and II)
   # Paired t-test, RPKM of paired tumor/normal samples
