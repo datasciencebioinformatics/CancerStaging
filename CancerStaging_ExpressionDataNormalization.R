@@ -109,7 +109,7 @@ png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 24, height
   ggpairs(df_normalization)
 dev.off()
 ####################################################################################
-
+df_reads_count_all_projects<-list(raw=df_reads_count_all_projects_raw,tmm=df_reads_count_all_projects_tmm,fpkm=df_reads_count_all_projects_fpkm,tpm=df_reads_count_all_projects_tpm,rpkm=df_reads_count_all_projects_rpkm)
 
 
 
