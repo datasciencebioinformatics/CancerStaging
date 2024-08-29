@@ -1,18 +1,3 @@
-###########################################################################################################################
-# Save normalized data                                                                                             
-merged_data_patient_info_count<-merged_data_patient_info_count[merged_data_patient_info_count$sample_id %in% colnames(df_reads_count_all_projects_fpkm),]
-###########################################################################################################################
-# All tumor and control samples
-unpaired_tumor_samples  <-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor","sample_id"]
-unpaired_control_samples<-merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal","sample_id"]
-
-unpaired_tumor_samples   %in%   colnames(df_reads_count_all_projects_fpkm)
-unpaired_control_samples %in%   colnames(df_reads_count_all_projects_fpkm)
-
-# Paired samples only
-paired_normal_samples    <- paired_sample_df$normal
-paired_tumor_samples     <- paired_sample_df$tumor
-#######################################################################################################################################
 # folchange=Expr(Stage i)/Expr(Stage ii and II)
 # Paired t-test, RPKM of paired tumor/normal samples
 # Plot with 15208 genes.
