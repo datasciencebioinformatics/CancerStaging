@@ -33,7 +33,6 @@ for (gene in df_gene_id_symbol$gene_id)
   df_gene_id_symbol[which(grepl( gene_id,df_gene_id_symbol$gene_id, fixed = TRUE)),"Gene_id"]<-gene_id
 }
 #############################################################################################################################
-
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 
@@ -41,18 +40,31 @@ normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 for (normalization_scheme in normalization_schemes)
 {
   # First, I will load the statistic table   
-  normalized_statistic_table<-table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)
+  normalized_statistic_table<-table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)
 
   # Second, expression table
   normalized_expression_table<-table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)      
+
+  # Set rownames normalized_statistic_table
+  rownames(normalized_statistic_table)<-normalized_statistic_table$gene
+
+  # Set rownames
+  rownames(normalized_expression_table)<-normalized_expression_table$gene
+  
+  # df_gene_id_symbol
+  normalized_expression_table<-normalized_expression_table[df_gene_id_symbol$Gene_id,]
+
+  # df_gene_id_symbol
+  normalized_statistic_table <-normalized_statistic_table[df_gene_id_symbol$Gene_id,]  
 
   # Set threshold_normalized
   threshold_normalized <-list_threshold_filters[[normalization_scheme]]
 
   # Select only the tumor genes
-  tumor_genes<-log2change_tumor_control[intersect(which(log2change_tumor_control$fdr_all_samples<=threshold_FDR), which(log2change_tumor_control$log2change_all_samples>=threshold_tumor)),"gene"]
-  
+  tumor_genes<-log2change_tumor_control[intersect(which(log2change_tumor_control$fdr_all_samples<=threshold_FDR), which(log2change_tumor_control$log2change_all_samples>=threshold_tumor)),"gene"]  
 }
+#############################################################################################################################
+
 
 # Find tumor genes by padj and log2foldchange
 # In this table, there are the statistics for each of the normalization scheme.
