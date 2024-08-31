@@ -73,7 +73,7 @@ for (normalization_scheme in normalization_schemes)
 	# Select only the tumor genes
 	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
 
-	print(dim(normalized_statistic_table))
+	print(paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],sep=""))
 	
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
