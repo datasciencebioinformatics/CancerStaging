@@ -52,25 +52,25 @@ normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 # for each  normalization scheme
 for (normalization_scheme in normalization_schemes)
 {
-  # First, I will load the statistic table   
-  normalized_statistic_table<-table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)
-
-  # Set rownames normalized_statistic_table
-  rownames(normalized_statistic_table)<-normalized_statistic_table$gene
-
-  # df_gene_id_symbol
-  normalized_statistic_table <-normalized_statistic_table[df_gene_id_symbol$Gene_id,]  
-
-  # Set threshold_normalized
-  threshold_normalized <-list_threshold_filters[[normalization_scheme]]
-
-  # Set tumor genes field
-  normalized_statistic_table$tumor_genes <- "no"
-
-  # Select only the tumor genes
-  normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
-
+	# First, I will load the statistic table   	
+	normalized_statistic_table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)
+	
+	# Set rownames normalized_statistic_table
+	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
+	
+	# df_gene_id_symbol
+	normalized_statistic_table <-normalized_statistic_table[df_gene_id_symbol$Gene_id,]  
+	
+	# Set threshold_normalized
+	threshold_normalized <-list_threshold_filters[[normalization_scheme]]
+	
+	# Set tumor genes field
+	normalized_statistic_table$tumor_genes <- "no"
+	
+	# Select only the tumor genes
+	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
+	
 	# Save TSV file with genes from Stage3
-	write_tsv(normalized_statistic_table, paste(output_dir,"DE_GenesPerStageMeansFromPairedUp_Stage_",Stage_i,".tsv",sep=""), paste(output_dir,"DE_GenesPerStageMeansFromPairedUp_Stage_",Stage_i,".tsv",sep=""))			  
+	write_tsv(normalized_statistic_table, paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
 }
 
