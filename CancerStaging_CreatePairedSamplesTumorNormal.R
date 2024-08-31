@@ -123,6 +123,7 @@ for (normalized_table_names in names(df_reads_count_all_projects))
   write_tsv(data.frame(logchange_tumor_control), paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalized_table_names,".tsv",sep="")) #
   ####################################################################################################################################### 
 }
+print("\nCancerStaging_CreatePairedSamplesTumorNormal")
 
 
 
