@@ -2,6 +2,26 @@
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 #######################################################################################################################################
+df_reads_count_all_projects_raw  <-load("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_raw.RData")
+df_reads_count_all_projects_rpkm <-load("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.RData")
+df_reads_count_all_projects_fpkm <-load("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_fpkm.RData")
+df_reads_count_all_projects_tpm  <-load("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tpm.RData")
+df_reads_count_all_projects_tmm  <-load("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.RData")
+#######################################################################################################################################
+
+isfar<-load("v") 
+isfar<-load("C:/Users/isfar.RData") 
+isfar<-load("C:/Users/isfar.RData") 
+isfar<-load("C:/Users/isfar.RData") 
+
+
+save(df_reads_count_all_projects_raw, file = "raw.RData")
+save(df_reads_count_all_projects_fpkm, file = "fpkm.RData")
+save(df_reads_count_all_projects_tpm, file = "tpm.RData")
+save(df_reads_count_all_projects_tmm, file = "tmm.RData")
+save(data.frame(df_reads_count_all_projects_rpkm), file = "rpkm.RData")
+#######################################################################################################################################
+
 # Find stage-specific genes by padj and log2foldchange                                                                                #
 # Only tumor samples                                                                                                                  #
 colData_tumor <-merged_data_patient_info[merged_data_patient_info$tissue_type=="Tumor",]                                              #
