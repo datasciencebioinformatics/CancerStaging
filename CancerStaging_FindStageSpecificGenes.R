@@ -64,7 +64,6 @@ for (normalization_scheme in normalization_schemes)
 	  
 	  	# Log2foldchange
 	  	LOG_CONSTANT=0.001
-	  	log2change=rowMeans(log(Stage_i_samples_expr+LOG_CONSTANT,2))/rowMeans(log(Stages_ii_sample_expr+LOG_CONSTANT,2))
 	  	log2change=log( (rowMeans(Stage_i_samples_expr+LOG_CONSTANT)/rowMeans(Stages_ii_sample_expr+LOG_CONSTANT)),2)	
 	  	
 	  	# log2change data
@@ -80,7 +79,7 @@ for (normalization_scheme in normalization_schemes)
 	  	for (gene in log2change_Stage_i$gene)
 	  	{
 	  		# Take p-value
-	  		log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(unstranded_data[gene,Stage_i_samples]), y=as.numeric(unstranded_data[gene,Stage_ii_samples]), paired = FALSE, alternative = "two.sided")$p.value	
+	  		log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(normalized_expression_table[gene,Stage_i_samples]), y=as.numeric(normalized_expression_table[gene,Stage_ii_samples]), paired = FALSE, alternative = "two.sided")$p.value	
 	  	}
 	  	# FRD 
 	  	log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="fdr")
