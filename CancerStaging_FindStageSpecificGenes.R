@@ -34,8 +34,7 @@ for (normalization_scheme in normalization_schemes)
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
 	
 	# First, I will load the statistic table   	
-	normalized_expression_table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE, row.names=1)
-	normalized_expression_table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = FALSE,fill=TRUE, row.names=1, col.names=c("log2change_all_samples", "pvalue_all_samples",	"fdr_all_samples", "log2change_paired", "pvalue_paired", "fdr_paired"))
+	normalized_expression_table<-read_tsv(file = paste("/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_",normalization_scheme,".tsv",sep="") )
 	
 	# Select only tumor genes
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
