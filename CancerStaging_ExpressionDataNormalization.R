@@ -97,7 +97,7 @@ write.table(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_stag
 write.table(data.frame(df_reads_count_all_projects_rpkm), "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 
 save(df_reads_count_all_projects_tmm, file = "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.RData")
-save(data.frame(df_reads_count_all_projects_rpkm), file = "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.RData")
+save(df_reads_count_all_projects_rpkm, file = "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.RData")
 ##########################################################################################################################
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
