@@ -18,7 +18,7 @@ colnames(Table1_data)<-c("gene_id","gene_symbol")
 df_gene_id_symbol<-data.frame(gene_id=gene_ids_data,gene_symbol=gene_name_data)
 
 # Rename collumns
-colnames(df_gene_id_symbol)<-c("gene_id","gene_symbol")
+colnames(df_gene_id_symbol)<-c("gene_symbol","gene_id")
 #############################################################################################################################
 # Set Gene_id
 df_gene_id_symbol$Gene_id <- ""
@@ -32,7 +32,10 @@ for (gene in df_gene_id_symbol$gene_id)
   # df_gene_id_symbol
   df_gene_id_symbol[which(grepl( gene_id,df_gene_id_symbol$gene_id, fixed = TRUE)),"Gene_id"]<-gene_id
 }
-#############################################################################################################################
+
+# Merge Table2_interactoma and df_gene_id_symbol
+merge_interactome_gene_symbol<-merge(x=Table2_interactoma, y=df_gene_id_symbol, by = "gene_symbol")
+#####################################################################################################################
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 #############################################################################################################################
@@ -59,7 +62,7 @@ for (normalization_scheme in normalization_schemes)
 	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
 	
 	# df_gene_id_symbol
-	normalized_statistic_table <-normalized_statistic_table[df_gene_id_symbol$Gene_id,]  
+	normalized_statistic_table <-normalized_statistic_table[merge_interactome_gene_symbol$Gene_id,]
 	
 	# Set threshold_normalized
 	threshold_normalized <-list_threshold_filters[[normalization_scheme]]
@@ -69,6 +72,8 @@ for (normalization_scheme in normalization_schemes)
 	
 	# Select only the tumor genes
 	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
+
+	print(dim(normalized_statistic_table))
 	
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
