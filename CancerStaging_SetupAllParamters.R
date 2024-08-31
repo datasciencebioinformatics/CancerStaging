@@ -13,4 +13,4 @@ list_threshold_filters<-list(rpkm=4,fpkm=4,tmm=4, tpm=4)
 # log2foldchange threshold for the comparisson all tumor samples / all control samples
 threshold_stage<-1.0 
 
-print("\nCancerStaging_SetupAllParamters.R)
+print("\nCancerStaging_SetupAllParamters.R")
