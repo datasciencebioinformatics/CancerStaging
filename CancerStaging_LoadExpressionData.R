@@ -152,6 +152,10 @@ reads_count_per_project_tpm[["TCGA-STAD"]])
 write.table(df_reads_count_all_projects_raw, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_raw.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 write.table(df_reads_count_all_projects_fpkm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_fpkm.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 write.table(df_reads_count_all_projects_tpm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tpm.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
+
+save(df_reads_count_all_projects_raw, file = "raw.RData")
+save(df_reads_count_all_projects_fpkm, file = "fpkm.RData")
+save(df_reads_count_all_projects_tpm, file = "tpm.RData")
 ###########################################################################################################################
 
 
