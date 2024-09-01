@@ -45,10 +45,16 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSa
 #### 9- CancerStaging Find Tumor Genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes.R")
 
-#### 10- CancerStaging Find Tumor Genes
+#### 10- CancerStaging Find Stage Specific genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpecificGenes.R")
 
-#### 11- Load interactome data
+#### 11- Calculate shannon entrpopy for each stage
+
+#### 12- Execute pipeline per projetct.
+
+
+
+#### 13- Load interactome data
 ##### The IntAct interactome was obtained from the intact-micluster.txt file (version updated December 2017) accessed on January 11, 2018, with 152280 interactions among 15651 gene symbols. After converting gene symbols to ENSEMBL identifiers with EnsemblToUniprotKBconversionList.txt, 148169 interactions (97.3%) and 14492 genes (92.6%) were kept. To calculate the connectivity per gene, we counted the number of times each gene appeared in the interactome. 
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
 
