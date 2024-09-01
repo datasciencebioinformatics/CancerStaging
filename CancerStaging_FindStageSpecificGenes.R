@@ -95,12 +95,12 @@ for (normalization_scheme in normalization_schemes)
 		#selected_genes<-log2change_Stage_i[ which(log2change_Stage_i$log2change>=threshold_stage),"gene"]	
 		####################################################################################################################	
 		# Save TSV file with genes from Stage3
-		write_tsv(na.omit(log2change_Stage_i[selected_genes,]), paste(output_dir,"DE_GenesPerStageMeansFromPairedUp_Stage_",Stage_i,".tsv",sep=""))			
+		write_tsv(na.omit(log2change_Stage_i[selected_genes,]), paste(output_dir,"FindStageSpecificGenes_",FindStageSpecificGenes,"_",Stage_i,".tsv",sep=""))			
 		####################################################################################################################			
 		#######################################################################################################################################
 		list_stage_specific_genes[[Stage_i]]<-log2change_Stage_i
 		####################################################################################################################	
-		cat(print(paste("\nNumber of tumor genes per stage for ",Stage_i, " : ",length(selected_genes))),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)    
+		cat(print(paste("\nNumber of tumor genes per stage for ",FindStageSpecificGenes,":",Stage_i, " : ",length(selected_genes))),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)    
 	}			
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
