@@ -95,7 +95,7 @@ for (normalization_scheme in normalization_schemes)
 		#selected_genes<-log2change_Stage_i[ which(log2change_Stage_i$log2change>=threshold_stage),"gene"]	
 		####################################################################################################################	
 		# Save TSV file with genes from Stage3
-		write_tsv(na.omit(log2change_Stage_i[selected_genes,]), paste(output_dir,"/FindStageSpecificGenes_","normalization_scheme","_",Stage_i,".tsv",sep=""))			
+		write_tsv(na.omit(log2change_Stage_i[selected_genes,]), paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_",Stage_i,".tsv",sep=""))			
 		####################################################################################################################		
 		list_stage_specific_genes[[paste(normalization_scheme,"_",substring(Stage_i,8,20),sep="")]]<-log2change_Stage_i
 		####################################################################################################################	
