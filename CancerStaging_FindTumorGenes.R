@@ -57,7 +57,7 @@ for (normalization_scheme in normalization_schemes)
 {
 	
 	# First, I will load the statistic table   	
-	normalized_statistic_table<-read.table(file = paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep="/"), sep = '\t', header = TRUE,fill=TRUE)
+	normalized_statistic_table<-read.table(file = paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""), sep = '\t', header = TRUE,fill=TRUE)
 	
 	# Set rownames normalized_statistic_table
 	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
@@ -77,7 +77,7 @@ for (normalization_scheme in normalization_schemes)
 	print(paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],sep=""))
 	
 	# Save TSV file with genes from Stage3
-	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep="/"))			  
+	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
 }
 print("\nCancerStaging_FindTumorGenes")
 
