@@ -149,9 +149,9 @@ reads_count_per_project_tpm[["TCGA-READ"]],
 reads_count_per_project_tpm[["TCGA-SKCM"]],
 reads_count_per_project_tpm[["TCGA-STAD"]])
 ###########################################################################################################################
-write.table(df_reads_count_all_projects_raw,  paste(output_dir,"df_reads_count_all_projects_raw.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
-write.table(df_reads_count_all_projects_fpkm, paste(output_dir,"df_reads_count_all_projects_fpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
-write.table(df_reads_count_all_projects_tpm,  paste(output_dir,"df_reads_count_all_projects_tpm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
+#write.table(df_reads_count_all_projects_raw,  paste(output_dir,"df_reads_count_all_projects_raw.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
+#write.table(df_reads_count_all_projects_fpkm, paste(output_dir,"df_reads_count_all_projects_fpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
+#write.table(df_reads_count_all_projects_tpm,  paste(output_dir,"df_reads_count_all_projects_tpm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 ###########################################################################################################################
 
 
