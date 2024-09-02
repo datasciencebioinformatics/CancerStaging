@@ -93,9 +93,8 @@ df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_proj
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
 
-write.table(df_reads_count_all_projects_tmm, "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_tmm.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
-write.table(data.frame(df_reads_count_all_projects_rpkm), "/home/felipe/Documents/Cancer_staging/df_reads_count_all_projects_rpkm.tsv", na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
-
+write.table(df_reads_count_all_projects_tmm,              paste(output_dir,"df_reads_count_all_projects_tmm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
+write.table(data.frame(df_reads_count_all_projects_rpkm), paste(output_dir,"df_reads_count_all_projects_rpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 ##########################################################################################################################
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
