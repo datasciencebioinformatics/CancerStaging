@@ -29,6 +29,15 @@ interactome_data_raw<-interactome_data
 interactome_data<-interactome_data[interactome_data$Gene1 %in% EnsemblToUniprotKBconversionList_data$SYMBOL,]
 interactome_data<-interactome_data[interactome_data$Gene2 %in% EnsemblToUniprotKBconversionList_data$SYMBOL,]
 
+# Invert data.frame
+interactome_data_inv<-unique(data.frame(Gene1=interactome_data$Gene2,Gene2=interactome_data$Gene1))
+
+# Assert rownames
+rownames(interactome_data_inv)<-paste(interactome_data_inv$Gene1,interactome_data_inv$Gene2,sep="-")
+
+# combine interactomes
+interactome_data<-unique(rbind(interactome_data,interactome_data_inv))
+
 # Create a table for id conversion gene_id and gene_symbol for the genes in the interactome data
 gene1_conversion<-merge(interactome_data,EnsemblToUniprotKBconversionList_data,by.x="Gene1", by.y="SYMBOL",all.x=TRUE,all.y=FALSE)
 gene_conversion<-merge(gene1_conversion,EnsemblToUniprotKBconversionList_data,by.x="Gene2", by.y="SYMBOL",all.x=TRUE,all.y=FALSE)
