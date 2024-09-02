@@ -35,7 +35,7 @@ for (normalization_scheme in normalization_schemes)
 	# Select only tumor genes
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
 	
-	# First, I will load the statistic table   	
+	# First, I will load the expression table   	
 	normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
 	
 	# Select only tumor genes
