@@ -53,6 +53,7 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpecificGenes.R")
 
 #### 12- Calculate shannon entrpopy for each stage
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
 #### 13- Execute pipeline per projetct.
 
