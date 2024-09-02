@@ -60,3 +60,6 @@ length(unique(c(interactome_data_raw$Gene1,interactome_data_raw$Gene2)))
 # The IntAct interactome was obtained from the intact-micluster.txt file (version updated December 2017) accessed on January 11, 2018, with 152280 interactions among 15651 gene symbols. After converting gene symbols to ENSEMBL identifiers with EnsemblToUniprotKBconversionList.txt, 148169 interactions (97.3%) and 14492 genes (92.6%) were kept. To calculate the connectivity per gene, we counted the number of times each gene appeared in the interactome. 
 # To calculate the connectivity of each, we counted the number of times each gene appeared in the interactome. The gene symbols were translated to ensemble identifiers with EnsemblToUniprotKBconversionList.txt.
 connectivity<-table(c(gene_conversion$ENSG.x,gene_conversion$ENSG.y))
+
+# Set rownames
+interactome_data<-paste(interactome_data$Gene1,interactome_data$Gene2,sep="-")
