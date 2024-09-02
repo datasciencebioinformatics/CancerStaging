@@ -1,5 +1,8 @@
+# Set name of the TCGA project
+TCGA_project <- "TCGA-LUAD"
+
 # Set outfolder
-output_dir="/home/felipe/Documents/Cancer_staging/outputfolder/"
+output_dir=paste("/home/felipe/Documents/Cancer_staging/outputfolder/",TCGA_project,"/",sep="")
 
 # FDR threshold for the comparisson all tumor samples / all control samples
 threshold_FDR<-0.05 
