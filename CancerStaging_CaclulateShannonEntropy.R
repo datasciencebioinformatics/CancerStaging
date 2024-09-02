@@ -2,7 +2,6 @@
 # A script to caluclate entropy from lists of genes from each stage
 #######################################################################################################################################
 # Interactome data
-interactome_data
 
 # for each  normalization scheme
 for (normalization_scheme in normalization_schemes)
@@ -75,8 +74,8 @@ for (normalization_scheme in normalization_schemes)
       # Caclulate entropy value
       Entropy_stage_value  <-abs(sum(df_entropy_calulation$p_k_mult_log2_pk))
 
-      paste(?)
-      print()
+      paste(dim)
+      print(normalization_scheme," : ", Entropy_stage_value )
 
       
     }
