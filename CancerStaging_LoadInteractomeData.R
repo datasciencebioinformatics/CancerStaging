@@ -62,4 +62,4 @@ length(unique(c(interactome_data_raw$Gene1,interactome_data_raw$Gene2)))
 connectivity<-table(c(gene_conversion$ENSG.x,gene_conversion$ENSG.y))
 
 # Set rownames
-interactome_data<-paste(interactome_data$Gene1,interactome_data$Gene2,sep="-")
+rownames(interactome_data)<-paste(interactome_data$Gene1,interactome_data$Gene2,sep="-")
