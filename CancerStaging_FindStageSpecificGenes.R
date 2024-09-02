@@ -102,6 +102,7 @@ for (normalization_scheme in normalization_schemes)
 		cat(print(paste("\nNumber of tumor genes per stage for ","FindStageSpecificGenes",":",Stage_i, " : ",length(selected_genes))),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)    
 	}			
 	# Save TSV file with genes from Stage3
-	write_tsv(normalized_statistic_table, paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
+	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))	
+	
 }
 print("\nCancerStaging_FindTumorGenes")
