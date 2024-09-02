@@ -107,4 +107,4 @@ table_cases_per_stage<-table(merged_data_patient_count$project_id)
 print("\nCancerStaging_CreateMetadataFromGDCFiles")
 
 # Organize how to send to Carles
-write_tsv(merged_data_patient_info, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
+write_tsv(merged_data_patient_info, paste(output_dir,"merged_data_patient_info.tsv",sep="/"))
