@@ -48,12 +48,26 @@ for (normalization_scheme in normalization_schemes)
 	full_interactome_stage_I<- data.frame(expand.grid.unique(x = genes_interactome_stage_I, y = genes_interactome_stage_I,include.equals=FALSE))
 	full_interactome_stage_II<- data.frame(expand.grid.unique(x = genes_interactome_stage_II, y = genes_interactome_stage_II,include.equals=FALSE))
 	full_interactome_stage_III<- data.frame(expand.grid.unique(x = genes_interactome_stage_III, y = genes_interactome_stage_III,include.equals=FALSE))
-	
-	# set colnames
-	colnames(full_interactome_stage_I)<-c("Gene1","Gene2")
-	colnames(full_interactome_stage_II)<-c("Gene1","Gene2")
-	colnames(full_interactome_stage_III)<-c("Gene1","Gene2")
-	
+
+	# If at least one overlapping interaction
+	if(dim(full_interactome_stage_I)[1]>0)
+	{		
+		# set colnames
+		colnames(full_interactome_stage_I)<-c("Gene1","Gene2")
+	}
+	# If at least one overlapping interaction
+	if(dim(full_interactome_stage_II)[1]>0)
+	{		
+		# set colnames
+		colnames(full_interactome_stage_II)<-c("Gene1","Gene2")
+	}
+	# If at least one overlapping interaction
+	if(dim(full_interactome_stage_III)[1]>0)
+	{		
+		# set colnames
+		colnames(full_interactome_stage_III)<-c("Gene1","Gene2")
+	}	  
+	  	  	
 	rownames(full_interactome_stage_I)  <- paste(full_interactome_stage_I$Gene1,full_interactome_stage_I$Gene2,sep="-")
 	rownames(full_interactome_stage_II) <-paste(full_interactome_stage_II$Gene1,full_interactome_stage_II$Gene2,sep="-")
 	rownames(full_interactome_stage_III)<-paste(full_interactome_stage_III$Gene1,full_interactome_stage_III$Gene2,sep="-")
