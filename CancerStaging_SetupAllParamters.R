@@ -1,6 +1,9 @@
 # Set name of the TCGA project
 TCGA_project <- "TCGA-LUSC"
 
+# Execute TCGA coomand
+t1 <- try(system(paste("mkdir /home/felipe/Documents/Cancer_staging/outputfolder/"), intern = TRUE))
+
 # Set outfolder
 output_dir=paste("/home/felipe/Documents/Cancer_staging/outputfolder/",TCGA_project,"/",sep="")
 
