@@ -10,16 +10,9 @@
 # /home/felipe/Documentos/LungPortal/exposure.txt
 # Output : merged_data_patient_info.tsv
 ###########################################################################################################################
-merged_data_patient_info_file       <- "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"             #
-# How many samples ids?
-# How many samples cases ids?
-# How many samples cases File.Ids?
-###########################################################################################################################
-merged_data_patient_info_data      <-read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE)#
-###########################################################################################################################
 merged_data_patient_info_data$patient_id  <- merged_data_patient_info_data$File.ID
 merged_data_patient_info_data$case_id     <- merged_data_patient_info_data$Case.ID
-#merged_data_patient_info_data$sample_id   <- merged_data_patient_info_data$Sample.ID
+#merged_data_patient_info_data$sample_id  <- merged_data_patient_info_data$Sample.ID
 ###########################################################################################################################
 # Paired samples                                                                                                         
 paired_sample_df<-data.frame(normal=c(),tumor=c(),case=c(),project=c())                                                              
