@@ -59,6 +59,15 @@ if (TCGA_project != "ALL")
     reads_count_per_project_tpm<-reads_count_per_project_tpm[[TCGA_project]]
     reads_count_per_project_fpkm<-reads_count_per_project_fpkm[[TCGA_project]]
 
+    # Count the number of reads per project
+    df_reads_count_all_projects_raw<-reads_count_per_project_raw
+    
+    # Count the number of reads per project
+    df_reads_count_all_projects_fpkm<-reads_count_per_project_fpkm
+    
+    # Count the number of reads per project
+    df_reads_count_all_projects_tpm<-reads_count_per_project_tpm
+
     # Take name of all samples
     all_samples<-c(colnames(reads_count_per_project_raw))        
 }else
