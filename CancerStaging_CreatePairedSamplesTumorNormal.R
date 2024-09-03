@@ -77,7 +77,6 @@ for (normalized_table_names in names(df_reads_count_all_projects))
   # Store normalized table
   normalized_table<-df_reads_count_all_projects[[normalized_table_names]]
 
-  
   # folchange=Expr(Stage i)/Expr(Stage ii and II)
   # Paired t-test, RPKM of paired tumor/normal samples
   # Plot with 15208 genes.
