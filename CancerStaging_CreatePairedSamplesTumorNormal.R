@@ -97,21 +97,21 @@ for (normalized_table_names in names(df_reads_count_all_projects))
   for (gene in log2change_tumor_control$gene)
   {
 
-      # Take the expression of genes above expression threshold for Stage_i_samples
-			expr_unpaired_tumor_samples<-normalized_expression_table[which(normalized_expression_table[gene,unpaired_tumor_samples]>list_threshold_filters[[normalization_scheme]]),]
-
-			# Take the expression of genes above expression threshold for Stage_i_samples
-			expr_unpaired_control_samples<-normalized_expression_table[which(normalized_expression_table[gene,unpaired_control_samples]>list_threshold_filters[[normalization_scheme]]),]			
-
-      # Take the expression of genes above expression threshold for Stage_i_samples
-			expr_paired_tumor_samples<-normalized_expression_table[which(normalized_expression_table[gene,paired_tumor_samples]>list_threshold_filters[[normalization_scheme]]),]
-
-			# Take the expression of genes above expression threshold for Stage_i_samples
-			expr_paired_control_samples<-normalized_expression_table[which(normalized_expression_table[gene,paired_control_samples]>list_threshold_filters[[normalization_scheme]]),]			    
+	# Take the expression of genes above expression threshold for Stage_i_samples
+	expr_unpaired_tumor_samples<-normalized_expression_table[which(normalized_expression_table[gene,unpaired_tumor_samples]>list_threshold_filters[[normalization_scheme]]),]
+	
+	# Take the expression of genes above expression threshold for Stage_i_samples
+	expr_unpaired_control_samples<-normalized_expression_table[which(normalized_expression_table[gene,unpaired_control_samples]>list_threshold_filters[[normalization_scheme]]),]			
+	
+	# Take the expression of genes above expression threshold for Stage_i_samples
+	expr_paired_tumor_samples<-normalized_expression_table[which(normalized_expression_table[gene,paired_tumor_samples]>list_threshold_filters[[normalization_scheme]]),]
+	
+	# Take the expression of genes above expression threshold for Stage_i_samples
+	expr_paired_control_samples<-normalized_expression_table[which(normalized_expression_table[gene,paired_control_samples]>list_threshold_filters[[normalization_scheme]]),]			    
     
-    # Take p-value
-    log2change_tumor_control[gene,"Pvalue"]<-t.test(x=as.numeric(expr_unpaired_tumor_samples), y=as.numeric(expr_unpaired_control_samples), paired = FALSE, alternative = "two.sided")$p.value	
-    log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=as.numeric(expr_paired_tumor_samples), y=as.numeric(expr_paired_control_samples), paired = TRUE, alternative = "two.sided")$p.value	
+	# Take p-value
+	log2change_tumor_control[gene,"Pvalue"]<-t.test(x=as.numeric(expr_unpaired_tumor_samples), y=as.numeric(expr_unpaired_control_samples), paired = FALSE, alternative = "two.sided")$p.value	
+	log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=as.numeric(expr_paired_tumor_samples), y=as.numeric(expr_paired_control_samples), paired = TRUE, alternative = "two.sided")$p.value	
   }
   # FRD 
   log2change_tumor_control$FDR<-p.adjust(log2change_tumor_control$Pvalue, method="fdr")
