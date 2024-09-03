@@ -10,18 +10,18 @@
 # /home/felipe/Documentos/LungPortal/exposure.txt
 # Output : merged_data_patient_info.tsv
 ###########################################################################################################################
-merged_data_patient_info_data$patient_id  <- merged_data_patient_info_data$File.ID
-merged_data_patient_info_data$case_id     <- merged_data_patient_info_data$Case.ID
-#merged_data_patient_info_data$sample_id  <- merged_data_patient_info_data$Sample.ID
+merged_data_patient_info$patient_id  <- merged_data_patient_info$File.ID
+merged_data_patient_info$case_id     <- merged_data_patient_info$Case.ID
+#merged_data_patient_info$sample_id  <- merged_data_patient_info$Sample.ID
 ###########################################################################################################################
 # Paired samples                                                                                                         
 paired_sample_df<-data.frame(normal=c(),tumor=c(),case=c(),project=c())                                                              
                                                                                                                          
 # For each case, find the pairs                                                                                          
-for (case in unique(merged_data_patient_info_data$Case.ID))                                                                 
+for (case in unique(merged_data_patient_info$Case.ID))                                                                 
 {                                                                                                                        
     # All samples for case id = "case"                                                                                   
-    case_samples<-merged_data_patient_info_data[merged_data_patient_info_data$Case.ID==case,]             
+    case_samples<-merged_data_patient_info[merged_data_patient_info$Case.ID==case,]             
                                                                                                                          
     # Take the tumor samples                                                                                           
     tumor_sampĺes <-case_samples[case_samples$tissue_type=="Tumor",]
