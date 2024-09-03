@@ -79,13 +79,13 @@ for (normalization_scheme in normalization_schemes)
 		
 		# For each genes in the tabe
 		for (gene in log2change_Stage_i$gene)
-		{
-			# Take the expression of genes above expression threshold for Stage_i_samples
-			expr_Stage_i_samples<-normalized_expression_table[which(normalized_expression_table[gene,Stage_i_samples]>list_threshold_filters[[normalization_scheme]]),]
-
-			# Take the expression of genes above expression threshold for Stage_i_samples
-			expr_Stage_ii_samples<-normalized_expression_table[which(normalized_expression_table[gene,Stage_ii_samples]>list_threshold_filters[[normalization_scheme]]),]			
-			
+		{		
+			# Filter by threshold_filters
+			Stage_i_samples_expr<-Stage_i_samples_expr[Stage_i_samples_expr > list_threshold_filters[[normalized_table_names]]]
+		
+			# Filter by threshold_filters
+			Stages_ii_sample_expr<-Stages_ii_sample_expr[Stages_ii_sample_expr > list_threshold_filters[[normalized_table_names]]]	  
+					
 			# Take p-value
 			log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(expr_Stage_i_samples), y=as.numeric(expr_Stage_ii_samples), paired = FALSE, alternative = "two.sided")$p.value	
 		}
