@@ -1,12 +1,6 @@
 #####################################################################################################################
 # This script will take the TSV file (metadata), unstranded.rna_seq.augmented_star_gene_counts (rna-seq count data), 
 #####################################################################################################################
-# Reading the contents of TSV file using read_tsv() method
-merged_data_patient_info_file<- "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv"
-
-# Load metadata table
-merged_data_patient_info     <-read.table(file = merged_data_patient_info_file, sep = '\t', header = TRUE,fill=TRUE)   
-#####################################################################################################################
 # A script to load cancer data base in R
 unstranded_raw_file      <- "/home/felipe/Documents/Cancer_staging/tables/unstranded.rna_seq.augmented_star_gene_counts.tsv"
 unstranded_fpkm_file     <- "/home/felipe/Documents/Cancer_staging/tables/fpkm_unstranded.rna_seq.augmented_star_gene_counts.tsv"
@@ -60,6 +54,10 @@ if (TCGA_project != "ALL")
     dim(reads_count_per_project_raw[[TCGA_project]])
     dim(reads_count_per_project_tpm[[TCGA_project]])
     dim(reads_count_per_project_fpkm[[TCGA_project]])
+
+    reads_count_per_project_raw<-reads_count_per_project_raw[[TCGA_project]]
+    reads_count_per_project_tpm<-reads_count_per_project_tpm[[TCGA_project]]
+    reads_count_per_project_fpkm<-reads_count_per_project_fpkm[[TCGA_project]]
 
     # Take name of all samples
     all_samples<-c(colnames(reads_count_per_project_raw))        
