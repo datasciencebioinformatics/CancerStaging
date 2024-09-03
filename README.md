@@ -23,42 +23,39 @@ rclone mount googledrive: /home/felipe/googledrive/
 #### 2- Create expression tables from file
 /home/felipe/Documents/Cancer_staging/github/CancerStaging_CreateTableFromFiles.sh
 
-#### 3- Save gene length information
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SaveGeneLengthInformation.R")
-
-#### 4- CancerStaging Setup All Paramters
+#### 3- CancerStaging Setup All Paramters
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")
 
-#### 5- Load all R packages
+#### 4- Load all R packages
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
 
-#### 6- Create metadata CancerStaging_CreateMetadataFromGDCFiles
+#### 5- Create metadata CancerStaging_CreateMetadataFromGDCFiles
 ##### The following files were downloaded from GDC portal, clinical.tsv (information for each patient), sample.tsv (information for each sample) and exposure.tsv (data about patient life-style). These three tables were merged by the "case_id" value. Additionally, gdc_sample_sheet.2024-07-18.tsv were also downloaded (infomation about the experimental files). Then, the gdc_sample_sheet.2024-07-18.tsv was merge with the formed merged table, relating the "Sample ID" to "sample_submitter_id", respectivelly. 
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
 
-#### 7- Load interactome data
+#### 6- Load interactome data
 ##### The IntAct interactome was obtained from the intact-micluster.txt file (version updated December 2017) accessed on January 11, 2018, with 152280 interactions among 15651 gene symbols. After converting gene symbols to ENSEMBL identifiers with EnsemblToUniprotKBconversionList.txt, 148169 interactions (97.3%) and 14492 genes (92.6%) were kept. To calculate the connectivity per gene, we counted the number of times each gene appeared in the interactome. 
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
 
-#### 8- Load expression data CancerStaging_LoadExpressionData
+#### 7- Load expression data CancerStaging_LoadExpressionData
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
 
-#### 9- Load expression data CancerStaging_LoadExpressionData. Raw read counts are normalized with DESeq2 package for CPM (counts per million), TPM (transcripts per kilobase million) and RPKM/FPKM (reads/fragments per kilobase of exon per million reads/fragments mapped).
+#### 8- Load expression data CancerStaging_LoadExpressionData. Raw read counts are normalized with DESeq2 package for CPM (counts per million), TPM (transcripts per kilobase million) and RPKM/FPKM (reads/fragments per kilobase of exon per million reads/fragments mapped).
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization.R")
 
-#### 10- Create Paired Samples Tumor Normal
+#### 9- Create Paired Samples Tumor Normal
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
 
-#### 11- CancerStaging Find Tumor Genes
+#### 10- CancerStaging Find Tumor Genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes.R")
 
-#### 12- CancerStaging Find Stage Specific genes
+#### 11- CancerStaging Find Stage Specific genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpecificGenes.R")
 
-#### 13- Calculate shannon entrpopy for each stage
+#### 12- Calculate shannon entrpopy for each stage
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
-#### 14- Execute pipeline per projetct.
+#### 13- Execute pipeline per projetct.
 
-#### 15- Create Expression maps ExpressionMaps
+#### 14- Create Expression maps ExpressionMaps
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
