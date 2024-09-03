@@ -1,5 +1,5 @@
 # Set name of the TCGA project
-TCGA_project <- "TCGA-LUAD"
+TCGA_project <- "TCGA-LUSC"
 
 # Set outfolder
 output_dir=paste("/home/felipe/Documents/Cancer_staging/outputfolder/",TCGA_project,"/",sep="")
