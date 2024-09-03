@@ -49,13 +49,16 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSa
 #### 10- CancerStaging Find Tumor Genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes.R")
 
-#### 11- CancerStaging Find Stage Specific genes
+#### 11- CancerStaging Filter tumor genes by threshold for raw, rpkm, fpkm, tpm a tmm
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_Filters.R")
+
+#### 12- CancerStaging Find Stage Specific genes
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpecificGenes.R")
 
-#### 12- Calculate shannon entrpopy for each stage
+#### 13- Calculate shannon entrpopy for each stage
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
-#### 13- Execute pipeline per projetct.
+#### 14- Execute pipeline per projetct.
 
 #### 14- Create Expression maps ExpressionMaps
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
