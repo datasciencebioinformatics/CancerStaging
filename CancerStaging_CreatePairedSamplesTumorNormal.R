@@ -112,6 +112,12 @@ for (normalized_table_names in names(df_reads_count_all_projects))
 	gene_expression_paired_control_samples <- gene_expression[rownames(gene_expression) %in% paired_normal_samples]	  
 
 	# Filter by threshold_filters
+	gene_expression_unpaired_tumor_samples<-gene_expression_unpaired_tumor_samples[gene_expression_unpaired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
+
+	# Filter by threshold_filters
+	gene_expression_unpaired_control_samples<-gene_expression_unpaired_control_samples[gene_expression_unpaired_control_samples > list_threshold_filters[[normalized_table_names]]]	  	  
+
+	# Filter by threshold_filters
 	gene_expression_paired_tumor_samples<-gene_expression_paired_tumor_samples[gene_expression_paired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
 
 	# Filter by threshold_filters
