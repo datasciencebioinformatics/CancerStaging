@@ -122,10 +122,19 @@ for (normalized_table_names in names(df_reads_count_all_projects))
 
 	# Filter by threshold_filters
 	gene_expression_paired_control_samples<-gene_expression_paired_control_samples[gene_expression_paired_control_samples > list_threshold_filters[[normalized_table_names]]]	  
-    
-	# Take p-value
-	log2change_tumor_control[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	
-	log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	
+
+	# if at least one sample 
+	if (length(gene_expression_paired_tumor_samples)>1 & length(gene_expression_paired_control_samples)>1 )
+	{
+		# Take p-value
+		log2change_tumor_control[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	
+	}
+	# if at least one sample 
+	if (length(gene_expression_paired_tumor_samples)>1 & length(gene_expression_paired_control_samples)>1 )
+	{
+		# Take p-value	
+		log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	
+	}	      
   }
   # FRD 
   log2change_tumor_control$FDR<-p.adjust(log2change_tumor_control$Pvalue, method="fdr")
