@@ -25,11 +25,9 @@ library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library("clusterProfiler")
 library("org.Hs.eg.db")
 library("ggplot2")
-library("ggpairs")
 
 
-
-
+#library("ggpairs")
 #library(AnnotationHub)
 #library("biomaRt")
 #library(data.table)
