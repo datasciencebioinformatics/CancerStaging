@@ -1,0 +1,10 @@
+# Experimental set up 1
+# The number genes after filtering:
+# list_threshold_filters<-list(raw=0,rpkm=0,fpkm=0,tmm=0, tpm=0)
+# threshold_FDR<-0.05
+# threshold_tumor<-0.0 
+# raw =8127
+# tmm =8894
+# fpkm=9020
+# tpkm=8789
+# rpkm=7748
