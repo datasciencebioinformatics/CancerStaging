@@ -1,3 +1,9 @@
+###########################################################################################################################
+# Load expression table
+loaded_ExpressionTable         <-load(paste(output_dir,"/","ExpressionData.RData",sep="")) 
+loaded_MergedDataPatientInfo   <-load(paste(output_dir,"/","MergedDataPatientInfo.RData",sep="")) 
+loaded_MergedDataPatientInfo   <-load(paste(output_dir,"/","MergedDataPatientInfo.RData",sep="")) 
+
 #############################################################################################################################
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
