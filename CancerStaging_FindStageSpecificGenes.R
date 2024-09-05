@@ -93,7 +93,7 @@ for (normalization_scheme in normalization_schemes)
 			Stages_ii_sample_expr<-Stages_ii_sample_expr[Stages_ii_sample_expr > list_threshold_filters[[normalized_table_names]]]	  
 					
 			# Take p-value				
-			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(expr_Stage_i_samples), y=as.numeric(expr_Stage_ii_samples), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
+			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_samples_expr), y=as.numeric(Stages_ii_sample_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
 		}
 		# FRD 
 		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="fdr")
