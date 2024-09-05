@@ -117,4 +117,5 @@ for (normalization_scheme in normalization_schemes)
 	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))	
 	
 }
+save(list_stage_specific_genes, file = paste(output_dir,"/","StageSpecificGenes.RData",sep=""))
 print("\nCancerStaging_FindTumorGenes")
