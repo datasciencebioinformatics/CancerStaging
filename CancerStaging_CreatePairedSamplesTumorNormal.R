@@ -1,4 +1,10 @@
 ###########################################################################################################################
+# Load expression table
+loaded_ExpressionTable<-load(paste(output_dir,"/","ExpressionData.RData",sep="")) 
+
+# Reload R packages
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
+###########################################################################################################################
 # Comments : from the GDC metadata, samples from each case are split according to tissue_type=Normal,tissue_type=Tumor.
 # the paired samples are combinations of tissue_type=Normal,tissue_type=Tumor from the same case.
 ###########################################################################################################################
