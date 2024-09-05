@@ -19,3 +19,4 @@ for (normalization_scheme in normalization_schemes)
 	
 	cat(print(paste("\nNumber of up-regulated filtered tumor-genes :",dim(df_reads_count_all_projects[[normalization_scheme]])[1])),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)
 }
+save(df_reads_count_all_projects, file = paste(output_dir,"/","ExpressionData.RData",sep=""))
