@@ -133,4 +133,6 @@ for (normalization_scheme in normalization_schemes)
 	}	  	  	
 ########################################################################################################################################		
 print(paste(normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels, sep="") )
+cat(print(paste(normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels, sep="") ),file=paste(output_dir,"outfile_1.txt",sep="/"),append=TRUE)
+	
 }
