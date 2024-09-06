@@ -5,35 +5,23 @@
 # for each  normalization scheme
 for (normalization_scheme in normalization_schemes)
 {	
-  # Take the expression data
-  # First, I will load the expression table   	
-  normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
-
-  # A filter to keep only genes that are positivelly regulated
-  genes_ids<-c()
-  
-  # For each gene
-  for (gene_id in rownames(normalized_expression_table))
-  {
-    # Store gene id in the vector
-    genes_ids<-c(genes_ids,strsplit(gene_id, split = "\\.")[[1]][1])
-  }
-  # Gene_ids
-  genes_ids<-unique(genes_ids)
-
-  # for each  normalization scheme
-  for (comparisson_index in rownames(df_table_comparisson))
-  {
+	# Take the expression data
+	# First, I will load the expression table   	
+	normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
+	
+	# Gene_ids
+	genes_ids<-unique(genes_ids)
+		
 	# Store log2change_Stage_i
 	log2change_Stage_i   <-list_stage_specific_genes[[paste(normalization_scheme,"_","stage_I",sep="")]]
 	log2change_Stage_ii  <-list_stage_specific_genes[[paste(normalization_scheme,"_","stage_II",sep="")]]
 	log2change_Stage_iii <-list_stage_specific_genes[[paste(normalization_scheme,"_","stage_III",sep="")]]	
-
+	
 	# Vectors to store gene ids from each stage
 	genes_id_vector_stage_I<-log2change_Stage_i[log2change_Stage_i$Category=="Per stage genes","gene"]
 	genes_id_vector_stage_II<-log2change_Stage_ii[log2change_Stage_ii$Category=="Per stage genes","gene"]
 	genes_id_vector_stage_III<-log2change_Stage_iii[log2change_Stage_iii$Category=="Per stage genes","gene"]
-
+	
 	# Take all genes from interactom
 	# store both, gene in pair one and gene in pair two in a same vectors
 	
