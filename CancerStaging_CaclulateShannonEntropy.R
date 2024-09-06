@@ -131,7 +131,6 @@ for (normalization_scheme in normalization_schemes)
 		# Caclulate entropy value
 		Entropy_stage_III_value_Carels  <-abs(sum(df_entropy_calulation_III$p_k_mult_log2_pk))				
 	}	  	  	
-	########################################################################################################################################		
-	print(paste(normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels, sep="") )
-  }
+########################################################################################################################################		
+print(paste(normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels, sep="") )
 }
