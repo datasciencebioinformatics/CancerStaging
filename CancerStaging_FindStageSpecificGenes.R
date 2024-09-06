@@ -112,6 +112,7 @@ for (normalization_scheme in normalization_schemes)
 		list_stage_specific_genes[[paste(normalization_scheme,"_",substring(Stage_i,8,20),sep="")]]<-log2change_Stage_i
 		####################################################################################################################	
 		cat(print(paste("\nNumber of tumor genes per stage for ","FindStageSpecificGenes",":",Stage_i, " : ",length(selected_genes))),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)    
+		cat(print(paste("Stage-speficic ",Stage_i, " : " ,normalization_scheme," : ",length(selected_genes),sep="")),file=paste(output_dir,"outfile_1.txt",sep="/"),append=TRUE)
 	}			
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))	
