@@ -99,6 +99,10 @@ merged_data_patient_count<-unique(merged_data_patient_info[,c("sample_id","Sampl
 # Cases per stage
 table_cases_per_stage<-table(merged_data_patient_count$project_id)
 
+# Write to to file the number of cases
+cat("Number of cases : ",file=results_files,sep="\n", append=TRUE)
+cat(names(table_cases_per_stage) ,file=results_files,sep="\n", append=TRUE)
+cat(table_cases_per_stage,file=results_files,sep="\n", append=TRUE)
 #####################################################################################################################
 # Total of 4075 samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
