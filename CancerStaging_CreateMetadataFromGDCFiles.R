@@ -100,7 +100,7 @@ merged_data_patient_count<-unique(merged_data_patient_info[,c("sample_id","Sampl
 table_cases_per_stage<-table(merged_data_patient_count$project_id)
 
 # Write to to file the number of cases
-cat(paste("Number of cases: ", sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("Number of cases for the project: ", sep=""),file=results_files,sep="\n", append=TRUE)
 cat(paste(names(table_cases_per_stage), collapse=" "),file=results_files,sep="\n", append=TRUE)
 cat(paste(table_cases_per_stage, collapse=" "),file=results_files,sep="\n", append=TRUE)
 #####################################################################################################################
