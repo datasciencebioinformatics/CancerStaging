@@ -26,4 +26,16 @@ threshold_stage<-1.0
 results_files <- paste(output_dir,"/outputfile_FDR_005_TUMOR_00_FILTER_0_STAGE_10.txt",sep="")
 
 print("\nCancerStaging_SetupAllParamters.R")
+####################################################################################################
+# Write to to file the number of cases
+cat(paste("results_files","       : ", results_files, sep=""),file=results_files,sep="\n", append=FALSE)
+cat(paste("threshold_FDR","       : ", threshold_FDR, sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_tumor","     : ", threshold_tumor, sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_stage","     : ", threshold_stage, sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_filters raw  : ", list_threshold_filters[["raw"]], sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_filters rpkm : ", list_threshold_filters[["rpkm"]], sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_filters fpkm : ", list_threshold_filters[["fpkm"]], sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_filters tmm : ", list_threshold_filters[["tmm"]], sep=""),file=results_files,sep="\n", append=TRUE)
+cat(paste("threshold_filters tpm : ", list_threshold_filters[["tpm"]], sep=""),file=results_files,sep="\n", append=TRUE)
+####################################################################################################
 
