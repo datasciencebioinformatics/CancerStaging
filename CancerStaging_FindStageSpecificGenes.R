@@ -118,4 +118,4 @@ for (normalization_scheme in normalization_schemes)
 	
 }
 save(list_stage_specific_genes, file = paste(output_dir,"/","StageSpecificGenes.RData",sep=""))
-print("\CancerStaging_FindStageSpecificGenes")
+print("\nCancerStaging_FindStageSpecificGenes")
