@@ -16,7 +16,7 @@ for (normalization_scheme in normalization_schemes)
 	
 	# Select only tumor genes
 	df_reads_count_all_projects[[normalization_scheme]]<-normalized_expression_table
-	
-	cat(print(paste("\nNumber of up-regulated filtered tumor-genes :",dim(df_reads_count_all_projects[[normalization_scheme]])[1])),file=paste(output_dir,"outfile.txt",sep="/"),append=TRUE)
+		
+	cat(print(paste("\nNumber of tumor gene after filtering",normalization_scheme,":", length(tumor_genes),"\n")),file=results_files,append=TRUE)
 }
 save(df_reads_count_all_projects, file = paste(output_dir,"/","ExpressionData.RData",sep=""))
