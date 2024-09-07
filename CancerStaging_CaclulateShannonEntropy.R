@@ -1,4 +1,6 @@
 #######################################################################################################################################
+loaded_StageSpecificGenes         <-load(paste(output_dir,"/","StageSpecificGenes.RData",sep=""))
+#######################################################################################################################################
 # A script to caluclate entropy from lists of genes from each stage
 #######################################################################################################################################
 # Interactome data
@@ -8,9 +10,9 @@ for (normalization_scheme in normalization_schemes)
 	# Take the expression data
 	# First, I will load the expression table   	
 	normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
-	
-	# Gene_ids
-	genes_ids<-unique(genes_ids)
+
+	# genes_ids
+	genes_ids <- rownames(normalized_expression_table)
 		
 	# Store log2change_Stage_i
 	log2change_Stage_i   <-list_stage_specific_genes[[paste(normalization_scheme,"_","stage_I",sep="")]]
