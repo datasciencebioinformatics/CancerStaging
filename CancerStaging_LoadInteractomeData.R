@@ -63,3 +63,7 @@ connectivity<-table(c(gene_conversion$ENSG.x,gene_conversion$ENSG.y))
 
 # Set rownames
 rownames(interactome_data)<-paste(interactome_data$Gene1,interactome_data$Gene2,sep="-")
+
+# Save number of genes and interaction in the interactome
+cat(paste("Number of genes in the interactome:", length(unique(c(interactome_data$Gene1,interactome_data$Gene2))),sep=" "),file=results_files,sep="\n", append=FALSE)
+cat(paste("Number of interactions in the interactome:", dim(interactome_data)[1],sep=" "),file=results_files,sep="\n", append=TRUE)
