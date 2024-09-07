@@ -81,82 +81,86 @@ list_logchange_tumor_control<-list()
 # for each normalization scheme
 for (normalized_table_names in names(df_reads_count_all_projects))
 {  
-  # Store normalized table
-  normalized_table<-df_reads_count_all_projects[[normalized_table_names]]
-
-  # folchange=Expr(Stage i)/Expr(Stage ii and II)
-  # Paired t-test, RPKM of paired tumor/normal samples
-  # Plot with 15208 genes.
-  # Log2foldchange
-  LOG_CONSTANT=0.001
-  log2change       =log( (rowMeans(normalized_table[,unpaired_tumor_samples]+LOG_CONSTANT)/rowMeans(normalized_table[,unpaired_control_samples]+LOG_CONSTANT)),2)	
-  log2change_paired=log( (rowMeans(normalized_table[,paired_tumor_samples]+LOG_CONSTANT)/rowMeans(normalized_table[,paired_normal_samples]+LOG_CONSTANT)),2)	
-  
-  # log2change data
-  log2change_tumor_control=na.omit(data.frame(gene=names(log2change),log2change=log2change))
-  log2change_tumor_control_paired=na.omit(data.frame(gene=names(log2change_paired),log2change=log2change_paired))
-  
-  # First, the log2foldchane tumor/normal samples is used
-  log2change_tumor_control$Pvalue<-1
-  log2change_tumor_control_paired$Pvalue<-1
-  
-  # For each genes in the tabe
-  for (gene in log2change_tumor_control$gene)
-  {
-	# Take the epxression for the gene for all samples
-	gene_expression<-t(normalized_table[gene,])
+	# Store normalized table
+	normalized_table<-df_reads_count_all_projects[[normalized_table_names]]
 	
-	# Take the expression of genes above expression threshold for Stage_i_samples
-	gene_expression_unpaired_tumor_samples <- gene_expression[rownames(gene_expression) %in% unpaired_tumor_samples]
-
-	# Take the expression of genes above expression threshold for Stage_i_samples
-	gene_expression_unpaired_control_samples <- gene_expression[rownames(gene_expression) %in% unpaired_control_samples]
-
-	# Take the expression of genes above expression threshold for Stage_i_samples
-	gene_expression_paired_tumor_samples <- gene_expression[rownames(gene_expression) %in% paired_tumor_samples]
-
-	# Take the expression of genes above expression threshold for Stage_i_samples
-	gene_expression_paired_control_samples <- gene_expression[rownames(gene_expression) %in% paired_normal_samples]	  
-
-	# Filter by threshold_filters
-	gene_expression_unpaired_tumor_samples<-gene_expression_unpaired_tumor_samples[gene_expression_unpaired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
-
-	# Filter by threshold_filters
-	gene_expression_unpaired_control_samples<-gene_expression_unpaired_control_samples[gene_expression_unpaired_control_samples > list_threshold_filters[[normalized_table_names]]]	  	  
-
-	# Filter by threshold_filters
-	gene_expression_paired_tumor_samples<-gene_expression_paired_tumor_samples[gene_expression_paired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
-
-	# Filter by threshold_filters
-	gene_expression_paired_control_samples<-gene_expression_paired_control_samples[gene_expression_paired_control_samples > list_threshold_filters[[normalized_table_names]]]	  
-
-	# if at least one sample 
-	if (length(gene_expression_paired_tumor_samples)>0 & length(gene_expression_paired_control_samples)>0 )
+	# folchange=Expr(Stage i)/Expr(Stage ii and II)
+	# Paired t-test, RPKM of paired tumor/normal samples
+	# Plot with 15208 genes.
+	# Log2foldchange
+	LOG_CONSTANT=0.001
+	log2change       =log( (rowMeans(normalized_table[,unpaired_tumor_samples]+LOG_CONSTANT)/rowMeans(normalized_table[,unpaired_control_samples]+LOG_CONSTANT)),2)	
+	log2change_paired=log( (rowMeans(normalized_table[,paired_tumor_samples]+LOG_CONSTANT)/rowMeans(normalized_table[,paired_normal_samples]+LOG_CONSTANT)),2)	
+	
+	# log2change data
+	log2change_tumor_control=na.omit(data.frame(gene=names(log2change),log2change=log2change))
+	log2change_tumor_control_paired=na.omit(data.frame(gene=names(log2change_paired),log2change=log2change_paired))
+	
+	# First, the log2foldchane tumor/normal samples is used
+	log2change_tumor_control$Pvalue<-1
+	log2change_tumor_control_paired$Pvalue<-1
+	
+	# For each genes in the tabe
+	for (gene in log2change_tumor_control$gene)
 	{
-		# Take p-value		
-		out <- tryCatch(log2change_tumor_control[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	, error = function(e) NULL)
+		# Take the epxression for the gene for all samples
+		gene_expression<-t(normalized_table[gene,])
+		
+		# Take the expression of genes above expression threshold for Stage_i_samples
+		gene_expression_unpaired_tumor_samples <- gene_expression[rownames(gene_expression) %in% unpaired_tumor_samples]
+		
+		# Take the expression of genes above expression threshold for Stage_i_samples
+		gene_expression_unpaired_control_samples <- gene_expression[rownames(gene_expression) %in% unpaired_control_samples]
+		
+		# Take the expression of genes above expression threshold for Stage_i_samples
+		gene_expression_paired_tumor_samples <- gene_expression[rownames(gene_expression) %in% paired_tumor_samples]
+		
+		# Take the expression of genes above expression threshold for Stage_i_samples
+		gene_expression_paired_control_samples <- gene_expression[rownames(gene_expression) %in% paired_normal_samples]	  
+		
+		# Filter by threshold_filters
+		gene_expression_unpaired_tumor_samples<-gene_expression_unpaired_tumor_samples[gene_expression_unpaired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
+		
+		# Filter by threshold_filters
+		gene_expression_unpaired_control_samples<-gene_expression_unpaired_control_samples[gene_expression_unpaired_control_samples > list_threshold_filters[[normalized_table_names]]]	  	  
+		
+		# Filter by threshold_filters
+		gene_expression_paired_tumor_samples<-gene_expression_paired_tumor_samples[gene_expression_paired_tumor_samples > list_threshold_filters[[normalized_table_names]]]
+		
+		# Filter by threshold_filters
+		gene_expression_paired_control_samples<-gene_expression_paired_control_samples[gene_expression_paired_control_samples > list_threshold_filters[[normalized_table_names]]]	  
+	
+		# if at least one sample 
+		if (length(gene_expression_paired_tumor_samples)>0 & length(gene_expression_paired_control_samples)>0 )
+		{
+			# Take p-value		
+			out <- tryCatch(log2change_tumor_control[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value	, error = function(e) NULL)
+		}
+		# if at least one sample 
+		if (length(gene_expression_paired_tumor_samples)>0 & length(gene_expression_paired_control_samples)>0 )
+		{
+			# Take p-value			
+			out <- tryCatch(log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
+		}	      
 	}
-	# if at least one sample 
-	if (length(gene_expression_paired_tumor_samples)>0 & length(gene_expression_paired_control_samples)>0 )
-	{
-		# Take p-value			
-		out <- tryCatch(log2change_tumor_control_paired[gene,"Pvalue"]<-t.test(x=gene_expression_paired_tumor_samples, y=gene_expression_paired_control_samples, paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
-	}	      
-  }
-  # FRD 
-  log2change_tumor_control$FDR<-p.adjust(log2change_tumor_control$Pvalue, method="fdr")
-  log2change_tumor_control_paired$FDR<-p.adjust(log2change_tumor_control_paired$Pvalue, method="fdr")
-  #######################################################################################################################################
-  colnames(log2change_tumor_control)       <- c("gene","log2change_all_samples","pvalue_all_samples","fdr_all_samples")                 #
-  colnames(log2change_tumor_control_paired)<- c("gene","log2change_paired","pvalue_paired","fdr_paired")                                #
-  #######################################################################################################################################
-  logchange_tumor_control<-merge(log2change_tumor_control,log2change_tumor_control_paired,by="gene")                                    #
-  #######################################################################################################################################
-  list_logchange_tumor_control[[normalized_table_names]]<-logchange_tumor_control                                                       #
-  #######################################################################################################################################  
-  # Write TSV
-  write_tsv(data.frame(logchange_tumor_control), paste(output_dir,"df_statistics_all_projects_",normalized_table_names,".tsv",sep="")) #
-  ####################################################################################################################################### 
+	# FRD 
+	log2change_tumor_control$FDR<-p.adjust(log2change_tumor_control$Pvalue, method="fdr")
+	log2change_tumor_control_paired$FDR<-p.adjust(log2change_tumor_control_paired$Pvalue, method="fdr")
+	#######################################################################################################################################
+	colnames(log2change_tumor_control)       <- c("gene","log2change_all_samples","pvalue_all_samples","fdr_all_samples")                 #
+	colnames(log2change_tumor_control_paired)<- c("gene","log2change_paired","pvalue_paired","fdr_paired")                                #
+	#######################################################################################################################################
+	logchange_tumor_control<-merge(log2change_tumor_control,log2change_tumor_control_paired,by="gene")                                    #
+	#######################################################################################################################################
+	list_logchange_tumor_control[[normalized_table_names]]<-logchange_tumor_control                                                       #
+	#######################################################################################################################################  
+	# Write TSV
+	write_tsv(data.frame(logchange_tumor_control), paste(output_dir,"df_statistics_all_projects_",normalized_table_names,".tsv",sep="")) #
+	####################################################################################################################################### 					
 }
 print("\nCancerStaging_CreatePairedSamplesTumorNormal")
 
+####################################################################################################################################### 
+# Write to to file the number of cases
+cat(paste("Number of paired samples","       : ", dim(paired_sample_df)[1], sep=""),file=results_files,sep="\n", append=TRUE)
+####################################################################################################################################### 
