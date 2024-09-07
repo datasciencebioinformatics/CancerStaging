@@ -23,7 +23,7 @@ list_threshold_filters<-list(raw=4,rpkm=4,fpkm=4,tmm=4, tpm=4)
 threshold_stage<-1.0 
 
 # File to save results
-results_files <- "/home/felipe/Documents/Cancer_staging/outputfolder/outputfile_FDR_005_TUMOR_00_FILTER_0_STAGE_10.txt"
+results_files <- paste(output_dir,"/outputfile_FDR_005_TUMOR_00_FILTER_0_STAGE_10.txt",sep="")
 
 print("\nCancerStaging_SetupAllParamters.R")
 
