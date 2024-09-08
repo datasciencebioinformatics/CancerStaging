@@ -10,7 +10,7 @@ for (normalization_scheme in normalization_schemes)
 	normalized_expression_table<-df_reads_count_all_projects[[normalization_scheme]]
 
 	# genes_ids
-	genes_ids <- rownames(normalized_expression_table)
+	genes_ids <- rownames(normalized_expression_table)	
 		
 	# Store log2change_Stage_i
 	log2change_Stage_i   <-list_stage_specific_genes[[paste(normalization_scheme,"_","stage_I",sep="")]]
@@ -30,6 +30,8 @@ for (normalization_scheme in normalization_schemes)
 	genes_interactome_stage_I  <-genes_id_vector_stage_I[genes_id_vector_stage_I %in% genes_ids]
 	genes_interactome_stage_II <-genes_id_vector_stage_II[genes_id_vector_stage_II %in% genes_ids]
 	genes_interactome_stage_III<-genes_id_vector_stage_III[genes_id_vector_stage_III %in% genes_ids]
+
+	print(paste(length(genes_interactome_stage_I),length(genes_interactome_stage_II),length(genes_interactome_stage_III), sep="-"))
 	
 	# A vector with all genes of the interactome,full_interactome<-unique(c(genes_interactome_stage_I$Gene1,genes_interactome_stage_I$Gene2))
 	# Calculate all pairwise combinations of genes, without redunctancy
@@ -67,72 +69,49 @@ for (normalization_scheme in normalization_schemes)
 	stage_I_genes_factor  <-factor(c(interactome_stage_I$Gene1,interactome_stage_I$Gene2),level=unique(c(interactome_stage_I$Gene1,interactome_stage_I$Gene2)))
 	stage_II_genes_factor <-factor(c(interactome_stage_II$Gene1,interactome_stage_II$Gene2),level=unique(c(interactome_stage_II$Gene1,interactome_stage_II$Gene2)))
 	stage_III_genes_factor<-factor(c(interactome_stage_III$Gene1,interactome_stage_III$Gene2),level=unique(c(interactome_stage_III$Gene1,interactome_stage_III$Gene2)))
+
+	print(paste(length(unique(stage_I_genes_factor)),length(unique(stage_II_genes_factor)),length(unique(stage_III_genes_factor)), sep="-"))
+
 	   
 	df_stageI_connectivity   <-unique(data.frame(Conectivity=table(stage_I_genes_factor)))
 	df_stageII_connectivity  <-unique(data.frame(Conectivity=table(stage_II_genes_factor)))
 	df_stageIII_connectivity <-unique(data.frame(Conectivity=table(stage_III_genes_factor)))	
 	########################################################################################################################################
-	# Start 
-	Entropy_stage_I_value_Carels  <- 0
-	Entropy_stage_II_value_Carels <- 0
-	Entropy_stage_III_value_Carels <- 0
-	  
-	# If at least one overlapping interaction
-	if(dim(df_stageI_connectivity)[1]>0)
-	{		
-		# Rename colnames
-		colnames(df_entropy_calulation_I)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
-		
-		# Calculate p(k)
-		df_entropy_calulation_I$p_k<-df_entropy_calulation_I$count/sum(df_entropy_calulation_I$count)
-		
-		# Calculate log2(p(k))
-		df_entropy_calulation_I$log2_pk<-log(df_entropy_calulation_I$p_k,2)
-		
-		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_I$p_k_mult_log2_pk<-df_entropy_calulation_I$p_k*df_entropy_calulation_I$log2_pk
-		
-		# Caclulate entropy value
-		Entropy_stage_I_value_Carels  <-abs(sum(df_entropy_calulation_I$p_k_mult_log2_pk))
-	}
-	# If at least one overlapping interaction
-	if(dim(df_stageII_connectivity)[1]>0)
-	{
-		# Rename colnames
-		colnames(df_entropy_calulation_II)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
-		
-		# Calculate p(k)
-		df_entropy_calulation_II$p_k<-df_entropy_calulation_II$count/sum(df_entropy_calulation_II$count)
-		
-		# Calculate log2(p(k))
-		df_entropy_calulation_II$log2_pk<-log(df_entropy_calulation_II$p_k,2)
-		
-		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_II$p_k_mult_log2_pk<-df_entropy_calulation_II$p_k*df_entropy_calulation_II$log2_pk
-		
-		# Caclulate entropy value
-		Entropy_stage_II_value_Carels  <-abs(sum(df_entropy_calulation_II$p_k_mult_log2_pk))
-	}	  
-	# If at least one overlapping interaction
-	if(dim(df_stageIII_connectivity)[1]>0)
-	{
-		# Rename colnames
-		colnames(df_entropy_calulation_III)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
-		
-		# Calculate p(k)
-		df_entropy_calulation_III$p_k<-df_entropy_calulation_III$count/sum(df_entropy_calulation_III$count)
-		
-		# Calculate log2(p(k))
-		df_entropy_calulation_III$log2_pk<-log(df_entropy_calulation_III$p_k,2)
-		
-		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_III$p_k_mult_log2_pk<-df_entropy_calulation_III$p_k*df_entropy_calulation_III$log2_pk
-		
-		# Caclulate entropy value
-		Entropy_stage_III_value_Carels  <-abs(sum(df_entropy_calulation_III$p_k_mult_log2_pk))
-	}	  	  	
-########################################################################################################################################		
-print(paste(normalization_scheme," : Stage I :", round(Entropy_stage_I_value_Carels,3), " : Stage II :", round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3), sep="") )
-cat(print(paste("\n",normalization_scheme," : Stage I :",  round(Entropy_stage_I_value_Carels,3), " : Stage II :",  round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3),"\n", sep="") ),file=results_files,append=TRUE)
+	colnames(df_stageI_connectivity)<-c("Gene","Conectivity")
+	colnames(df_stageII_connectivity)<-c("Gene","Conectivity")
+	colnames(df_stageIII_connectivity)<-c("Gene","Conectivity")
+	########################################################################################################################################
+	# Table for the calculation of entropy
+	df_entropy_calulation_I   <-data.frame(table(df_stageI_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)
+	df_entropy_calulation_II  <-data.frame(table(df_stageII_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)
+	df_entropy_calulation_III <-data.frame(table(df_stageIII_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)
+	
+	# Rename colnames
+	colnames(df_entropy_calulation_I)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+	colnames(df_entropy_calulation_II)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+	colnames(df_entropy_calulation_III)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+	
+	# Calculate p(k)
+	df_entropy_calulation_I$p_k<-df_entropy_calulation_I$count/sum(df_entropy_calulation_I$count)
+	df_entropy_calulation_II$p_k<-df_entropy_calulation_II$count/sum(df_entropy_calulation_II$count)
+	df_entropy_calulation_III$p_k<-df_entropy_calulation_III$count/sum(df_entropy_calulation_III$count)
+	
+	# Calculate log2(p(k))
+	df_entropy_calulation_I$log2_pk<-log(df_entropy_calulation_I$p_k,2)
+	df_entropy_calulation_II$log2_pk<-log(df_entropy_calulation_II$p_k,2)
+	df_entropy_calulation_III$log2_pk<-log(df_entropy_calulation_III$p_k,2)
+	
+	# Calculate p(k)*log2(p(k))
+	df_entropy_calulation_I$p_k_mult_log2_pk<-df_entropy_calulation_I$p_k*df_entropy_calulation_I$log2_pk
+	df_entropy_calulation_II$p_k_mult_log2_pk<-df_entropy_calulation_II$p_k*df_entropy_calulation_II$log2_pk
+	df_entropy_calulation_III$p_k_mult_log2_pk<-df_entropy_calulation_III$p_k*df_entropy_calulation_III$log2_pk
+	
+	# Caclulate entropy value
+	Entropy_stage_I_value_Carels  <-abs(sum(df_entropy_calulation_I$p_k_mult_log2_pk))
+	Entropy_stage_II_value_Carels <-abs(sum(df_entropy_calulation_II$p_k_mult_log2_pk))
+	Entropy_stage_III_value_Carels<-abs(sum(df_entropy_calulation_III$p_k_mult_log2_pk))
+	########################################################################################################################################		
+	print(paste(normalization_scheme," : Stage I :", round(Entropy_stage_I_value_Carels,3), " : Stage II :", round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3), sep="") )
+	cat(print(paste("\n",normalization_scheme," : Stage I :",  round(Entropy_stage_I_value_Carels,3), " : Stage II :",  round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3),"\n", sep="") ),file=results_files,append=TRUE)
 	
 }
