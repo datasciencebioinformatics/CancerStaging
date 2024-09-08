@@ -19,4 +19,3 @@ for (normalization_scheme in normalization_schemes)
 		
 	cat(print(paste("\nNumber of tumor gene after filtering",normalization_scheme,":", length(tumor_genes),"\n")),file=results_files,append=TRUE)
 }
-save(df_reads_count_all_projects, file = paste(output_dir,"/","ExpressionData.RData",sep=""))
