@@ -8,8 +8,6 @@ loaded_StatisticTable          <-load(paste(output_dir,"/","StatisticTable.RData
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 #######################################################################################################################################
-normalized_expression_table_list<-list("raw"=df_reads_count_all_projects_raw,"rpkm"=df_reads_count_all_projects_rpkm,"fpkm"=df_reads_count_all_projects_fpkm, "tpm"=df_reads_count_all_projects_tpm, "tmm"=df_reads_count_all_projects_tmm)
-#######################################################################################################################################
 # Find stage-specific genes by padj and log2foldchange                                                                                #
 # Only tumor samples                                                                                                                  #
 colData_tumor <-merged_data_patient_info[merged_data_patient_info$tissue_type=="Tumor",]                                              #
@@ -42,10 +40,7 @@ for (normalization_scheme in normalization_schemes)
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
 	
 	# First, I will load the expression table   	
-	normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
-	
-	# Select only tumor genes
-	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
+	normalized_expression_table<-df_reads_count_all_projects[[normalization_scheme]]
 	
 	# for each pair of stage.
 	for (comparisson_index in rownames(df_table_comparisson))
