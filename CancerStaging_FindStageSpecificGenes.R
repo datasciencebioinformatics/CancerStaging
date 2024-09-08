@@ -60,7 +60,7 @@ for (normalization_scheme in normalization_schemes)
 		
 		# Log2foldchange
 		LOG_CONSTANT=0.001
-		log2change=log( (rowMeans(Stage_i_samples_expr+LOG_CONSTANT)/rowMeans(Stages_ii_sample_expr+LOG_CONSTANT)),2)	
+		log2change=log( (rowMeans(Stages_i_samples_expr+LOG_CONSTANT)/rowMeans(Stages_ii_samples_expr+LOG_CONSTANT)),2)	
 		
 		# log2change data
 		log2change_Stage_i=na.omit(data.frame(gene=names(log2change),log2change=log2change))
