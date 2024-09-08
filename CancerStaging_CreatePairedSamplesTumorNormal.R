@@ -1,8 +1,5 @@
 ###########################################################################################################################
 # Load expression table
-loaded_ExpressionTable         <-load(paste(output_dir,"/","ExpressionData.RData",sep="")) 
-loaded_MergedDataPatientInfo   <-load(paste(output_dir,"/","MergedDataPatientInfo.RData",sep="")) 
-
 # Reload R packages
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
 ###########################################################################################################################
