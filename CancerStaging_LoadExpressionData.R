@@ -142,7 +142,6 @@ cat(paste(table_cases_per_stage, collapse=" "),file=results_files,sep="\n", appe
 #####################################################################################################################
 # Organize how to send to Carles
 write_tsv(merged_data_patient_info, "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv")
-save(merged_data_patient_info, file = paste(output_dir,"/","MergedDataPatientInfo.RData",sep=""))
 #####################################################################################################################
 # Total number of samples
 #TCGA-BRCA TCGA-LIHC TCGA-LUAD TCGA-LUSC TCGA-PRAD TCGA-READ TCGA-SKCM TCGA-STAD 
