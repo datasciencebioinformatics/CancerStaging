@@ -30,8 +30,6 @@ for (normalization_scheme in normalization_schemes)
 	genes_interactome_stage_I  <-genes_id_vector_stage_I[genes_id_vector_stage_I %in% genes_ids]
 	genes_interactome_stage_II <-genes_id_vector_stage_II[genes_id_vector_stage_II %in% genes_ids]
 	genes_interactome_stage_III<-genes_id_vector_stage_III[genes_id_vector_stage_III %in% genes_ids]
-
-	print(paste(length(genes_interactome_stage_I),length(genes_interactome_stage_II),length(genes_interactome_stage_III), sep="-"))
 	
 	# A vector with all genes of the interactome,full_interactome<-unique(c(genes_interactome_stage_I$Gene1,genes_interactome_stage_I$Gene2))
 	# Calculate all pairwise combinations of genes, without redunctancy
@@ -69,9 +67,6 @@ for (normalization_scheme in normalization_schemes)
 	stage_I_genes_factor  <-factor(c(interactome_stage_I$Gene1,interactome_stage_I$Gene2),level=unique(c(interactome_stage_I$Gene1,interactome_stage_I$Gene2)))
 	stage_II_genes_factor <-factor(c(interactome_stage_II$Gene1,interactome_stage_II$Gene2),level=unique(c(interactome_stage_II$Gene1,interactome_stage_II$Gene2)))
 	stage_III_genes_factor<-factor(c(interactome_stage_III$Gene1,interactome_stage_III$Gene2),level=unique(c(interactome_stage_III$Gene1,interactome_stage_III$Gene2)))
-
-	print(paste(length(unique(stage_I_genes_factor)),length(unique(stage_II_genes_factor)),length(unique(stage_III_genes_factor)), sep="-"))
-
 	   
 	df_stageI_connectivity   <-unique(data.frame(Conectivity=table(stage_I_genes_factor)))
 	df_stageII_connectivity  <-unique(data.frame(Conectivity=table(stage_II_genes_factor)))
