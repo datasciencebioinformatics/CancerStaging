@@ -80,7 +80,7 @@ for (normalization_scheme in normalization_schemes)
 	list_logchange_tumor_control[[normalized_table_names]]<-normalized_statistic_table	
 
 	print(paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],sep=""))
-	cat(print(paste("\nNumber of tumor gene :", paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],"\n",sep=" "))),file=results_files,append=TRUE)
+	cat(print(paste("\nNumber of tumor gene :", paste(normalization_scheme," : ",sum(normalized_statistic_table$tumor_genes=="yes"),"",sep=" "))),file=results_files,append=TRUE)
 		
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
