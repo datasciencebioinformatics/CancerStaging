@@ -11,10 +11,10 @@ colData_normal<-merged_data_patient_info[merged_data_patient_info$tissue_type=="
 stages_str<-c("stage_I","stage_II","stage_III")                                                                                       #
                                                                                                                                       #
 # Samples of each stage stored in colData                                                                                             #
-sample_stage_I  <-colData_tumor[colData_tumor$stages=="Stage I","sample_id"]                                                          #
-sample_stage_II <-colData_tumor[colData_tumor$stages=="Stage II","sample_id"]                                                         #
-sample_stage_III<-colData_tumor[colData_tumor$stages=="Stage III","sample_id"]                                                        #
-sample_normal   <-colData_normal[,"sample_id"]                                                                                        #
+sample_stage_I  <-unique(colData_tumor[colData_tumor$stages=="Stage I","sample_id"])                                                          #
+sample_stage_II <-unique(colData_tumor[colData_tumor$stages=="Stage II","sample_id"])                                                         #
+sample_stage_III<-unique(colData_tumor[colData_tumor$stages=="Stage III","sample_id"])                                                        #
+sample_normal   <-unique(colData_normal[,"sample_id"])                                                                                        #
 #######################################################################################################################################
 df_table_comparisson=rbind(data.frame(Stage_i="sample_stage_I",Stage_ii="sample_normal"),                                             #
 data.frame(Stage_i="sample_stage_II",Stage_ii="sample_normal"),                                                                       # 
@@ -74,15 +74,19 @@ for (normalization_scheme in normalization_schemes)
 		
 		# For each genes in the tabe
 		for (gene in log2change_Stage_i$gene)
-		{		
+		{
+			# Take expression only for the gene
+			Stage_i_gene_expr<-Stage_i_samples_expr[gene,]
+			Stage_ii_gene_expr<-Stages_ii_sample_expr[gene,]
+			
 			# Filter by threshold_filters
-			Stage_i_samples_expr<-Stage_i_samples_expr[Stage_i_samples_expr > list_threshold_filters[[normalized_table_names]]]
+			Stage_i_gene_expr<-Stage_i_gene_expr[Stage_i_gene_expr[gene,] > list_threshold_filters[[normalized_table_names]]]
 		
 			# Filter by threshold_filters
-			Stages_ii_sample_expr<-Stages_ii_sample_expr[Stages_ii_sample_expr > list_threshold_filters[[normalized_table_names]]]	  
+			Stage_ii_gene_expr<-Stage_ii_gene_expr[Stages_ii_sample_expr[gene,] > list_threshold_filters[[normalized_table_names]]]	  
 					
 			# Take p-value				
-			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_samples_expr), y=as.numeric(Stages_ii_sample_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
+			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_gene_expr), y=as.numeric(Stage_ii_gene_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
 		}
 		# FRD 
 		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="fdr")
