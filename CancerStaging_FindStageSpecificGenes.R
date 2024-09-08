@@ -2,11 +2,10 @@
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 #######################################################################################################################################
-# Find stage-specific genes by padj and log2foldchange                                                                                #
-# Only tumor samples                                                                                                                  #
-colData_tumor <-merged_data_patient_info[merged_data_patient_info$tissue_type=="Tumor",]                                              #
-colData_normal<-merged_data_patient_info[merged_data_patient_info$tissue_type=="Tumor",]                                              #
-                                                                                                                                      #
+# All tumor and control samples
+colData_tumor  <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor",])
+colData_normal <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal",])
+                                                                                                                                     #
 # Vector with each stage                                                                                                              #
 stages_str<-c("stage_I","stage_II","stage_III")                                                                                       #
                                                                                                                                       #
@@ -89,7 +88,7 @@ for (normalization_scheme in normalization_schemes)
 			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_gene_expr), y=as.numeric(Stage_ii_gene_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
 		}
 		# FRD 
-		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="none")
+		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="fdr")
 		
 		# Categorize genes if log2foldchange >= threshold_
 		log2change_Stage_i[intersect(which(log2change_Stage_i$FDR<=threshold_FDR), which(log2change_Stage_i$log2change>=threshold_stage)),"Category"]<-paste("Per stage genes", sep="")
