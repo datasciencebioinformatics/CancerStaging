@@ -79,60 +79,60 @@ for (normalization_scheme in normalization_schemes)
 	  
 	# If at least one overlapping interaction
 	if(dim(df_stageI_connectivity)[1]>0)
-	{
-		# Set colnames
-		colnames(df_stageI_connectivity)<-c("Gene","Conectivity")
-
-		# Table for the calculation of entropy
-		df_entropy_calulation_I   <-data.frame(table(df_stageI_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)		
-
+	{		
 		# Rename colnames
-		colnames(df_entropy_calulation_I)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")		
-
+		colnames(df_entropy_calulation_I)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+		
+		# Calculate p(k)
+		df_entropy_calulation_I$p_k<-df_entropy_calulation_I$count/sum(df_entropy_calulation_I$count)
+		
+		# Calculate log2(p(k))
+		df_entropy_calulation_I$log2_pk<-log(df_entropy_calulation_I$p_k,2)
+		
 		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_I$p_k_mult_log2_pk<-df_entropy_calulation_I$p_k*df_entropy_calulation_I$log2_pk		
-
+		df_entropy_calulation_I$p_k_mult_log2_pk<-df_entropy_calulation_I$p_k*df_entropy_calulation_I$log2_pk
+		
 		# Caclulate entropy value
-		Entropy_stage_I_value_Carels  <-abs(sum(df_entropy_calulation_I$p_k_mult_log2_pk))				
+		Entropy_stage_I_value_Carels  <-abs(sum(df_entropy_calulation_I$p_k_mult_log2_pk))
 	}
 	# If at least one overlapping interaction
 	if(dim(df_stageII_connectivity)[1]>0)
 	{
-		# Set colnames
-		colnames(df_stageII_connectivity)<-c("Gene","Conectivity")
-
-		# Table for the calculation of entropy
-		df_entropy_calulation_II   <-data.frame(table(df_stageII_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)		
-
 		# Rename colnames
-		colnames(df_entropy_calulation_II)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")		
-
+		colnames(df_entropy_calulation_II)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+		
+		# Calculate p(k)
+		df_entropy_calulation_II$p_k<-df_entropy_calulation_II$count/sum(df_entropy_calulation_II$count)
+		
+		# Calculate log2(p(k))
+		df_entropy_calulation_II$log2_pk<-log(df_entropy_calulation_II$p_k,2)
+		
 		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_II$p_k_mult_log2_pk<-df_entropy_calulation_II$p_k*df_entropy_calulation_II$log2_pk		
-
+		df_entropy_calulation_II$p_k_mult_log2_pk<-df_entropy_calulation_II$p_k*df_entropy_calulation_II$log2_pk
+		
 		# Caclulate entropy value
-		Entropy_stage_II_value_Carels  <-abs(sum(df_entropy_calulation_II$p_k_mult_log2_pk))				
+		Entropy_stage_II_value_Carels  <-abs(sum(df_entropy_calulation_II$p_k_mult_log2_pk))
 	}	  
 	# If at least one overlapping interaction
 	if(dim(df_stageIII_connectivity)[1]>0)
 	{
-		# Set colnames
-		colnames(df_stageIII_connectivity)<-c("Gene","Conectivity")
-
-		# Table for the calculation of entropy
-		df_entropy_calulation_III   <-data.frame(table(df_stageIII_connectivity$Conectivity),p_k=0,log2_pk=0,p_k_mult_log2_pk=0)		
-
 		# Rename colnames
-		colnames(df_entropy_calulation_III)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")		
-
+		colnames(df_entropy_calulation_III)<-c("k","count","p_k","log2_pk","p_k_mult_log2_pk")
+		
+		# Calculate p(k)
+		df_entropy_calulation_III$p_k<-df_entropy_calulation_III$count/sum(df_entropy_calulation_III$count)
+		
+		# Calculate log2(p(k))
+		df_entropy_calulation_III$log2_pk<-log(df_entropy_calulation_III$p_k,2)
+		
 		# Calculate p(k)*log2(p(k))
-		df_entropy_calulation_III$p_k_mult_log2_pk<-df_entropy_calulation_III$p_k*df_entropy_calulation_III$log2_pk		
-
+		df_entropy_calulation_III$p_k_mult_log2_pk<-df_entropy_calulation_III$p_k*df_entropy_calulation_III$log2_pk
+		
 		# Caclulate entropy value
-		Entropy_stage_III_value_Carels  <-abs(sum(df_entropy_calulation_III$p_k_mult_log2_pk))				
+		Entropy_stage_III_value_Carels  <-abs(sum(df_entropy_calulation_III$p_k_mult_log2_pk))
 	}	  	  	
 ########################################################################################################################################		
-print(paste(normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels, sep="") )
-cat(print(paste("\n",normalization_scheme," : Stage I :", Entropy_stage_I_value_Carels, " : Stage II :", Entropy_stage_II_value_Carels, " : Stage III :", Entropy_stage_III_value_Carels,"\n", sep="") ),file=results_files,append=TRUE)
+print(paste(normalization_scheme," : Stage I :", round(Entropy_stage_I_value_Carels,3), " : Stage II :", round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3), sep="") )
+cat(print(paste("\n",normalization_scheme," : Stage I :",  round(Entropy_stage_I_value_Carels,3), " : Stage II :",  round(Entropy_stage_II_value_Carels,3), " : Stage III :",  round(Entropy_stage_III_value_Carels,3),"\n", sep="") ),file=results_files,append=TRUE)
 	
 }
