@@ -51,8 +51,8 @@ for (normalization_scheme in normalization_schemes)
 		Stage_ii_samples        =list_of_comparisson[[Stage_ii]]	
 		
 		# Take RPKM of genes from samples of each stage
-		Stage_i_samples_expr         <-na.omit(normalized_expression_table[DE_genes,Stage_i_samples])
-		Stages_ii_sample_expr        <-na.omit(normalized_expression_table[DE_genes,Stage_ii_samples])
+		Stages_i_samples_expr         <-na.omit(normalized_expression_table[DE_genes,Stage_i_samples])
+		Stages_ii_samples_expr        <- na.omit(normalized_expression_table[DE_genes,Stage_ii_samples])
 		
 		####################################################################################################################
 		# folchange=Expr(Stage i)/Expr(Stage ii and II)
@@ -76,20 +76,20 @@ for (normalization_scheme in normalization_schemes)
 		for (gene in log2change_Stage_i$gene)
 		{
 			# Take expression only for the gene
-			Stage_i_gene_expr<-Stage_i_samples_expr[gene,]
-			Stage_ii_gene_expr<-Stages_ii_sample_expr[gene,]
+			Stage_i_gene_expr<-Stages_i_samples_expr[gene,]
+			Stage_ii_gene_expr<-Stages_ii_samples_expr[gene,]
 			
 			# Filter by threshold_filters
-			Stage_i_gene_expr<-Stage_i_gene_expr[Stage_i_gene_expr[gene,] > list_threshold_filters[[normalized_table_names]]]
+			Stage_i_gene_expr<-Stage_i_gene_expr[Stage_i_gene_expr > list_threshold_filters[[normalized_table_names]]]
 		
 			# Filter by threshold_filters
-			Stage_ii_gene_expr<-Stage_ii_gene_expr[Stages_ii_sample_expr[gene,] > list_threshold_filters[[normalized_table_names]]]	  
+			Stage_ii_gene_expr<-Stage_ii_gene_expr[Stage_ii_gene_expr > list_threshold_filters[[normalized_table_names]]]	  
 					
 			# Take p-value				
 			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_gene_expr), y=as.numeric(Stage_ii_gene_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
 		}
 		# FRD 
-		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="fdr")
+		log2change_Stage_i$FDR<-p.adjust(log2change_Stage_i$Pvalue, method="none")
 		
 		# Categorize genes if log2foldchange >= threshold_
 		log2change_Stage_i[intersect(which(log2change_Stage_i$FDR<=threshold_FDR), which(log2change_Stage_i$log2change>=threshold_stage)),"Category"]<-paste("Per stage genes", sep="")
