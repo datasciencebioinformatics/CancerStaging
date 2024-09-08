@@ -62,7 +62,7 @@ for (normalization_scheme in normalization_schemes)
 	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
 	
 	# df_gene_id_symbol
-	normalized_statistic_table <-normalized_statistic_table[merge_interactome_gene_symbol$Gene_id,]
+	normalized_statistic_table <-normalized_statistic_table[unique(merge_interactome_gene_symbol$Gene_id),]
 	
 	# Set threshold_normalized
 	threshold_normalized <-list_threshold_filters[[normalization_scheme]]
