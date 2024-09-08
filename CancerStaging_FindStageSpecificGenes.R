@@ -1,9 +1,3 @@
-###########################################################################################################################
-# Load expression table
-loaded_ExpressionTable         <-load(paste(output_dir,"/","ExpressionData.RData",sep="")) 
-loaded_MergedDataPatientInfo   <-load(paste(output_dir,"/","MergedDataPatientInfo.RData",sep="")) 
-loaded_MergedDataPatientInfo   <-load(paste(output_dir,"/","MergedDataPatientInfo.RData",sep="")) 
-loaded_StatisticTable          <-load(paste(output_dir,"/","StatisticTable.RData",sep="")) 
 #############################################################################################################################
 # A vector with the name of the normalizaton schemes
 normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
@@ -34,7 +28,7 @@ list_stage_specific_genes<-c()
 for (normalization_scheme in normalization_schemes)
 {
 	# First, I will load the statistic table   	
-	normalized_statistic_table<-read.table(file = paste("/home/felipe/Documents/Cancer_staging/df_statistics_all_projects_",normalization_scheme,".tsv",sep="") , sep = '\t', header = TRUE,fill=TRUE)
+	normalized_statistic_table<-list_logchange_tumor_control[[normalized_table_names]]
 	
 	# Select only tumor genes
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
