@@ -7,7 +7,7 @@ for (normalization_scheme in normalization_schemes)
 {	
 	# Take the expression data
 	# First, I will load the expression table   	
-	normalized_expression_table<-normalized_expression_table_list[[normalization_scheme]]
+	normalized_expression_table<-df_reads_count_all_projects[[normalization_scheme]]
 
 	# genes_ids
 	genes_ids <- rownames(normalized_expression_table)
