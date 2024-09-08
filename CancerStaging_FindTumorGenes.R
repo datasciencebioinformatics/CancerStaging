@@ -79,6 +79,5 @@ for (normalization_scheme in normalization_schemes)
 	# Save TSV file with genes from Stage3
 	write_tsv(normalized_statistic_table, paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""))			  
 }
-save(normalized_statistic_table, file = paste(output_dir,"/","StatisticTable.RData",sep=""))
 print("\nCancerStaging_FindTumorGenes")
 
