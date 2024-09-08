@@ -12,8 +12,8 @@ for (normalization_scheme in normalization_schemes)
 	normalized_expression_table<-df_reads_count_all_projects[[normalization_scheme]]
 	
 	# normalized_expression_table
-	normalized_expression_table<-normalized_expression_table[tumor_genes,]
-	
+	normalized_expression_table<-normalized_expression_table[tumor_genes,]	
+		
 	# Select only tumor genes
 	df_reads_count_all_projects[[normalization_scheme]]<-normalized_expression_table
 		
