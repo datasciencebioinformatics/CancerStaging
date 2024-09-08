@@ -56,8 +56,8 @@ normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 for (normalization_scheme in normalization_schemes)
 {	
 	# First, I will load the statistic table   	
-	normalized_statistic_table<-read.table(file = paste(output_dir,"df_statistics_all_projects_",normalization_scheme,".tsv",sep=""), sep = '\t', header = TRUE,fill=TRUE)
-	
+	normalized_statistic_table<-list_logchange_tumor_control[[normalized_table_names]]
+		
 	# Set rownames normalized_statistic_table
 	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
 	
@@ -72,6 +72,12 @@ for (normalization_scheme in normalization_schemes)
 	
 	# Select only the tumor genes
 	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
+
+	# First, I will load the statistic table   	
+	normalized_statistic_table<-na.omit(normalized_statistic_table)
+
+	# First, I will load the statistic table   	
+	list_logchange_tumor_control[[normalized_table_names]]<-normalized_statistic_table	
 
 	print(paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],sep=""))
 	cat(print(paste("\nNumber of tumor gene :", paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],"\n",sep=" "))),file=results_files,append=FALSE)
