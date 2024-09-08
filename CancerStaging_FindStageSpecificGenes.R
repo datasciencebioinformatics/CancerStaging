@@ -40,7 +40,7 @@ for (normalization_scheme in normalization_schemes)
 	normalized_statistic_table<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes",]
 	
 	# First, I will load the expression table   	
-	normalized_expression_table<-df_reads_count_all_projects[[normalization_scheme]]
+	normalized_expression_table<-na.omit(df_reads_count_all_projects[[normalization_scheme]])
 	
 	# for each pair of stage.
 	for (comparisson_index in rownames(df_table_comparisson))
