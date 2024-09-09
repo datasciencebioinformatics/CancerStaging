@@ -3,7 +3,7 @@
 for (normalization_scheme in normalization_schemes)
 {
 	# First, I will load the statistic table   	
-	normalized_statistic_table<-list_logchange_tumor_control[[normalized_table_names]]
+	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
 	
 	# Select only tumor genes
 	tumor_genes<-normalized_statistic_table[normalized_statistic_table$tumor_genes == "yes","gene"]
