@@ -56,7 +56,7 @@ normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 for (normalization_scheme in normalization_schemes)
 {	
 	# First, I will load the statistic table   	
-	normalized_statistic_table<-list_logchange_tumor_control[[normalized_table_names]]
+	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
 		
 	# Set rownames normalized_statistic_table
 	rownames(normalized_statistic_table)<-normalized_statistic_table$gene
@@ -77,9 +77,8 @@ for (normalization_scheme in normalization_schemes)
 	normalized_statistic_table<-na.omit(normalized_statistic_table)
 
 	# First, I will load the statistic table   	
-	list_logchange_tumor_control[[normalized_table_names]]<-normalized_statistic_table	
+	list_logchange_tumor_control[[normalization_scheme]]<-normalized_statistic_table	
 
-	print(paste(normalization_scheme," : ",dim(normalized_statistic_table)[1],sep=""))
 	cat(print(paste("\nNumber of tumor gene :", paste(normalization_scheme," : ",sum(normalized_statistic_table$tumor_genes=="yes"),"",sep=" "))),file=results_files,append=TRUE)
 		
 	# Save TSV file with genes from Stage3
