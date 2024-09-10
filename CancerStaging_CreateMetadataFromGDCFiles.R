@@ -53,18 +53,6 @@ primary_tumor<-merged_data_patient_info[merged_data_patient_info[,c("sample_id",
 solid_tissue<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Solid Tissue Normal",]
 merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
 
-# length(unique(primary_tumor$sample_id))
-# length(unique(solid_tissue$sample_id))
-
-# Population demographic
-# table(unique(merged_data_patient_info[,c("sample_id","primary_diagnosis")])$primary_diagnosis)
-#merged_data_patient_info<-merged_data_patient_info[merged_data_patient_info$primary_diagnosis=="Squamous cell carcinoma, NOS",]
-
-# Filter tumor and normal samples
-primary_tumor<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Primary Tumor",]
-solid_tissue<-merged_data_patient_info[merged_data_patient_info[,c("sample_id","Sample.Type")][,2]=="Solid Tissue Normal",]
-merged_data_patient_info<-rbind(primary_tumor,solid_tissue)
-
 # table(unique(merged_data_patient_info[,c("sample_id","ethnicity")])$ethnicity)
 # table(unique(merged_data_patient_info[,c("sample_id","gender")])$gender)
 # table(unique(merged_data_patient_info[,c("sample_id","vital_status")])$vital_status)
