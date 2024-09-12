@@ -1,5 +1,5 @@
 # Set name of the TCGA project
-TCGA_project <- "ALL"
+TCGA_project <- "TCGA-LUSCH"
 
 # Execute TCGA coomand
 t1 <- try(system(paste("mkdir /home/felipe/Documents/Cancer_staging/outputfolder/"), intern = TRUE))
