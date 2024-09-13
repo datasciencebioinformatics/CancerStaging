@@ -104,40 +104,12 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
-df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
-
-df_reads_count_all_projects_tmp <- t( df_reads_count_all_projects_rpkm / colSums(df_reads_count_all_projects_rpkm) ) * 1e6
-
-df_reads_count_all_projects_tpm <- apply(t(df_reads_count_all_projects_rpkm), 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame()
-
+df_reads_count_all_projects_tpm_calculated <- t(apply(t(df_reads_count_all_projects_rpkm), 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame())
 ##########################################################################################################################
-counts <- trunc(matrix(runif(6000, min=0, max=2000), ncol=6))
-geneLength <- rowMeans(counts)
 
-                                         geneLength_ENTREZID_ENSEMBL
-
-# TMM normalized Log2FPKM
-df_reads_count_all_projects_fpkm <- convertCounts(data.frame(df_reads_count_all_projects_raw),
-                        unit       = "fpkm",
-                        geneLength = geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count_all_projects_raw),"geneLength"],
-                        log        = TRUE,
-                        normalize  = "tmm")
-
-df_reads_count_all_projects_fpkm <- convertCounts(df_reads_count_all_projects_raw,
-                        unit       = "fpkm",
-                        geneLength = geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count_all_projects_raw),"geneLength"],
-                        log        = TRUE,
-                        normalize  = "tmm")
-                                         
-
-# Non-normalized CPM (not logged)
-RawCPM <- convertCounts(counts,
-                      unit      = "CPM",
-                      log       = FALSE,
-                      normalize = "none")
-##########################################################################################################################
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
+colnames(df_reads_count_all_projects_tpm_calculated)<-colnames(df_reads_count_all_projects_tpm_calculated)                                                      
 
 #write.table(df_reads_count_all_projects_tmm,              paste(output_dir,"df_reads_count_all_projects_tmm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 #write.table(data.frame(df_reads_count_all_projects_rpkm), paste(output_dir,"df_reads_count_all_projects_rpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
@@ -147,16 +119,17 @@ tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
 tp53_fpkm<-t(data.frame(df_reads_count_all_projects_fpkm["ENSG00000141510",]))
 tp53_tpm<-t(data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",]))
 tp53_rpkm<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))
+tp53_tpm_calc<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))                                                      
 
 # df_normalization
-df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"],tp53_rpkm[,"ENSG00000141510"])
+df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"],tp53_rpkm[,"ENSG00000141510"],tp53_tpm_calc[,"ENSG00000141510"])
 ####################################################################################
-colnames(df_normalization)<-c("raw","tmm","fpkm","tpm","rpkm")
+colnames(df_normalization)<-c("raw","tmm","fpkm","tpm","rpkm","tpm_calc")
 ####################################################################################
 # FindClusters_resolution
 png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 24, height = 24, res=600, units = "cm")
   ggpairs(df_normalization)
 dev.off()
 ####################################################################################
-df_reads_count_all_projects<-list(raw=df_reads_count_all_projects_raw,tmm=df_reads_count_all_projects_tmm,fpkm=df_reads_count_all_projects_fpkm,tpm=df_reads_count_all_projects_tpm,rpkm=df_reads_count_all_projects_rpkm)
+df_reads_count_all_projects<-list(raw=df_reads_count_all_projects_raw,tmm=df_reads_count_all_projects_tmm,fpkm=df_reads_count_all_projects_fpkm,tpm=df_reads_count_all_projects_tpm,rpkm=df_reads_count_all_projects_rpkm, tpm_calc=df_reads_count_all_projects_tpm_calculated)
 print("\nCancerStaging_ExpressionDataNormalization")
