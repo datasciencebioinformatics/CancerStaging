@@ -105,6 +105,36 @@ unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = 
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
 df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
+
+df_reads_count_all_projects_tmp <- t( df_reads_count_all_projects_rpkm / colSums(df_reads_count_all_projects_rpkm) ) * 1e6
+
+df_reads_count_all_projects_tpm <- apply(t(df_reads_count_all_projects_rpkm), 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame()
+
+##########################################################################################################################
+counts <- trunc(matrix(runif(6000, min=0, max=2000), ncol=6))
+geneLength <- rowMeans(counts)
+
+                                         geneLength_ENTREZID_ENSEMBL
+
+# TMM normalized Log2FPKM
+df_reads_count_all_projects_fpkm <- convertCounts(data.frame(df_reads_count_all_projects_raw),
+                        unit       = "fpkm",
+                        geneLength = geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count_all_projects_raw),"geneLength"],
+                        log        = TRUE,
+                        normalize  = "tmm")
+
+df_reads_count_all_projects_fpkm <- convertCounts(df_reads_count_all_projects_raw,
+                        unit       = "fpkm",
+                        geneLength = geneLength_ENTREZID_ENSEMBL[rownames(df_reads_count_all_projects_raw),"geneLength"],
+                        log        = TRUE,
+                        normalize  = "tmm")
+                                         
+
+# Non-normalized CPM (not logged)
+RawCPM <- convertCounts(counts,
+                      unit      = "CPM",
+                      log       = FALSE,
+                      normalize = "none")
 ##########################################################################################################################
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
