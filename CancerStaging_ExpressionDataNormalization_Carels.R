@@ -111,22 +111,22 @@ df_reads_count_all_projects_rpk<-df_reads_count_all_projects_raw*0
 # First, I calculate the RPK of each gene, per each patient
 # The RPK is defined as the raw read counts divided by the gene legnth
 # for each patient
-for (patient_i in colnames(df_reads_count_all_projects_raw))
+for (patient_j in colnames(df_reads_count_all_projects_raw))
 {
     # For each gene
     for (gene_i in rownames(df_reads_count_all_projects_raw))
     {
         # Take the raw read counts
-        raw_read_counts_gene_i_patient_i<-df_reads_count_all_projects_raw[gene_i,patient_i]
+        raw_read_counts_gene_i_patient_j<-df_reads_count_all_projects_raw[gene_i,patient_j]
 
         # Take the gene length for that gene
         geneLength_gene_i<-geneLength_ENTREZID_ENSEMBL[gene,"geneLength"]
 
         # The RPK is defined as the raw read counts divided by the gene legnth
-        RPK<-raw_read_counts_gene_i_patient_i/geneLength_gene_i
+        RPK<-raw_read_counts_gene_i_patient_j/geneLength_gene_i
 
         # Assert RPK value on the table
-        df_reads_count_all_projects_rpk[gene_i,patient_i]<-RPK
+        df_reads_count_all_projects_rpk[gene_i,patient_j]<-RPK
     }    
 }
 ##########################################################################################################################
