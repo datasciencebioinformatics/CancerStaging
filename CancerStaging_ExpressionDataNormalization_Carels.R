@@ -120,39 +120,36 @@ for (patient_i in colnames(df_reads_count_all_projects_raw))
         raw_read_counts_gene_i_patient_i<-df_reads_count_all_projects_raw[gene_i,patient_i]
 
         # Take the gene length for that gene
-        geneLength_gene<-geneLength_ENTREZID_ENSEMBL[gene,"geneLength"]
+        geneLength_gene_i<-geneLength_ENTREZID_ENSEMBL[gene,"geneLength"]
 
         # The RPK is defined as the raw read counts divided by the gene legnth
-        RPK<-raw_read_counts_gene_i_patient_i/geneLength_gene
+        RPK<-raw_read_counts_gene_i_patient_i/geneLength_gene_i
 
         # Assert RPK value on the table
         df_reads_count_all_projects_rpk[gene_i,patient_i]<-RPK
     }    
 }
 ##########################################################################################################################
-# Start table for the TPK values
+# Start table for the TMM values
 df_reads_count_all_projects_tpm<-df_reads_count_all_projects_rpk*0
 
-# TPM = RPK(gene i, paciente j) dividido pela somatória RPK (gene i, todos pacientes)
-# First, I calculate the RPK of each gene, per each patient
-# The RPK is defined as the raw read counts divided by the gene legnth
-# for each patient
-for (patient_i in colnames(df_reads_count_all_projects_rpk))
+# Para cada paciente_j: rpk(gene_i, paciente_j)/ somatória do rpk (todos os genes, paciente_j).
+for (patient_j in colnames(df_reads_count_all_projects_rpk))
 {
     # For each gene
     for (gene_i in rownames(df_reads_count_all_projects_rpk))
     {
         # Take the rpk counts
-        rpk_gene_i_patient_i<-df_reads_count_all_projects_rpk[gene_i,patient_i]
+        rpk_gene_i_patient_j<-df_reads_count_all_projects_rpk[gene_i,patient_j]
 
-        # Take the sum of the RPKM for that gene
-        rpk_gene_i<-sum(df_reads_count_all_projects_rpk[gene_i,])
+        # Take the sum of the RPKM for that patient_i
+        rpk_patient_j<-sum(df_reads_count_all_projects_rpk[,patient_i])
 
-        # TPM = RPK(gene i, paciente j) dividido pela somatória RPK (gene i, todos pacientes)
-        TPM<-rpk_gene_i_patient_i/rpk_gene_i
+        # Para cada paciente_j: rpk(gene_i, paciente_j)/ somatória do rpk (todos os genes, paciente_j).
+        TPM<-rpk_gene_i_patient_j/rpk_patient_j
 
         # Assert RPK value on the table
-        df_reads_count_all_projects_tpm[gene_i,patient_i]<-RPK
+        df_reads_count_all_projects_tpm[gene_i,patient_j]<-RPK
     }    
 }
 ##########################################################################################################################
