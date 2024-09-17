@@ -51,10 +51,9 @@ id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTREZID, fromType = "EN
 geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSEMBL,by="ENTREZID")
 ####################################################################################################################
 geneLength_ENTREZID_ENSEMBL<-merge(cds_data,geneLength_ENTREZID_ENSEMBL,by="UNIPROT")
+colnames(geneLength_ENTREZID_ENSEMBL)[2]<-"geneLength"
 geneLength_ENTREZID_ENSEMBL<-geneLength_ENTREZID_ENSEMBL[,c("ENTREZID","geneLength","SYMBOL","ENSEMBL")]
 ####################################################################################################################
-
-
 # Substrintg of dataset
 df_reads_count_all_projects_raw$IDS<-substring(rownames(df_reads_count_all_projects_raw),1,last=15)
 df_reads_count_all_projects_fpkm$IDS<-substring(rownames(df_reads_count_all_projects_fpkm),1,last=15)
@@ -104,7 +103,9 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
-df_reads_count_all_projects_tpm_calculated <- t(apply(t(df_reads_count_all_projects_rpkm), 2, function(x) x / sum(as.numeric(x)) * 10^6) %>% as.data.frame())
+df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
+#############################################################################################################################
+df_reads_count_all_projects_tpm_calculated <- r_tpm(df_reads_count_all_projects_raw[geneLength_ENTREZID_ENSEMBL$ENSEMBL,], geneLength_ENTREZID_ENSEMBL$geneLength)
 ##########################################################################################################################
 
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
