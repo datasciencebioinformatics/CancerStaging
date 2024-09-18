@@ -1,6 +1,3 @@
-###########################################################################################################################
-# A vector with the name of the normalizaton schemes
-normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm")
 #######################################################################################################################################
 # All tumor and control samples
 colData_tumor  <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor",])
@@ -24,7 +21,7 @@ list_of_comparisson=list(sample_stage_I=sample_stage_I,sample_stage_II=sample_st
 list_stage_specific_genes<-c()
 ####################################################################################################################
 # for each  normalization scheme
-for (normalization_scheme in normalization_schemes)
+for (normalization_scheme in names(df_reads_count_all_projects))
 {
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
