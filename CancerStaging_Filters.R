@@ -1,6 +1,6 @@
 ####################################################################################################################
 # for each  normalization scheme
-for (normalization_scheme in normalization_schemes)
+for (normalization_scheme in names(df_reads_count_all_projects))
 {
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
