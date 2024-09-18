@@ -151,5 +151,3 @@ write_tsv(merged_data_patient_info, "/home/felipe/Documents/Cancer_staging/merge
 #write.table(df_reads_count_all_projects_fpkm, paste(output_dir,"df_reads_count_all_projects_fpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 #write.table(df_reads_count_all_projects_tpm,  paste(output_dir,"df_reads_count_all_projects_tpm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 ###########################################################################################################################
-
-
