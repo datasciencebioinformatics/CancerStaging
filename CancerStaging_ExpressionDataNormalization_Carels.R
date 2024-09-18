@@ -106,7 +106,7 @@ df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
 #############################################################################################################################
 # Start table for the TMM values
-df_reads_count_all_projects_tpm_calculated <- apply(df_reads_count_all_projects_raw, 2, function(x) tpm(x, geneLength_ENTREZID_ENSEMBL$geneLength))
+df_reads_count_all_projects_tpm_calculated <- apply(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], 2, function(x) tpm(x, geneLength_ENTREZID_ENSEMBL$geneLength))
 ##########################################################################################################################
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
