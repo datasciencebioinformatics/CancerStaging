@@ -105,77 +105,45 @@ df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
 df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
 #############################################################################################################################
-# Start table for the TPK values
-df_reads_count_all_projects_rpk<-df_reads_count_all_projects_raw*0
-
-# First, I calculate the RPK of each gene, per each patient
-# The RPK is defined as the raw read counts divided by the gene legnth
-# for each patient
-for (patient_j in colnames(df_reads_count_all_projects_raw))
-{
-    # For each gene
-    for (gene_i in rownames(df_reads_count_all_projects_raw))
-    {
-        # Take the raw read counts
-        raw_read_counts_gene_i_patient_j<-df_reads_count_all_projects_raw[gene_i,patient_j]
-
-        # Take the gene length for that gene
-        geneLength_gene_i<-geneLength_ENTREZID_ENSEMBL[gene,"geneLength"]
-
-        # The RPK is defined as the raw read counts divided by the gene legnth
-        RPK<-raw_read_counts_gene_i_patient_j/geneLength_gene_i
-
-        # Assert RPK value on the table
-        df_reads_count_all_projects_rpk[gene_i,patient_j]<-RPK
-    }    
-}
-##########################################################################################################################
 # Start table for the TMM values
-df_reads_count_all_projects_tpm<-df_reads_count_all_projects_rpk*0
-
-# Para cada paciente_j: rpk(gene_i, paciente_j)/ somatória do rpk (todos os genes, paciente_j).
-for (patient_j in colnames(df_reads_count_all_projects_rpk))
-{
-    # For each gene
-    for (gene_i in rownames(df_reads_count_all_projects_rpk))
-    {
-        # Take the rpk counts
-        rpk_gene_i_patient_j<-df_reads_count_all_projects_rpk[gene_i,patient_j]
-
-        # Take the sum of the RPKM for that patient_i
-        rpk_patient_j<-sum(df_reads_count_all_projects_rpk[,patient_i])
-
-        # Para cada paciente_j: rpk(gene_i, paciente_j)/ somatória do rpk (todos os genes, paciente_j).
-        TPM<-rpk_gene_i_patient_j/rpk_patient_j
-
-        # Assert RPK value on the table
-        df_reads_count_all_projects_tpm[gene_i,patient_j]<-RPK
-    }    
-}
+df_reads_count_all_projects_tpm_calculated <- apply(df_reads_count_all_projects_raw, 2, function(x) tpm(x, geneLength_ENTREZID_ENSEMBL$geneLength))
 ##########################################################################################################################
-
 colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
 colnames(df_reads_count_all_projects_tpm_calculated)<-colnames(df_reads_count_all_projects_tpm_calculated)                                                      
 
+colnames(df_reads_count_all_projects_tmm)<-colnames(df_reads_count_all_projects_raw)
+colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)
+colnames(df_reads_count_all_projects_tpm_calculated)<-colnames(df_reads_count_all_projects_tpm_calculated)                                                      
+colnames(df_reads_count_all_projects_tpm)<-colnames(df_reads_count_all_projects_raw)                                                      
+colnames(df_reads_count_all_projects_rpkm)<-colnames(df_reads_count_all_projects_raw)                                                      
+##########################################################################################################################
+rownames(df_reads_count_all_projects_tmm)<-rownames(df_reads_count_all_projects_raw)
+rownames(df_reads_count_all_projects_rpkm)<-rownames(df_reads_count_all_projects_raw)
+rownames(df_reads_count_all_projects_tpm_calculated)<-rownames(df_reads_count_all_projects_tpm_calculated)                                                      
+rownames(df_reads_count_all_projects_tpm)<-rownames(df_reads_count_all_projects_raw)                                                      
+rownames(df_reads_count_all_projects_rpkm)<-rownames(df_reads_count_all_projects_raw)              
+##########################################################################################################################
 #write.table(df_reads_count_all_projects_tmm,              paste(output_dir,"df_reads_count_all_projects_tmm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 #write.table(data.frame(df_reads_count_all_projects_rpkm), paste(output_dir,"df_reads_count_all_projects_rpkm.tsv",sep="/"), na = "NA", append = TRUE, col.names = TRUE, row.names = TRUE, sep = "\t", quote = TRUE)
 ##########################################################################################################################
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
 tp53_fpkm<-t(data.frame(df_reads_count_all_projects_fpkm["ENSG00000141510",]))
-tp53_tpm<-t(data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",]))
+tp53_tpm<-data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",])
 tp53_rpkm<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))
-tp53_tpm_calc<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))                                                      
+tp53_tpm_calc<-data.frame(df_reads_count_all_projects_tpm_calculated["ENSG00000141510",])
 
-# df_normalization
+colnames(tp53_tpm)<-colnames(tp53_raw)
+colnames(tp53_tpm_calc)<-colnames(tp53_raw)
+
 df_normalization<-data.frame(raw=tp53_raw[,"ENSG00000141510"],tp53_tmm[,"ENSG00000141510"],tp53_fpkm[,"ENSG00000141510"],tp53_tpm[,"ENSG00000141510"],tp53_rpkm[,"ENSG00000141510"],tp53_tpm_calc[,"ENSG00000141510"])
-####################################################################################
+###################################################################################
 colnames(df_normalization)<-c("raw","tmm","fpkm","tpm","rpkm","tpm_calc")
 ####################################################################################
 # FindClusters_resolution
 png(filename=paste(output_dir,"df_normalization.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-  ggpairs(df_normalization)
+  ggpairs(df_normalization,sgnf=3)
 dev.off()
 ####################################################################################
 df_reads_count_all_projects<-list(raw=df_reads_count_all_projects_raw,tmm=df_reads_count_all_projects_tmm,fpkm=df_reads_count_all_projects_fpkm,tpm=df_reads_count_all_projects_tpm,rpkm=df_reads_count_all_projects_rpkm, tpm_calc=df_reads_count_all_projects_tpm_calculated)
