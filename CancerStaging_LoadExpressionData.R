@@ -25,6 +25,12 @@ colnames(unstranded_tpm_data)<-colnames_data[,1]
 rownames(unstranded_fpkm_data)<-rownames_data[,1]
 colnames(unstranded_fpkm_data)<-colnames_data[,1]
 #####################################################################################################################
+# Remove genes whose counts are zero in at least one patient
+unstranded_raw_data<-unstranded_raw_data[rowSums(unstranded_raw_data[])>0,]
+
+# Genes whose counts are zero in one patient
+nonzero_genes<-rownames(unstranded_raw_data)
+#####################################################################################################################
 # A list to store the datasets
 reads_count_per_project_raw  <-list()
 reads_count_per_project_tpm  <-list()
@@ -37,12 +43,12 @@ for (project in rownames(table_cases_per_stage))
     sample_ids <-merged_data_patient_info[merged_data_patient_info$project_id==project,"sample_id"]  
 
     # Set project data
-    project_data_raw<-unstranded_raw_data[,which(colnames(unstranded_raw_data) %in% sample_ids)]
-    project_data_tpm<-unstranded_tpm_data[,which(colnames(unstranded_tpm_data) %in% sample_ids)]
-    project_data_fpkm<-unstranded_fpkm_data[,which(colnames(unstranded_fpkm_data) %in% sample_ids)]
+    project_data_raw<-unstranded_raw_data[nonzero_genes,which(colnames(unstranded_raw_data) %in% sample_ids)]
+    project_data_tpm<-unstranded_tpm_data[nonzero_genes,which(colnames(unstranded_tpm_data) %in% sample_ids)]
+    project_data_fpkm<-unstranded_fpkm_data[nonzero_genes,which(colnames(unstranded_fpkm_data) %in% sample_ids)]
 
     # Store dataset
-    reads_count_per_project_raw[[project]]<-project_data_raw    
+    reads_count_per_project_raw[[project]]<-project_data_raw
     reads_count_per_project_tpm[[project]]<-project_data_tpm
     reads_count_per_project_fpkm[[project]]<-project_data_fpkm
 }
