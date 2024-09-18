@@ -103,7 +103,7 @@ unstranded_dgelist              <- DGEList(counts=df_reads_count_all_projects_ra
 unstranded_dgelist              <- calcNormFactors(unstranded_dgelist, method = c("TMM"))
 df_reads_count_all_projects_tmm <- data.frame(cpm(unstranded_dgelist))
 #############################################################################################################################
-df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$c)) #
+df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),], gene.length = geneLength_ENTREZID_ENSEMBL$geneLength)) #
 #############################################################################################################################
 # Start table for the TPK values
 df_reads_count_all_projects_rpk<-df_reads_count_all_projects_raw*0
