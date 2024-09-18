@@ -110,7 +110,7 @@ df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_proj
 RPK <- df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),] / geneLength_ENTREZID_ENSEMBL$geneLength
 
 # Replace infinite by NA
-# Infinite or can happen if gene length of read counts are zero
+# Infinite or NA value can happen if "gene length" or "read counts" are zero
 RPK[sapply(RPK, is.infinite)] <- NA
 
 # Infinite and NA values are removed to compute the sum of RPK values over the genessssss
@@ -138,7 +138,7 @@ rownames(df_reads_count_all_projects_rpkm)<-rownames(df_reads_count_all_projects
 tp53_raw<-t(data.frame(df_reads_count_all_projects_raw["ENSG00000141510",]))
 tp53_tmm<-t(data.frame(df_reads_count_all_projects_tmm["ENSG00000141510",]))
 tp53_fpkm<-t(data.frame(df_reads_count_all_projects_fpkm["ENSG00000141510",]))
-tp53_tpm<-data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",])
+tp53_tpm<-t(data.frame(df_reads_count_all_projects_tpm["ENSG00000141510",]))
 tp53_rpkm<-t(data.frame(df_reads_count_all_projects_rpkm["ENSG00000141510",]))
 tp53_tpm_calc<-data.frame(df_reads_count_all_projects_tpm_calculated["ENSG00000141510",])
 
