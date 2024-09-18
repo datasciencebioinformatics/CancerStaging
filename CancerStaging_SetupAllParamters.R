@@ -1,3 +1,13 @@
+####################################################################################################
+# Function to calculate the tmp
+# A dataframe with the read count per gene for the patient_j	
+# A vector with gene length in the same order of read_counts_per_patient_j
+tpm <- function(counts, lengths) 
+{
+	rate <- counts / lengths
+	rate / sum(rate) * 1e6  
+}
+####################################################################################################
 # Set name of the TCGA project
 TCGA_project <- "TCGA-LUSC"
 
