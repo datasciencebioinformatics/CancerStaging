@@ -36,9 +36,6 @@ for (gene in df_gene_id_symbol$gene_id)
 # Merge Table2_interactoma and df_gene_id_symbol
 merge_interactome_gene_symbol<-merge(x=Table2_interactoma, y=df_gene_id_symbol, by = "gene_symbol")
 #####################################################################################################################
-# A vector with the name of the normalizaton schemes
-normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm","tpm_calc")
-#############################################################################################################################
 # Find tumor genes by padj and log2foldchange
 # In this table, there are the statistics for each of the normalization scheme.
 # The statistics compare the tumor against normal samples in two way,
@@ -53,7 +50,7 @@ normalization_schemes <- c("raw","rpkm","fpkm","tpm","tmm","tpm_calc")
 # fdr_paired               : fdr tumor/normal paired samples
 #############################################################################################################################
 # for each  normalization scheme
-for (normalization_scheme in normalization_schemes)
+for (normalization_scheme in names(df_reads_count_all_projects))
 {	
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
