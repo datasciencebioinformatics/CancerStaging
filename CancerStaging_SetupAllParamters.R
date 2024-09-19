@@ -21,7 +21,7 @@ output_dir=paste("/home/felipe/Documents/Cancer_staging/outputfolder/",TCGA_proj
 t1 <- try(system(paste("mkdir",output_dir), intern = TRUE))
 
 # FDR threshold for the comparisson all tumor samples / all control samples
-threshold_FDR<-1.00 
+threshold_FDR<-0.05 
 
 # log2foldchange threshold for the comparisson all tumor samples / all control samples
 threshold_tumor<-0.0 
