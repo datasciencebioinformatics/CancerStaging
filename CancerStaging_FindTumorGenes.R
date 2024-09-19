@@ -68,7 +68,7 @@ for (normalization_scheme in names(df_reads_count_all_projects))
 	normalized_statistic_table$tumor_genes <- "no"
 	
 	# Select only the tumor genes
-	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_tumor)),"tumor_genes"]  <- "yes"
+	normalized_statistic_table[intersect(which(normalized_statistic_table$fdr_all_samples<=threshold_FDR), which(normalized_statistic_table$log2change_all_samples>=threshold_stage)),"tumor_genes"]  <- "yes"
 
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-na.omit(normalized_statistic_table)
