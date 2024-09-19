@@ -76,10 +76,10 @@ for (normalization_scheme in names(df_reads_count_all_projects))
 			Stage_ii_gene_expr<-Stages_ii_samples_expr[gene,]
 			
 			# Filter by threshold_filters
-			Stage_i_gene_expr<-Stage_i_gene_expr[Stage_i_gene_expr > list_threshold_filters[[normalized_table_names]]]
+			Stage_i_gene_expr<-Stage_i_gene_expr[Stage_i_gene_expr > list_threshold_filters[[normalization_scheme]]]
 		
 			# Filter by threshold_filters
-			Stage_ii_gene_expr<-Stage_ii_gene_expr[Stage_ii_gene_expr > list_threshold_filters[[normalized_table_names]]]	  
+			Stage_ii_gene_expr<-Stage_ii_gene_expr[Stage_ii_gene_expr > list_threshold_filters[[normalization_scheme]]]	  
 					
 			# Take p-value				
 			out <- tryCatch(log2change_Stage_i[gene,"Pvalue"]<-t.test(x=as.numeric(Stage_i_gene_expr), y=as.numeric(Stage_ii_gene_expr), paired = FALSE, alternative = "two.sided")$p.value, error = function(e) NULL)
