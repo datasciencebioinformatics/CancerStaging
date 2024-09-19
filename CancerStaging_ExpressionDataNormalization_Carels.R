@@ -109,10 +109,6 @@ df_reads_count_all_projects_rpkm<-data.frame(edgeR::rpkm(df_reads_count_all_proj
 # RPK = RAW RNA COUNTS / GENE LENGTH
 RPK <- df_reads_count_all_projects_raw[rownames(geneLength_ENTREZID_ENSEMBL),] / geneLength_ENTREZID_ENSEMBL$geneLength
 
-# Replace infinite by NA
-# Infinite or NA value can happen if "gene length" or "read counts" are zero
-#RPK[sapply(RPK, is.infinite)] <- NA
-
 # Infinite and NA values are removed to compute the sum of RPK values over the genessssss
 df_reads_count_all_projects_tpm_calculated <- t( t(RPK) * 1e6 / colSums(RPK, na.rm=TRUE) )
 ##########################################################################################################################
