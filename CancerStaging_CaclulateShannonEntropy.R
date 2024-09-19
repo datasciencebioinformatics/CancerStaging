@@ -3,7 +3,7 @@
 #######################################################################################################################################
 # Interactome data
 # for each  normalization scheme
-for (normalization_scheme in normalization_schemes)
+for (normalization_scheme in names(df_reads_count_all_projects))
 {	
 	# Take the expression data
 	# First, I will load the expression table   	
