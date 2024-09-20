@@ -41,7 +41,7 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractom
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
 
 #### 8- Load expression data CancerStaging_LoadExpressionData. Raw read counts are normalized with DESeq2 package for CPM (counts per million), TPM (transcripts per kilobase million) and RPKM/FPKM (reads/fragments per kilobase of exon per million reads/fragments mapped).
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization_Carels.R")
 
 #### 9- Create Paired Samples Tumor Normal
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
