@@ -31,6 +31,11 @@ expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 # Uniprot entries have multiple ENSEMBL. Criteria is to take UNIRPOTKB with highest conections.
 # To Do : take UNIRPOTKB with highest conections.
 
+# I want this table today by 16:00.
+# Input for the table. For each gene:
+# 1) Expression per patient. 2) T2, Connection, etc.
+
+
 # Set ensembl ids
 ENSEMBL_ids<-unique(intersect(rownames(expression_table_normalized),Interactomes_GC3_T2_merged$ENSEMBL))
                                  
