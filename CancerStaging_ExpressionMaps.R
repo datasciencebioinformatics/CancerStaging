@@ -30,31 +30,33 @@ expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 # The expression table has unique ids but it seems the Interactomes_GC3_T2_merged is duplicated (check).
 # Uniprot entries have multiple ENSEMBL. Criteria is to take UNIRPOTKB with highest conections.
 # To Do : take UNIRPOTKB with highest conections.
+# Trasnsform data.frame to a data.table
+Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
 
-# I want this table today by 16:00.
-# Input for the table. For each gene:
-# 1) Expression per patient. 2) T2, Connection, etc.
-
+# Take the occurance with greatest number of connections
+Interactomes_GC3_T2_merged<-data.frame(Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged[, .I[which.max(Conections)], by=ENSEMBL]$V1])
 
 # Set ensembl ids
 ENSEMBL_ids<-unique(intersect(rownames(expression_table_normalized),Interactomes_GC3_T2_merged$ENSEMBL))
-                                 
-# Take the used genes
-used_genes<-unique(rownames(expression_table_normalized[which(rownames(expression_table_normalized) %in% Interactomes_GC3_T2_merged$ENSEMBL),]))
 
-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% used_genes,]
+# Interactomes_GC3_T2_merged
+Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")]
 
-dim(expression_table_normalized[used_genes,])
+# "Merge expression table" and "Interactomes_GC3_T2_merged"
+merged_expression_interactomes<-cbind(expression_table_normalized[ENSEMBL_ids,],Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")])
 
+# Melt data.frame 
+melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","GC3","Conections","ENSEMBL"))
 
+# Set name of normalization schme
+colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
-
-
-[Interactomes_GC3_T2_merged$ENSEMBL,]
-
-
-
-Interactomes_GC3_T2_merged<-merge(expression_table_normalized,Interactomes_GC3_T2_data,by="SYMBOL")
-
-
-
+# Packages and data use throught 
+library(metR)
+library(ggplot2)
+# FindClusters_resolution
+png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
+  ggplot(melt_expression_interactomes, aes(T2, GC3, z = tpm)) +
+    geom_contour_fill() +
+    geom_contour(color = "black", size = 0.1)
+dev.off()
