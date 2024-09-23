@@ -1,3 +1,4 @@
+# Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
 # FPKM, TPM  - take these as robust.
 
@@ -10,6 +11,12 @@ Interactomes_GC3_T2_file <-"/home/felipe/Documents/github/CancerStaging/Interact
 
 # Read data
 Interactomes_GC3_T2_data <-read.table(file = Interactomes_GC3_T2_file, sep = '\t', header = TRUE,fill=TRUE) 
+
+# Rename second collumn
+colnames(Interactomes_GC3_T2_data)[2]<-"SYMBOL"
+
+# Merge Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL
+Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T2_data,by="SYMBOL")
 
 # Accross cancer types.
 # The hypohtoses is to put the clusters ordered by entropy in the 3d maps                   .
