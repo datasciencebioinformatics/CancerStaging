@@ -51,9 +51,6 @@ melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","
 # Set name of normalization schme
 colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
-# Packages and data use throught 
-library(metR)
-library(ggplot2)
 # FindClusters_resolution
 png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
   ggplot(melt_expression_interactomes, aes(T2, GC3, z = tpm)) +
