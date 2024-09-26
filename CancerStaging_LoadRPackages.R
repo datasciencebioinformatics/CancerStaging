@@ -13,7 +13,6 @@ expand.grid.unique <- function(x, y, include.equals=FALSE)
 }
 
 # Packages and data use throught 
-library(metR)
 library(ggplot2)
 library("readr")
 library(AnnotationHub)
@@ -29,7 +28,7 @@ library("clusterProfiler")
 library("org.Hs.eg.db")
 library("ggplot2")
 
-
+#library(metR)
 #library("ggpairs")
 #library(AnnotationHub)
 #library("biomaRt")
