@@ -40,7 +40,7 @@ id_conversion_ENTREZID_ENSEMBL <-bitr(store_gene_length$ENTREZID, fromType = "EN
 geneLength_ENTREZID_ENSEMBL<-merge(store_gene_length,id_conversion_ENTREZID_ENSEMBL,by="ENTREZID")
 ####################################################################################################################
 # Path to CDS files
-cds_file <- "/home/felipe/Documents/Cancer_staging/CDS_pb.txt"                                                  
+cds_file <- "/home/felipe/Documents/github/CancerStaging/CDS_pb.txt"                                                  
 
 # Load data
 cds_data <-read.table(file = cds_file, sep = ' ', header = TRUE,fill=TRUE)    
