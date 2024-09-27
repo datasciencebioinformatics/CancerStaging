@@ -48,4 +48,3 @@ cat(paste("threshold_filters fpkm : ", list_threshold_filters[["fpkm"]], sep="")
 cat(paste("threshold_filters tmm : ", list_threshold_filters[["tmm"]], sep=""),file=results_files,sep="\n", append=TRUE)
 cat(paste("threshold_filters tpm : ", list_threshold_filters[["tpm"]], sep=""),file=results_files,sep="\n", append=TRUE)
 ####################################################################################################
-
