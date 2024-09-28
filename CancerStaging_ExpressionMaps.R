@@ -53,6 +53,5 @@ colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
 # FindClusters_resolution
 png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-  plot_ly(x=melt_expression_interactomes$T2, y=melt_expression_interactomes$GC3, z=melt_expression_interactomes$tpm, type="scatter3d", mode="markers", color=temp)
-  ggplot(data,aes(x=melt_expression_interactomes$T2,y=melt_expression_interactomes$GC3,z=D3,color=melt_expression_interactomes$tpm)) + geom_point()
+  plot_ly(x=melt_expression_interactomes$T2, y=melt_expression_interactomes$GC3, z=melt_expression_interactomes$tpm, type="scatter3d", mode="markers")  
 dev.off()
