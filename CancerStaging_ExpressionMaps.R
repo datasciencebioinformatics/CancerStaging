@@ -1,3 +1,25 @@
+#######################################################################################################################
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                               #
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
+#######################################################################################################################
+# saveRDS                                                                                                             #
+saveRDS(object = df_reads_count_all_projects, file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))      #
+                                                                                                                      #
+# saveRDS                                                                                                             #
+saveRDS(object = geneLength_ENTREZID_ENSEMBL, file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))      #
+                                                                                                                      #
+# saveRDS                                                                                                             #
+saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))        #
+                                                                                                                      #
+# Restore the object                                                                                                  #
+readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))                                            #
+                                                                                                                      #
+# Restore the object                                                                                                  #
+readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                                             #
+                                                                                                                      #
+# Restore the object                                                                                                  #
+readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))                                            #
+#######################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
 # FPKM, TPM  - take these as robust.
