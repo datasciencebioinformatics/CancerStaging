@@ -67,11 +67,44 @@ Interactomes_GC3_T2_merged$AveExp<-0
 
 # Calculate the average expression for the epression of each g
 Interactomes_GC3_T2_merged[ENSEMBL_ids,"AveExp"]<-rowMeans(expression_table_normalized[ENSEMBL_ids,])
+
+# merged_expression_interactomes
+merged_expression_interactomes<-cbind(expression_table_normalized[ENSEMBL_ids,],Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")])
+
+# Melt data.frame 
+melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","GC3","Conections","ENSEMBL"))
+
+# Set colnames
+colnames(melt_expression_interactomes)[6]<-normalization_scheme
 ####################################################################################################################################################
-# I have a table with "T2",      "GC3", "Conections", "ENSEMBL" "AveExp"
+# I have two tables to be use.                                                                                                                     #
+# First , a table with with "T2", "GC3", "Conections", "ENSEMBL" "AveExp" per gene                                                                 #
+# Interactomes_GC3_T2_merged                                                                                                                       #
+# Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
+# melt_expression_interactomes                                                                                                                     #
+####################################################################################################################################################
+Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2","GC3",normalization_scheme,"Conections")]
+Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[!is.na(melt_expression_interactomes$Conections),]
+Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[!is.na(melt_expression_interactomes$T2),]
+Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[!is.na(melt_expression_interactomes$GC3),]
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_selected[Interactomes_GC3_T2_selected[,normalization_scheme]>0,]
+
 # FindClusters_resolution
-png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
-        ggplot(Interactomes_GC3_T2_merged,aes(x=T2,y=GC3,z=AveExp)) + geom_point()
+png(filename=paste(output_dir,"geom_contour_melt.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+        scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","GC3",normalization_scheme)], pch = 16)
 dev.off()
+####################################################################################################################################################
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[,c("T2","GC3","AveExp","Conections")]
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[!is.na(melt_expression_interactomes$Conections),]
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[!is.na(melt_expression_interactomes$T2),]
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[!is.na(melt_expression_interactomes$GC3),]
+Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$AveExp>0,]
 
-
+# FindClusters_resolution
+png(filename=paste(output_dir,"geom_contour_merged.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+        scatterplot3d(Interactomes_GC3_T2_merged[,c("T2","GC3","AveExp")], pch = 16)
+dev.off()
+####################################################################################################################################################
+# Plost histogram of T2, GC3 and AveExp 
+# Plost histogram of T2, GC3 and TPM
+####################################################################################################################################################
