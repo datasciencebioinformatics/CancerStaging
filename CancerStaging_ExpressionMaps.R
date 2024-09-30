@@ -4,20 +4,12 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.
 #######################################################################################################################
 # saveRDS                                                                                                             #
 saveRDS(object = df_reads_count_all_projects, file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))      #
-                                                                                                                      #
-# saveRDS                                                                                                             #
 saveRDS(object = geneLength_ENTREZID_ENSEMBL, file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))      #
-                                                                                                                      #
-# saveRDS                                                                                                             #
 saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))        #
                                                                                                                       #
 # Restore the object                                                                                                  #
 geneLength_ENTREZID_ENSEMBL<-readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))               #
-                                                                                                                      #
-# Restore the object                                                                                                  #
 Interactomes_GC3_T2_merged<-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                 #
-                                                                                                                      #
-# Restore the object                                                                                                  #
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))               #
 #######################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
@@ -33,114 +25,55 @@ normalization_scheme<-"tpm"
 # Reading the contents of TSV file using read_tsv() method
 Interactomes_GC3_T2_file <-"/home/felipe/Documents/github/CancerStaging/Interactomes_GC3_T2.csv"
 
-# Read data
+# Read the Interactomes_GC3_T2_data
+# First  collumn : UniprotKB
+# Second collumn : SYMBOL
+# Third  collumn : GC3
+# Fourth collumn : T2
+# Fifth  collumn : Conections
 Interactomes_GC3_T2_data <-read.table(file = Interactomes_GC3_T2_file, sep = '\t', header = TRUE,fill=TRUE) 
 
-# Rename second collumn
+# Set the second collum from GeneSymbol to SYMBOL
 colnames(Interactomes_GC3_T2_data)[2]<-"SYMBOL"
 
-# Merge Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL
+# Merge Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL by gene SYMBOL.
+# geneLength_ENTREZID_ENSEMBL contains the following collumn:
+# ENTREZID   entrezid identifier
+# geneLength genelenght calculated by Carels
+# SYMBOL     gene symbol
+# ENSEMBL    ENSEMBL symbol
 Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T2_data,by="SYMBOL")
 
-# Accross cancer types.
-# The hypohtoses is to put the clusters ordered by entropy in the 3d maps                   .
-# The hypotheseis is to order the clusters by entropy in the 3d map                         .
-# Amont the 2d coordinates this can have low signal, in a three map can have a stroger sinal.
+# Take also expression data from the normalization scheme set by "normalization_scheme"
 expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 
-# I need take the intersection of ids from the interactome table and expression table.
-# The expression table has unique ids but it seems the Interactomes_GC3_T2_merged is duplicated (check).
-# Uniprot entries have multiple ENSEMBL. Criteria is to take UNIRPOTKB with highest conections.
-# To Do : take UNIRPOTKB with highest conections.
-# Trasnsform data.frame to a data.table
+# Transform the Interactomes_GC3_T2_merged to as.data.table
 Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
 
-# Take the occurance with greatest number of connections
+# In the file "Interactomes_GC3_T2" each genes can have multiple entries with multiple values for the variable connections.
+# Only the occurance with greatest number of Conections will be used.
+# Interactomes_GC3_T2_merged
 Interactomes_GC3_T2_merged<-data.frame(Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged[, .I[which.max(Conections)], by=ENSEMBL]$V1])
 
 # Set ensembl ids
 ENSEMBL_ids<-unique(intersect(rownames(expression_table_normalized),Interactomes_GC3_T2_merged$ENSEMBL))
 
-# Interactomes_GC3_T2_merged
+# Selecte collumns to be extracted, Interactomes_GC3_T2_merged
+# "T2","GC3","Conections" and "ENSEMBL"
 Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")]
+####################################################################################################################################################
+# Set AveExp to zero 
+Interactomes_GC3_T2_merged$AveExp<-0
 
-# "Merge expression table" and "Interactomes_GC3_T2_merged"
-merged_expression_interactomes<-cbind(expression_table_normalized[ENSEMBL_ids,],Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")])
-
-# Melt data.frame 
-melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","GC3","Conections","ENSEMBL"))
-
-# Set name of normalization schme
-colnames(melt_expression_interactomes)[6]<-normalization_scheme
-
-# FindClusters_resolution
-png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-  plot_ly(x=melt_expression_interactomes[1:1000,"T2"], y=melt_expression_interactomes[1:1000,"GC3"], z=melt_expression_interactomes[1:1000,"tpm"], type="scatter3d", mode="markers")
-dev.off()
-
-####################################################################################################################3
-# Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
-# Consitency - check filters meticulously.
-# FPKM, TPM  - take these as robust.
-# Paramter to set the normalization_scheme
-normalization_scheme<-"tpm"
-
-# Construnction of 3d coordinates.
-# X=T2           : Thymine composition in second codon position (T2)
-# Y=connectivity : interactome_data                 # Carels checked    .
-# Z=expression   : reads_count_all_projects         # Use the fpkm
-# Reading the contents of TSV file using read_tsv() method
-Interactomes_GC3_T2_file <-"/home/felipe/Documents/github/CancerStaging/Interactomes_GC3_T2.csv"
-
-# Read data
-Interactomes_GC3_T2_data <-read.table(file = Interactomes_GC3_T2_file, sep = '\t', header = TRUE,fill=TRUE) 
-
-# Rename second collumn
-colnames(Interactomes_GC3_T2_data)[2]<-"SYMBOL"
-
-# Merge Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL
-Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T2_data,by="SYMBOL")
-
-# Accross cancer types.
-# The hypohtoses is to put the clusters ordered by entropy in the 3d maps                   .
-# The hypotheseis is to order the clusters by entropy in the 3d map                         .
-# Amont the 2d coordinates this can have low signal, in a three map can have a stroger sinal.
-expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
-
-# I need take the intersection of ids from the interactome table and expression table.
-# The expression table has unique ids but it seems the Interactomes_GC3_T2_merged is duplicated (check).
-# Uniprot entries have multiple ENSEMBL. Criteria is to take UNIRPOTKB with highest conections.
-# To Do : take UNIRPOTKB with highest conections.
-# Trasnsform data.frame to a data.table
-Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
-
-# Take the occurance with greatest number of connections
-Interactomes_GC3_T2_merged<-data.frame(Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged[, .I[which.max(Conections)], by=ENSEMBL]$V1])
-
-# Set ensembl ids
-ENSEMBL_ids<-unique(intersect(rownames(expression_table_normalized),Interactomes_GC3_T2_merged$ENSEMBL))
-
-# Interactomes_GC3_T2_merged
-Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")]
-
-# Set rownames
-rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
-
-# Interactomes_GC3_T2_merged
+# Calculate the average expression for the epression of each g
 Interactomes_GC3_T2_merged[ENSEMBL_ids,"AveExp"]<-rowMeans(expression_table_normalized[ENSEMBL_ids,])
+####################################################################################################################################################
+# I have two tablem
 
-# Set name of normalization schme
-colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
 # FindClusters_resolution
-png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-  # Basic plot
-  #v <- ggplot(Interactomes_GC3_T2_merged, aes(T2, GC3, z = AveExp)) + geom_contour(bins = 5)
-  #v + geom_contour()
-  # Basic plot
-  v <- ggplot(Interactomes_GC3_T2_merged,aes(x=T2,y=GC3,z=AveExp)) + geom_point()
-  v + geom_contour()
+png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+        ggplot(Interactomes_GC3_T2_merged, aes(T2, GC3, z = AveExp)) + geom_contour(bins = 5)
 dev.off()
-
 
 
