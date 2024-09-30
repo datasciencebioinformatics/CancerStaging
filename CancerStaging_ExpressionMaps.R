@@ -68,12 +68,10 @@ Interactomes_GC3_T2_merged$AveExp<-0
 # Calculate the average expression for the epression of each g
 Interactomes_GC3_T2_merged[ENSEMBL_ids,"AveExp"]<-rowMeans(expression_table_normalized[ENSEMBL_ids,])
 ####################################################################################################################################################
-# I have two tablem
-
-
+# I have a table with "T2",      "GC3", "Conections", "ENSEMBL" "AveExp"
 # FindClusters_resolution
 png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
-        ggplot(Interactomes_GC3_T2_merged, aes(T2, GC3, z = AveExp)) + geom_contour(bins = 5)
+        ggplot(Interactomes_GC3_T2_merged,aes(x=T2,y=GC3,z=AveExp)) + geom_point()
 dev.off()
 
 
