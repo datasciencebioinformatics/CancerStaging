@@ -134,8 +134,11 @@ colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
 # FindClusters_resolution
 png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-    # Basic plot
-  v <- ggplot(Interactomes_GC3_T2_merged, aes(T2, GC3, z = AveExp)) + geom_contour(bins = 5)
+  # Basic plot
+  #v <- ggplot(Interactomes_GC3_T2_merged, aes(T2, GC3, z = AveExp)) + geom_contour(bins = 5)
+  #v + geom_contour()
+  # Basic plot
+  v <- ggplot(Interactomes_GC3_T2_merged,aes(x=T2,y=GC3,z=AveExp)) + geom_point()
   v + geom_contour()
 dev.off()
 
