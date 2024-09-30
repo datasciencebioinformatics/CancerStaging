@@ -12,13 +12,13 @@ saveRDS(object = geneLength_ENTREZID_ENSEMBL, file = paste(output_dir,"geneLengt
 saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))        #
                                                                                                                       #
 # Restore the object                                                                                                  #
-readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))                                            #
+geneLength_ENTREZID_ENSEMBL<-readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))               #
                                                                                                                       #
 # Restore the object                                                                                                  #
-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                                             #
+Interactomes_GC3_T2_merged<-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                 #
                                                                                                                       #
 # Restore the object                                                                                                  #
-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))                                            #
+df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))               #
 #######################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
@@ -75,9 +75,8 @@ colnames(melt_expression_interactomes)[6]<-normalization_scheme
 
 # FindClusters_resolution
 png(filename=paste(output_dir,"geom_contour_filled.png",sep=""), width = 24, height = 24, res=600, units = "cm")
-  ggplot(tmp_expression_interactomes, aes(x=T2, y=GC3, z=tpm)) +  theme_void() #+  axes_3D() +   stat_3D()
+  plot_ly(x=melt_expression_interactomes[1:1000,"T2"], y=melt_expression_interactomes[1:1000,"GC3"], z=melt_expression_interactomes[1:1000,"tpm"], type="scatter3d", mode="markers")
 dev.off()
-
 
 ####################################################################################################################3
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
