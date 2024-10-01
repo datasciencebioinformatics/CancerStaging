@@ -29,6 +29,7 @@ library("org.Hs.eg.db")
 library("ggplot2")
 library("data.table")
 library("plotly")
+library(GGally)
 
 #library(metR)
 #library("ggpairs")
