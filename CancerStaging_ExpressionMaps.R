@@ -137,14 +137,14 @@ p1 <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=tpm)) + geom_box
 p1 <- p1 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
 
 # Basic box plot
-p2 <- ggplot(melt_expression_interactomes, aes(x=T2, y=tpm)) + geom_boxplot(notch = TRUE)
+p2 <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=T2)) + geom_boxplot(notch = TRUE)
 p2 <- p2 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
 
 # Basic box plot
-p3 <- ggplot(melt_expression_interactomes, aes(x=GC3, y=tpm)) + geom_boxplot(notch = TRUE)
+p3 <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
 p3 <- p3 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
 
 # FindClusters_resolution
-png(filename=paste(output_dir,"boxplot_GC3_T2_melt.png",sep=""), width = 10, height = 10, res=600, units = "cm")  
-        grid.arrange(p1, p2, p3, ncol = 2, nrow = 2)
+png(filename=paste(output_dir,"boxplot_GC3_T2_melt.png",sep=""), width = 30, height = 10, res=600, units = "cm")  
+        grid.arrange(p1, p2, p3, nrow = 1)
 dev.off()
