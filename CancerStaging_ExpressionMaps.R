@@ -81,7 +81,7 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 normalization_schemes<-c("tpm","fpkm","rpkm","tmm","tpm_calc")
 
 # For each normlization normalization_scheme
-for (normalization_scheme %in% normalization_schemes)
+for (normalization_scheme in normalization_schemes)
 {
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged$AveExp<-0
