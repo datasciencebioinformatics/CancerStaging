@@ -82,8 +82,6 @@ Interactomes_GC3_T2_merged$AveExp<-0
 # Calculate the average expression for the epression of each g
 Interactomes_GC3_T2_merged[ENSEMBL_ids,"AveExp"]<-rowMeans(expression_table_normalized[ENSEMBL_ids,])
 
-Interactomes_GC3_T2_merged[ENSEMBL_ids,]
-
 # merged_expression_interactomes
 merged_expression_interactomes<-cbind(expression_table_normalized[ENSEMBL_ids,],Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")])
 
