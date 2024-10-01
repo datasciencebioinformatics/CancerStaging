@@ -9,9 +9,10 @@ saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactom
                                                                                                                       #
 # Restore the object                                                                                                  #
 geneLength_ENTREZID_ENSEMBL<-readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))               #
-Interactomes_GC3_T2_merged<-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                 #
-df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))               #
-#######################################################################################################################
+Interactomes_GC3_T2_merged <-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                #
+df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))               ###########################
+merged_data_patient_info   <-read.table(file = "/home/felipe/Documents/Cancer_staging/merged_data_patient_info.tsv", sep = '\t', header = TRUE) #
+#################################################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
 # FPKM, TPM  - take these as robust.
@@ -97,9 +98,9 @@ colnames(melt_expression_interactomes)[6]<-normalization_scheme
 # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
 # melt_expression_interactomes                                                                                                                     #
 ####################################################################################################################################################
-Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2","GC3",normalization_scheme,"Conections")]
-# FindClusters_resolution
-png(filename=paste(output_dir,"geom_contour_melt.png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2","GC3",normalization_scheme,"Conections")]                #
+# FindClusters_resolution                                                                                                                          #
+png(filename=paste(output_dir,"geom_contour_melt.png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
         scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","GC3",normalization_scheme)], pch = 16)
 dev.off()
 ####################################################################################################################################################
@@ -112,19 +113,6 @@ dev.off()
 # Plost histogram of T2, GC3 and AveExp 
 # Plost histogram of T2, GC3 and TPM
 ####################################################################################################################################################
-library(gridExtra)
-# Basic histogram
-hihstogram_T2       <-   ggplot(Interactomes_GC3_T2_merged, aes(x=T2))     + geom_histogram() 
-hihstogram_GC3      <-   ggplot(Interactomes_GC3_T2_merged, aes(x=GC3))    + geom_histogram() 
-hihstogram_AveExp   <-   ggplot(Interactomes_GC3_T2_merged, aes(x=AveExp)) + geom_histogram()
-# FindClusters_resolution
-png(filename=paste(output_dir,"Interactomes_GC3_T2_histogram.png",sep=""), width = 36, height = 12, res=600, units = "cm")  
-        grid.arrange(hihstogram_T2, hihstogram_GC3,hihstogram_AveExp, nrow = 1)
-dev.off()
-####################################################################################################################################################
-# Quick display of two cabapilities of GGally, to assess the distribution and correlation of variables 
-library(GGally)
- 
 # Only Variable Labels on the outside (no axis labels)
 Interactomes_GC3_T2_mean <- ggpairs(Interactomes_GC3_T2_selected[,c("T2","GC3","AveExp")], axisLabels = "none")
 
@@ -139,4 +127,24 @@ Interactomes_GC3_T2_melt <- ggpairs(melt_expression_interactomes[,c("T2","GC3","
 # FindClusters_resolution
 png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_melt.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
         Interactomes_GC3_T2_melt
+dev.off()
+####################################################################################################################################################
+# melt_expression_interactomes
+melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
+
+# Basic box plot
+p1 <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=tpm)) + geom_boxplot(notch = TRUE)
+p1 <- p1 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+
+# Basic box plot
+p2 <- ggplot(melt_expression_interactomes, aes(x=T2, y=tpm)) + geom_boxplot(notch = TRUE)
+p2 <- p2 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+
+# Basic box plot
+p3 <- ggplot(melt_expression_interactomes, aes(x=GC3, y=tpm)) + geom_boxplot(notch = TRUE)
+p3 <- p3 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+
+# FindClusters_resolution
+png(filename=paste(output_dir,"boxplot_GC3_T2_melt.png",sep=""), width = 10, height = 10, res=600, units = "cm")  
+        grid.arrange(p1, p2, p3, ncol = 2, nrow = 2)
 dev.off()
