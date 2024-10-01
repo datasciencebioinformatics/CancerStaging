@@ -135,6 +135,8 @@ for (normalization_scheme %in% normalization_schemes)
             Interactomes_GC3_T2_melt
     dev.off()
     ###########################################################################################################################################################
+    melt_expression_interactomes
+  
     tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3","tpm","variable")] #
     ###########################################################################################################################################################
     # Basic box plot
