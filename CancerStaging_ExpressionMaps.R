@@ -135,8 +135,10 @@ for (normalization_scheme %in% normalization_schemes)
             Interactomes_GC3_T2_melt
     dev.off()
     ###########################################################################################################################################################
-    melt_expression_interactomes
-  
+    # melt_expression_interactomes
+    melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
+
+    # Select collumns
     tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3","tpm","variable")] #
     ###########################################################################################################################################################
     # Basic box plot
@@ -150,10 +152,7 @@ for (normalization_scheme %in% normalization_schemes)
     # Basic box plot
     p3_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
     p3_tp53 <- p3_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-    
-    # melt_expression_interactomes
-    melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
-    
+        
     # Basic box plot
     p1_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=tpm)) + geom_boxplot(notch = TRUE)
     p1_all <- p1_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
