@@ -30,6 +30,7 @@ library("ggplot2")
 library("data.table")
 library("plotly")
 library(GGally)
+library("scatterplot3d") # load
 
 #library(metR)
 #library("ggpairs")
