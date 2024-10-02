@@ -3,9 +3,9 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamt
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
 #######################################################################################################################
 # saveRDS                                                                                                             #
-saveRDS(object = df_reads_count_all_projects, file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))      #
-saveRDS(object = geneLength_ENTREZID_ENSEMBL, file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))      #
-saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))        #
+#saveRDS(object = df_reads_count_all_projects, file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))      #
+#saveRDS(object = geneLength_ENTREZID_ENSEMBL, file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))      #
+#saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))        #
                                                                                                                       #
 # Restore the object                                                                                                  #
 geneLength_ENTREZID_ENSEMBL<-readRDS(file = paste(output_dir,"geneLength_ENTREZID_ENSEMBL.rds",sep=""))               #
@@ -104,23 +104,23 @@ for (normalization_scheme in normalization_schemes)
     # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
     # melt_expression_interactomes                                                                                                                     #
     ####################################################################################################################################################
-    Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2","GC3",normalization_scheme,"Conections")]                #
+    Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2",normalization_scheme,"Conections")]                #
     # FindClusters_resolution          #               
     png(filename=paste(output_dir,"geom_contour_melt_",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
-            scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","GC3",normalization_scheme)], pch = 16)
+            scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections",normalization_scheme)], pch = 16)
     dev.off()
     ####################################################################################################################################################
-    Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[,c("T2","GC3","AveExp","Conections")]
+    Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[,c("T2","AveExp","Conections","GC3")]
     # FindClusters_resolution               
     png(filename=paste(output_dir,"geom_contour_merged_",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
-            scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","GC3","AveExp")], pch = 16) 
+            scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections","AveExp")], pch = 16) 
     dev.off()
     ####################################################################################################################################################
     # Plost histogram of T2, GC3 and AveExp 
     # Plost histogram of T2, GC3 and TPM
     ####################################################################################################################################################
     # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_mean <- ggpairs(Interactomes_GC3_T2_selected[,c("T2","GC3","AveExp")], axisLabels = "none")
+    Interactomes_GC3_T2_mean <- ggpairs(Interactomes_GC3_T2_selected[,c("T2","GC3","AveExp","Conections")], axisLabels = "none")
     
     # FindClusters_resolution               
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_mean_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
@@ -128,7 +128,7 @@ for (normalization_scheme in normalization_schemes)
     dev.off()
     ####################################################################################################################################################
     # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_melt <- ggpairs(melt_expression_interactomes[,c("T2","GC3",normalization_scheme)], axisLabels = "none")
+    Interactomes_GC3_T2_melt <- ggpairs(melt_expression_interactomes[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
     
     # FindClusters_resolution
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
@@ -139,7 +139,7 @@ for (normalization_scheme in normalization_schemes)
     melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
 
     # Select collumns
-    tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3",normalization_scheme,"variable")] #
+    tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3",normalization_scheme,"variable","Conections")] #
     ###########################################################################################################################################################
     # Basic box plot
     p1_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=normalization_scheme)) + geom_boxplot(notch = TRUE)
@@ -152,6 +152,10 @@ for (normalization_scheme in normalization_schemes)
     # Basic box plot
     p3_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
     p3_tp53 <- p3_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+
+    # Basic box plot
+    p4_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=Conections)) + geom_boxplot(notch = TRUE)
+    p4_tp53 <- p4_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")  
         
     # Basic box plot
     p1_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=normalization_scheme)) + geom_boxplot(notch = TRUE)
@@ -164,9 +168,13 @@ for (normalization_scheme in normalization_schemes)
     # Basic box plot
     p3_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
     p3_all <- p3_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+
+    # Basic box plot
+    p4_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=Conections)) + geom_boxplot(notch = TRUE)
+    p4_all <- p4_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")  
     
-    grid_arrange_tp53<-grid.arrange(p1_tp53, p2_tp53, p3_tp53, nrow = 1, top = "tp53 only")
-    grid_arrange_all <-grid.arrange(p1_all, p2_all, p3_all, nrow = 1, top = "all genes")
+    grid_arrange_tp53<-grid.arrange(p1_tp53, p2_tp53, p3_tp53,p4_tp53, nrow = 1, top = "tp53 only")
+    grid_arrange_all <-grid.arrange(p1_all, p2_all, p3_all, p4_all, nrow = 1, top = "all genes")
     ###########################################################################################################################################################
     # FindClusters_resolution
     png(filename=paste(output_dir,"boxplot_GC3_T2_tp53_",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
