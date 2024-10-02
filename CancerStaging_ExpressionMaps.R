@@ -104,7 +104,7 @@ for (normalization_scheme in normalization_schemes)
     # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
     # melt_expression_interactomes                                                                                                                     #
     ####################################################################################################################################################
-    Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2",normalization_scheme,"Conections")]                #
+    Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2",normalization_scheme,"Conections","GC3")]                #
     # FindClusters_resolution          #               
     png(filename=paste(output_dir,"geom_contour_melt_T2",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
             scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections",normalization_scheme)], pch = 16)
@@ -182,10 +182,11 @@ for (normalization_scheme in normalization_schemes)
     p4_all <- p4_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")  
     
     grid_arrange_tp53<-grid.arrange(p1_tp53, p2_tp53, p3_tp53,p4_tp53, nrow = 1, top = "tp53 only")
-    grid_arrange_all <-grid.arrange(p1_all, p2_all, p3_all, p4_all, nrow = 1, top = "all genes")
+    grid_arrange_all <-grid.arrange(p1_all, p2_all, p3_all, p4_all, nrow = 1, top = "all genes")    
     ###########################################################################################################################################################
     # FindClusters_resolution
     png(filename=paste(output_dir,"boxplot_GC3_T2_tp53_",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
       grid.arrange(grid_arrange_tp53, grid_arrange_all,  nrow = 2)
     dev.off()
+    ###########################################################################################################################################################
 }
