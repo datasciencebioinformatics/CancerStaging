@@ -139,7 +139,7 @@ for (normalization_scheme in normalization_schemes)
     melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
 
     # Select collumns
-    tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3","tpm","variable")] #
+    tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3",normalization_scheme,"variable")] #
     ###########################################################################################################################################################
     # Basic box plot
     p1_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=tpm)) + geom_boxplot(notch = TRUE)
