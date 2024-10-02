@@ -106,14 +106,22 @@ for (normalization_scheme in normalization_schemes)
     ####################################################################################################################################################
     Interactomes_GC3_T2_selected                       <-melt_expression_interactomes[,c("T2",normalization_scheme,"Conections")]                #
     # FindClusters_resolution          #               
-    png(filename=paste(output_dir,"geom_contour_melt_",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
+    png(filename=paste(output_dir,"geom_contour_melt_T2",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
             scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections",normalization_scheme)], pch = 16)
     dev.off()
+    # FindClusters_resolution          #               
+    png(filename=paste(output_dir,"geom_contour_melt_GC3",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
+            scatterplot3d(Interactomes_GC3_T2_selected[,c("GC3","Conections",normalization_scheme)], pch = 16)
+    dev.off()  
     ####################################################################################################################################################
     Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[,c("T2","AveExp","Conections","GC3")]
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"geom_contour_merged_",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+    png(filename=paste(output_dir,"geom_contour_merged_T2",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
             scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections","AveExp")], pch = 16) 
+    dev.off()
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"geom_contour_merged_GC3",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+            scatterplot3d(Interactomes_GC3_T2_selected[,c("GC3","Conections","AveExp")], pch = 16) 
     dev.off()
     ####################################################################################################################################################
     # Plost histogram of T2, GC3 and AveExp 
