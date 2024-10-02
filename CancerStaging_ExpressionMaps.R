@@ -124,11 +124,11 @@ for (normalization_scheme in normalization_schemes)
     
     # FindClusters_resolution               
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_mean_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            Interactomes_GC3_T2_plot
+            Interactomes_GC3_T2_mean
     dev.off()
     ####################################################################################################################################################
     # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_melt <- ggpairs(melt_expression_interactomes[,c("T2","GC3","tpm")], axisLabels = "none")
+    Interactomes_GC3_T2_melt <- ggpairs(melt_expression_interactomes[,c("T2","GC3",normalization_scheme)], axisLabels = "none")
     
     # FindClusters_resolution
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
