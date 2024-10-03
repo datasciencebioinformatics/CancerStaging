@@ -11,6 +11,11 @@ expand.grid.unique <- function(x, y, include.equals=FALSE)
     }
     do.call(rbind, lapply(seq_along(x), g))
 }
+# Calculating Z score in R
+calculate_z <- function(X, X_mean, S)
+{
+  return((X-X_mean)/S)
+}
 
 # Packages and data use throught 
 library(ggplot2)
