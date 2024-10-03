@@ -45,7 +45,7 @@ Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T
 Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
 
 # Set ensembl ids
-ENSEMBL_ids<-unique(intersect(rownames(df_reads_count_all_projects[[1]]),Interactomes_GC3_T2_merged$ENSEMBL))
+ENSEMBL_ids<-unique(Interactomes_GC3_T2_merged$ENSEMBL)
 
 # Selecte collumns to be extracted, Interactomes_GC3_T2_merged
 # "T2","GC3","Conections" and "ENSEMBL"
@@ -83,6 +83,9 @@ for (normalization_scheme in normalization_schemes)
     # Take also expression data from the normalization scheme set by "normalization_scheme"
     expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 
+    # ENSEMBL_ids
+    ENSEMBL_ids<-unique(intersect(rownames(df_reads_count_all_projects[[1]]),Interactomes_GC3_T2_merged$ENSEMBL))
+
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged$AveExp<-0
     
@@ -91,6 +94,9 @@ for (normalization_scheme in normalization_schemes)
     
     # merged_expression_interactomes
     merged_expression_interactomes<-cbind(expression_table_normalized[ENSEMBL_ids,],Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$ENSEMBL %in% ENSEMBL_ids,c("T2","GC3","Conections","ENSEMBL")])
+
+    # Rempove NA lines
+    merged_expression_interactomes<-merged_expression_interactomes[complete.cases(merged_expression_interactomes), ]    
     
     # Melt data.frame 
     melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","GC3","Conections","ENSEMBL"))
