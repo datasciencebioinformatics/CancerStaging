@@ -220,12 +220,14 @@ for (normalization_scheme in normalization_schemes)
                              sd(Interactomes_GC3_T2_selected$T2, na.rm = TRUE))   
 
     #########################################################################################################################################
-    # FindClusters_resolution
-    png(filename=paste(output_dir,"Interactomes_GC3_T2_z_Score",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
-      # Basic plot
-      ggplot(Interactomes_GC3_T2, aes(Conections, AveExp, z = T2))  + geom_point(aes(colour=T2))
-      print(v + geom_contour() )  
-    dev.off()      
-    #########################################################################################################################################
+    m1<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")   #+ theme(legend.position="none")
+    m2<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-1000",sep=""))+ geom_contour()  + xlim(0, 1000) + ylim(0, 1000)     #+ theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)        #+ theme(legend.position="none")
+    m4<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-10",sep=""))+ geom_contour()  + xlim(0, 10) + ylim(0, 10)           #+ theme(legend.position="none")
+    #########################################################################################################################################    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_mean_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,m4, nrow = 1, common.legend = TRUE)
+    dev.off()
   
 }
