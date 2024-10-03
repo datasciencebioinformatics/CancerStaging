@@ -206,8 +206,6 @@ for (normalization_scheme in normalization_schemes)
     # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
     # sd calculates the standard deviation in R.
     # weighted average
-    Interactomes_GC3_T2_selected$Conections,Interactomes_GC3_T2_selected$AveExp
-
     # Z-score for AveExp_expression
     Interactomes_GC3_T2_selected$AveExp_z_score <- calculate_z(Interactomes_GC3_T2_selected$AveExp, 
                              mean(Interactomes_GC3_T2_selected$AveExp, na.rm = TRUE),
