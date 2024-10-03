@@ -45,7 +45,7 @@ Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T
 Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
 
 # Set ensembl ids
-ENSEMBL_ids<-unique(intersect(rownames(expression_table_normalized),Interactomes_GC3_T2_merged$ENSEMBL))
+ENSEMBL_ids<-unique(intersect(rownames(df_reads_count_all_projects[[1]]),Interactomes_GC3_T2_merged$ENSEMBL))
 
 # Selecte collumns to be extracted, Interactomes_GC3_T2_merged
 # "T2","GC3","Conections" and "ENSEMBL"
