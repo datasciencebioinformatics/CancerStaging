@@ -124,6 +124,10 @@ for (normalization_scheme in normalization_schemes)
             scatterplot3d(Interactomes_GC3_T2_selected[,c("GC3","Conections","AveExp")], pch = 16) 
     dev.off()
     ####################################################################################################################################################
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"geom_contour_merged",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
+            ggplot(Interactomes_GC3_T2, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
+    dev.off()
     # Plost histogram of T2, GC3 and AveExp 
     # Plost histogram of T2, GC3 and TPM
     ####################################################################################################################################################
@@ -141,6 +145,11 @@ for (normalization_scheme in normalization_schemes)
     # FindClusters_resolution
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_melt
+    dev.off()
+    ###########################################################################################################################################################
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"geom_contour_melt",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
+            ggplot(Interactomes_GC3_T2_melt, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
     dev.off()
     ###########################################################################################################################################################
     # melt_expression_interactomes
