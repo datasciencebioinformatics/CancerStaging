@@ -189,4 +189,36 @@ for (normalization_scheme in normalization_schemes)
       grid.arrange(grid_arrange_tp53, grid_arrange_all,  nrow = 2)
     dev.off()
     ###########################################################################################################################################################
+    # Conections, T2, AvgExpression
+    # Combine AvgExpression, Conections, T2
+    # harmonic mean
+    # z-core : Composite Scores
+    # Implementing the Z score formula in R is quite straightforward. 
+    # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
+    # sd calculates the standard deviation in R.
+    # weighted average
+    Interactomes_GC3_T2_selected$Conections,Interactomes_GC3_T2_selected$AveExp
+
+    # Z-score for AveExp_expression
+    Interactomes_GC3_T2_selected$AveExp_z_score <- calculate_z(Interactomes_GC3_T2_selected$AveExp, 
+                             mean(Interactomes_GC3_T2_selected$AveExp, na.rm = TRUE),
+                             sd(Interactomes_GC3_T2_selected$AveExp, na.rm = TRUE))  
+    # Z-score for AveExp_expression
+    Interactomes_GC3_T2_selected$Conections_z_score <- calculate_z(Interactomes_GC3_T2_selected$Conections, 
+                             mean(Interactomes_GC3_T2_selected$Conections, na.rm = TRUE),
+                             sd(Interactomes_GC3_T2_selected$Conections, na.rm = TRUE)) 
+    # Z-score for AveExp_expression
+    Interactomes_GC3_T2_selected$T2_z_score <- calculate_z(Interactomes_GC3_T2_selected$T2, 
+                             mean(Interactomes_GC3_T2_selected$T2, na.rm = TRUE),
+                             sd(Interactomes_GC3_T2_selected$T2, na.rm = TRUE))   
+
+    #########################################################################################################################################
+    # FindClusters_resolution
+    png(filename=paste(output_dir,"Interactomes_GC3_T2_z_Score",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
+      # Basic plot
+      v <- ggplot(Interactomes_GC3_T2_selected, aes(AveExp_z_score, Conections_z_score, z = T2_z_score))
+      print(v + geom_contour() )  
+    dev.off()      
+    #########################################################################################################################################
+  
 }
