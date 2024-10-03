@@ -99,7 +99,7 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_interactomes<-merged_expression_interactomes[complete.cases(merged_expression_interactomes), ]    
     
     # Melt data.frame 
-    melt_expression_interactomes <- melt(merged_expression_interactomes, id=c("T2","GC3","Conections","ENSEMBL"))
+    melt_expression_interactomes <- melt(data.frame(merged_expression_interactomes), id=c("T2","GC3","Conections","ENSEMBL"))
     
     # Set colnames
     colnames(melt_expression_interactomes)[6]<-normalization_scheme
