@@ -41,9 +41,6 @@ colnames(Interactomes_GC3_T2_data)[2]<-"SYMBOL"
 # ENSEMBL    ENSEMBL symbol
 Interactomes_GC3_T2_merged<-merge(geneLength_ENTREZID_ENSEMBL,Interactomes_GC3_T2_data,by="SYMBOL")
 
-# Take also expression data from the normalization scheme set by "normalization_scheme"
-expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
-
 # Transform the Interactomes_GC3_T2_merged to as.data.table
 Interactomes_GC3_T2_merged<-as.data.table(Interactomes_GC3_T2_merged)
 
@@ -83,6 +80,9 @@ normalization_schemes<-c("tpm","fpkm","rpkm","tmm","tpm_calc")
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {
+    # Take also expression data from the normalization scheme set by "normalization_scheme"
+    expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
+
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged$AveExp<-0
     
