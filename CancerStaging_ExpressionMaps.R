@@ -225,7 +225,7 @@ for (normalization_scheme in normalization_schemes)
     # FindClusters_resolution
     png(filename=paste(output_dir,"Interactomes_GC3_T2_z_Score",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
       # Basic plot
-      v <- ggplot(Interactomes_GC3_T2_selected, aes(AveExp_z_score, Conections_z_score, z = T2_z_score))
+      ggplot(Interactomes_GC3_T2, aes(Conections, AveExp, z = T2))  + geom_point(aes(colour=T2))
       print(v + geom_contour() )  
     dev.off()      
     #########################################################################################################################################
