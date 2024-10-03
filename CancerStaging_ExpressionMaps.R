@@ -116,16 +116,16 @@ for (normalization_scheme in normalization_schemes)
     ####################################################################################################################################################
     Interactomes_GC3_T2_selected                       <-Interactomes_GC3_T2_merged[,c("T2","AveExp","Conections","GC3")]
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"geom_contour_merged_T2",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+    png(filename=paste(output_dir,"geom_scatterplot3d_merged_T2",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
             scatterplot3d(Interactomes_GC3_T2_selected[,c("T2","Conections","AveExp")], pch = 16) 
     dev.off()
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"geom_contour_merged_GC3",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
+    png(filename=paste(output_dir,"geom_scatterplot3d_merged_GC3",normalization_scheme,".png",sep=""), width = 24, height = 24, res=600, units = "cm")  
             scatterplot3d(Interactomes_GC3_T2_selected[,c("GC3","Conections","AveExp")], pch = 16) 
     dev.off()
     ####################################################################################################################################################
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"geom_contour_merged",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
+    png(filename=paste(output_dir,"geom_scatterplot3d_merged",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
             ggplot(Interactomes_GC3_T2, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
     dev.off()
     # Plost histogram of T2, GC3 and AveExp 
@@ -218,7 +218,6 @@ for (normalization_scheme in normalization_schemes)
     Interactomes_GC3_T2_selected$T2_z_score <- calculate_z(Interactomes_GC3_T2_selected$T2, 
                              mean(Interactomes_GC3_T2_selected$T2, na.rm = TRUE),
                              sd(Interactomes_GC3_T2_selected$T2, na.rm = TRUE))   
-
     #########################################################################################################################################
     m1<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")   #+ theme(legend.position="none")
     m2<-ggplot(Interactomes_GC3_T2, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-1000",sep=""))+ geom_contour()  + xlim(0, 1000) + ylim(0, 1000)     #+ theme(legend.position="none")
@@ -228,6 +227,5 @@ for (normalization_scheme in normalization_schemes)
     # FindClusters_resolution               
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_mean_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4, nrow = 1, common.legend = TRUE)
-    dev.off()
-  
+    dev.off()  
 }
