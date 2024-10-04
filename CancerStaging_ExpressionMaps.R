@@ -227,11 +227,10 @@ for (normalization_scheme in normalization_schemes)
     #########################################################################################################################################
     m1<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")   #+ theme(legend.position="none")
     m2<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-1000",sep=""))+ geom_contour()  + xlim(0, 1000) + ylim(0, 1000)     #+ theme(legend.position="none")
-    m3<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)        #+ theme(legend.position="none")
-    m4<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-10",sep=""))+ geom_contour()  + xlim(0, 10) + ylim(0, 10)           #+ theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 500) + ylim(0, 500)        #+ theme(legend.position="none")    
     #########################################################################################################################################    
     # FindClusters_resolution               
     png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_mean_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4, nrow = 1, common.legend = TRUE)
+            ggarrange(m1,m2,m3,nrow = 2, common.legend = TRUE)
     dev.off()  
 }
