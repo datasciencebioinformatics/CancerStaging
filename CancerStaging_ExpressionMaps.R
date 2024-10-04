@@ -76,6 +76,8 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","rpkm","tmm","tpm_calc")
+normalization_schemes<-c("tpm")
+
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
@@ -84,7 +86,7 @@ for (normalization_scheme in normalization_schemes)
     expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 
     # ENSEMBL_ids
-    ENSEMBL_ids<-unique(intersect(rownames(df_reads_count_all_projects[[1]]),Interactomes_GC3_T2_merged$ENSEMBL))
+    ENSEMBL_ids<-unique(intersect(rownames(df_reads_count_all_projects[[normalization_scheme]]),Interactomes_GC3_T2_merged$ENSEMBL))
 
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged$AveExp<-0
@@ -155,7 +157,7 @@ for (normalization_scheme in normalization_schemes)
     ###########################################################################################################################################################
     # FindClusters_resolution               
     png(filename=paste(output_dir,"geom_contour_melt",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
-            ggplot(Interactomes_GC3_T2_melt, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
+            ggplot(melt_expression_interactomes, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
     dev.off()
     ###########################################################################################################################################################
     # melt_expression_interactomes
