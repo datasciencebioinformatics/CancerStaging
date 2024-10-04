@@ -226,12 +226,14 @@ for (normalization_scheme in normalization_schemes)
                              mean(Interactomes_GC3_T2_selected$T2, na.rm = TRUE),
                              sd(Interactomes_GC3_T2_selected$T2, na.rm = TRUE))   
     #########################################################################################################################################
-    m1<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")   #+ theme(legend.position="none")
-    m2<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-1000",sep=""))+ geom_contour()  + xlim(0, 1000) + ylim(0, 1000)     #+ theme(legend.position="none")
-    m3<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 500) + ylim(0, 500)        #+ theme(legend.position="none")    
+    m1<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")   + theme(legend.position="none")
+    m2<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-1000",sep=""))+ geom_contour()  + xlim(0, 500) + ylim(0, 500)     + theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-250",sep=""))+ geom_contour()  + xlim(0, 250) + ylim(0, 250)        + theme(legend.position="none")        
+    m4<-ggplot(Interactomes_GC3_T2_selected, aes(AveExp, Conections, z = T2))  + geom_point(aes(colour=T2)) + geom_density_2d() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-150",sep=""))+ geom_contour()  + xlim(0, 150) + ylim(0, 150)        + theme(legend.position="none")        
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"correaltion_matrix_GC3_T2_all_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,nrow = 2, common.legend = TRUE)
+    png(filename=paste(output_dir,"countour_GC3_T2_all_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+            grid.arrange(m1,m2,m3,nrow = 2)
     dev.off()  
+    #########################################################################################################################################    
 }
