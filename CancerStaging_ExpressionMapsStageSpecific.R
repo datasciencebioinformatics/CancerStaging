@@ -126,6 +126,11 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_I <- melt(data.frame(merged_expression_table_normalized_stage_I), id=c("T2","GC3","Conections","ENSEMBL"))
     merged_expression_table_normalized_stage_II <- melt(data.frame(merged_expression_table_normalized_stage_II), id=c("T2","GC3","Conections","ENSEMBL"))
     merged_expression_table_normalized_stage_III <- melt(data.frame(merged_expression_table_normalized_stage_III), id=c("T2","GC3","Conections","ENSEMBL"))
+
+    # Change variables
+    merged_expression_table_normalized_stage_I$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_I$variable)  
+    merged_expression_table_normalized_stage_II$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_II$variable)  
+    merged_expression_table_normalized_stage_III$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_III$variable)  
     
     # Set colnames
     colnames(merged_expression_table_normalized_stage_I)[6]<-normalization_scheme
@@ -210,54 +215,10 @@ for (normalization_scheme in normalization_schemes)
             Interactomes_GC3_T2_avg_Stage_III
     dev.off()    
     ###########################################################################################################################################################
-    # melt_expression_interactomes
-    Interactomes_GC3_T2_melt_Stage_I$Sample.Type <-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_I$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
-    Interactomes_GC3_T2_melt_Stage_II$Sample.Type<-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_II$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
-    Interactomes_GC3_T2_melt_Stage_III$Sample.Type<-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_III$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
-
-    # Select collumns
-    tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3",normalization_scheme,"variable","Conections")] #
-    ###########################################################################################################################################################
-    # Basic box plot
-    p1_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=normalization_scheme)) + geom_boxplot(notch = TRUE)
-    p1_tp53 <- p1_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-    
-    # Basic box plot
-    p2_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=T2)) + geom_boxplot(notch = TRUE)
-    p2_tp53 <- p2_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-    
-    # Basic box plot
-    p3_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
-    p3_tp53 <- p3_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-
-    # Basic box plot
-    p4_tp53 <- ggplot(tp53_expresion, aes(x=Sample.Type, y=Conections)) + geom_boxplot(notch = TRUE)
-    p4_tp53 <- p4_tp53 + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")  
-        
-    # Basic box plot
-    p1_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=normalization_scheme)) + geom_boxplot(notch = TRUE)
-    p1_all <- p1_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-    
-    # Basic box plot
-    p2_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=T2)) + geom_boxplot(notch = TRUE)
-    p2_all <- p2_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-    
-    # Basic box plot
-    p3_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=GC3)) + geom_boxplot(notch = TRUE)
-    p3_all <- p3_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
-
-    # Basic box plot
-    p4_all <- ggplot(melt_expression_interactomes, aes(x=Sample.Type, y=Conections)) + geom_boxplot(notch = TRUE)
-    p4_all <- p4_all + theme_bw() + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")  
-    
-    grid_arrange_tp53<-grid.arrange(p1_tp53, p2_tp53, p3_tp53,p4_tp53, nrow = 1, top = "tp53 only")
-    grid_arrange_all <-grid.arrange(p1_all, p2_all, p3_all, p4_all, nrow = 1, top = "all genes")    
-    ###########################################################################################################################################################
-    # FindClusters_resolution
-    png(filename=paste(output_dir,"boxplot_GC3_T2_tp53_",normalization_scheme,".png",sep=""), width = 30, height = 20, res=600, units = "cm")  
-      grid.arrange(grid_arrange_tp53, grid_arrange_all,  nrow = 2)
-    dev.off()
-    ###########################################################################################################################################################
+    colnames(Interactomes_GC3_T2_selected_Stage_I)[2]<-"Expr"
+    colnames(Interactomes_GC3_T2_selected_Stage_II)[2]<-"Expr"
+    colnames(Interactomes_GC3_T2_selected_Stage_III)[2]<-"Expr"
+  
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
     # harmonic mean
@@ -267,19 +228,21 @@ for (normalization_scheme in normalization_schemes)
     # sd calculates the standard deviation in R.
     # weighted average
     # Z-score for AveExp_expression
-    Interactomes_GC3_T2_selected$AveExp_z_score <- calculate_z(Interactomes_GC3_T2_selected$AveExp, 
-                             mean(Interactomes_GC3_T2_selected$AveExp, na.rm = TRUE),
-                             sd(Interactomes_GC3_T2_selected$AveExp, na.rm = TRUE))  
-    # Z-score for AveExp_expression
-    Interactomes_GC3_T2_selected$Conections_z_score <- calculate_z(Interactomes_GC3_T2_selected$Conections, 
-                             mean(Interactomes_GC3_T2_selected$Conections, na.rm = TRUE),
-                             sd(Interactomes_GC3_T2_selected$Conections, na.rm = TRUE)) 
-    # Z-score for AveExp_expression
-    Interactomes_GC3_T2_selected$T2_z_score <- calculate_z(Interactomes_GC3_T2_selected$T2, 
-                             mean(Interactomes_GC3_T2_selected$T2, na.rm = TRUE),
-                             sd(Interactomes_GC3_T2_selected$T2, na.rm = TRUE))   	    
+    Interactomes_GC3_T2_selected_Stage_I$Exp_z_score        <-  calculate_z(Interactomes_GC3_T2_selected_Stage_I$Expr,        mean(Interactomes_GC3_T2_selected_Stage_I$Expr, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_I$Expr, na.rm = TRUE))  
+    Interactomes_GC3_T2_selected_Stage_I$Conections_z_score <-  calculate_z(Interactomes_GC3_T2_selected_Stage_I$Conections,  mean(Interactomes_GC3_T2_selected_Stage_I$Conections, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_I$Conections, na.rm = TRUE))    
+    Interactomes_GC3_T2_selected_Stage_I$T2_z_score         <-  calculate_z(Interactomes_GC3_T2_selected_Stage_I$T2,          mean(Interactomes_GC3_T2_selected_Stage_I$T2, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_I$T2, na.rm = TRUE))      
+
+    Interactomes_GC3_T2_selected_Stage_II$Exp_z_score        <-  calculate_z(Interactomes_GC3_T2_selected_Stage_II$Expr,        mean(Interactomes_GC3_T2_selected_Stage_II$Expr, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_II$Expr, na.rm = TRUE))  
+    Interactomes_GC3_T2_selected_Stage_II$Conections_z_score <-  calculate_z(Interactomes_GC3_T2_selected_Stage_II$Conections,  mean(Interactomes_GC3_T2_selected_Stage_II$Conections, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_II$Conections, na.rm = TRUE))    
+    Interactomes_GC3_T2_selected_Stage_II$T2_z_score         <-  calculate_z(Interactomes_GC3_T2_selected_Stage_II$T2,          mean(Interactomes_GC3_T2_selected_Stage_II$T2, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_II$T2, na.rm = TRUE))      
+
+    Interactomes_GC3_T2_selected_Stage_III$Exp_z_score        <-  calculate_z(Interactomes_GC3_T2_selected_Stage_III$Expr,        mean(Interactomes_GC3_T2_selected_Stage_III$Expr, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_III$Expr, na.rm = TRUE))  
+    Interactomes_GC3_T2_selected_Stage_III$Conections_z_score <-  calculate_z(Interactomes_GC3_T2_selected_Stage_III$Conections,  mean(Interactomes_GC3_T2_selected_Stage_III$Conections, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_III$Conections, na.rm = TRUE))    
+    Interactomes_GC3_T2_selected_Stage_III$T2_z_score         <-  calculate_z(Interactomes_GC3_T2_selected_Stage_III$T2,          mean(Interactomes_GC3_T2_selected_Stage_III$T2, na.rm = TRUE),sd(Interactomes_GC3_T2_selected_Stage_III$T2, na.rm = TRUE))      
     ###########################################################################################################################################################
-    colnames(melt_expression_interactomes)[6]<-"Expr"
+    colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
+    colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
+    colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
 
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
@@ -290,80 +253,100 @@ for (normalization_scheme in normalization_schemes)
     # sd calculates the standard deviation in R.
     # weighted average
     # Z-score for AveExp_expression
-    melt_expression_interactomes$AveExp_z_score <- calculate_z(melt_expression_interactomes$AveExp, 
-                             mean(melt_expression_interactomes$AveExp, na.rm = TRUE),
-                             sd(melt_expression_interactomes$AveExp, na.rm = TRUE))  
     # Z-score for AveExp_expression
-    melt_expression_interactomes$Conections_z_score <- calculate_z(melt_expression_interactomes$Conections, 
-                             mean(melt_expression_interactomes$Conections, na.rm = TRUE),
-                             sd(melt_expression_interactomes$Conections, na.rm = TRUE)) 
-    # Z-score for AveExp_expression
-    melt_expression_interactomes$T2_z_score <- calculate_z(melt_expression_interactomes$T2, 
-                             mean(melt_expression_interactomes$T2, na.rm = TRUE),
-                             sd(melt_expression_interactomes$T2, na.rm = TRUE))     
+    merged_expression_table_normalized_stage_I$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_I$Expr,        mean(merged_expression_table_normalized_stage_I$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_I$Expr, na.rm = TRUE))  
+    merged_expression_table_normalized_stage_I$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_I$Conections,  mean(merged_expression_table_normalized_stage_I$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_I$Conections, na.rm = TRUE))    
+    merged_expression_table_normalized_stage_I$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_I$T2,          mean(merged_expression_table_normalized_stage_I$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_I$T2, na.rm = TRUE))      
+
+    merged_expression_table_normalized_stage_II$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_II$Expr,        mean(merged_expression_table_normalized_stage_II$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$Expr, na.rm = TRUE))  
+    merged_expression_table_normalized_stage_II$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_II$Conections,  mean(merged_expression_table_normalized_stage_II$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$Conections, na.rm = TRUE))    
+    merged_expression_table_normalized_stage_II$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_II$T2,          mean(merged_expression_table_normalized_stage_II$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$T2, na.rm = TRUE))      
+
+    merged_expression_table_normalized_stage_III$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_III$Expr,        mean(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE))  
+    merged_expression_table_normalized_stage_III$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_III$Conections,  mean(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE))    
+    merged_expression_table_normalized_stage_III$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_III$T2,          mean(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE))        
     #########################################################################################################################################
     # Filter up Average expression greater than zero
-    Interactomes_GC3_T2_selected<-Interactomes_GC3_T2_selected[Interactomes_GC3_T2_selected$AveExp>0,]
-    Interactomes_GC3_T2_selected<-Interactomes_GC3_T2_selected[Interactomes_GC3_T2_selected$Conections>0,]
-    Interactomes_GC3_T2_selected<-Interactomes_GC3_T2_selected[Interactomes_GC3_T2_selected$T2>0,]
+    Interactomes_GC3_T2_selected_Stage_I  <-Interactomes_GC3_T2_selected_Stage_I[Interactomes_GC3_T2_selected_Stage_I$Expr>0,]
+    Interactomes_GC3_T2_selected_Stage_II <-Interactomes_GC3_T2_selected_Stage_II[Interactomes_GC3_T2_selected_Stage_II$Expr>0,]
+    Interactomes_GC3_T2_selected_Stage_III <-Interactomes_GC3_T2_selected_Stage_III[Interactomes_GC3_T2_selected_Stage_III$Expr>0,]
+    
  
-    m1<-ggplot(Interactomes_GC3_T2_selected, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(Interactomes_GC3_T2_selected, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(Interactomes_GC3_T2_selected, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(Interactomes_GC3_T2_selected, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
+    m1<-ggplot(Interactomes_GC3_T2_selected_Stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(Interactomes_GC3_T2_selected_Stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2_selected_Stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
+    m4<-ggplot(Interactomes_GC3_T2_selected_Stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_Expression_",normalization_scheme,".png",sep=""), width = 25, height = 25, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_Expression_",normalization_scheme,"_Stage_I.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
     dev.off()  
     #########################################################################################################################################    
-    #########################################################################################################################################
-    # Change collumn id
-    colnames(melt_expression_interactomes)[6]<-"Expr"
-  
-    # Filter up Average expression greater than zero
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$Expr>0,]
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$Conections>0,]
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$T2>0,]
-
-    m1<-ggplot(melt_expression_interactomes, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(melt_expression_interactomes, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-100",sep=""))+ geom_contour()     + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(melt_expression_interactomes, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-50",sep=""))+ geom_contour()      + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(melt_expression_interactomes, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-25",sep=""))+ geom_contour()      + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
+    m1<-ggplot(Interactomes_GC3_T2_selected_Stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(Interactomes_GC3_T2_selected_Stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2_selected_Stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
+    m4<-ggplot(Interactomes_GC3_T2_selected_Stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_AvgExpression_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_Expression_",normalization_scheme,"_Stage_II.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
     dev.off()  
     #########################################################################################################################################      
-    #########################################################################################################################################
-    m1<-ggplot(Interactomes_GC3_T2_selected, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs. Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(Interactomes_GC3_T2_selected, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(Interactomes_GC3_T2_selected, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(Interactomes_GC3_T2_selected, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs .Conections : 0-2.5 - 0-30",sep=""))+ geom_contour()  + xlim(0, 2.5) + ylim(0, 30)      #  + theme(legend.position="none")          
+    #########################################################################################################################################    
+    m1<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
+    m4<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 25, height = 25, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_Expression_",normalization_scheme,"_Stage_III.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
     dev.off()  
-    #########################################################################################################################################    
-    #########################################################################################################################################
-    # Change collumn id
-    colnames(melt_expression_interactomes)[6]<-"Expr"
-  
+    #########################################################################################################################################     
     # Filter up Average expression greater than zero
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$Expr>0,]
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$Conections>0,]
-    melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$T2>0,]
-
-    m1<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-100",sep=""))+ geom_contour()     + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-50",sep=""))+ geom_contour()      + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-25",sep=""))+ geom_contour()      + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
+    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0,]
+    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0,]
+    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0,]
+    
+ 
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
+    m4<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          a
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_I.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
     dev.off()  
-    #########################################################################################################################################      				   
+    #########################################################################################################################################    
+    m1<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
+    m4<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
+    #########################################################################################################################################    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_II.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
+    dev.off()  
+    #########################################################################################################################################      
+    #########################################################################################################################################    
+    m1<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
+    m2<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
+    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
+    m4<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
+    #########################################################################################################################################    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_III.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
+    dev.off()  
+    
+    #########################################################################################################################################            
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs. Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")    
+    #########################################################################################################################################    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 10, height = 10, res=600, units = "cm")  
+            m1
+    dev.off()  
+    #########################################################################################################################################    
+
 }
