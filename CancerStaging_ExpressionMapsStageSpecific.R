@@ -208,16 +208,12 @@ for (normalization_scheme in normalization_schemes)
     # FindClusters_resolution
     png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_avg_Stage_III
-    dev.off()  
-    ###########################################################################################################################################################
-  
-    # FindClusters_resolution               
-    png(filename=paste(output_dir,"geom_contour_melt",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
-            ggplot(melt_expression_interactomes, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
-    dev.off()
+    dev.off()    
     ###########################################################################################################################################################
     # melt_expression_interactomes
-    melt_expression_interactomes$Sample.Type<-merged_data_patient_info[match(melt_expression_interactomes$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
+    Interactomes_GC3_T2_melt_Stage_I$Sample.Type <-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_I$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
+    Interactomes_GC3_T2_melt_Stage_II$Sample.Type<-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_II$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
+    Interactomes_GC3_T2_melt_Stage_III$Sample.Type<-merged_data_patient_info[match(Interactomes_GC3_T2_melt_Stage_III$variable, merged_data_patient_info$sample_id, nomatch = NA_integer_, incomparables = NULL),"Sample.Type"]
 
     # Select collumns
     tp53_expresion<-melt_expression_interactomes[which(melt_expression_interactomes$ENSEMBL=="ENSG00000141510"),c("Sample.Type","T2","GC3",normalization_scheme,"variable","Conections")] #
