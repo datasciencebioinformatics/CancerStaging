@@ -180,15 +180,15 @@ for (normalization_scheme in normalization_schemes)
     Interactomes_GC3_T2_melt_Stage_III <- ggpairs(merged_expression_table_normalized_stage_III[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
     
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_melt_Stage_I
     dev.off()
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_melt_Stage_II
     dev.off()
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_melt_Stage_III
     dev.off()  
     ###########################################################################################################################################################
@@ -198,15 +198,15 @@ for (normalization_scheme in normalization_schemes)
     Interactomes_GC3_T2_avg_Stage_III <- ggpairs(Interactomes_GC3_T2_merged_Stage_III[,c("T2","GC3","AveExp","Conections")], axisLabels = "none")
     
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_avg_Stage_I
     dev.off()
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_avg_Stage_II
     dev.off()
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
             Interactomes_GC3_T2_avg_Stage_III
     dev.off()  
     ###########################################################################################################################################################
