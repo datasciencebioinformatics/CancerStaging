@@ -149,28 +149,28 @@ for (normalization_scheme in normalization_schemes)
                                                                                                                                                                 #
     # FindClusters_resolution          #                                                                                                                        #
     png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")             #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_I[,c("T2","Conections",normalization_scheme)], pch = 16)                                           #
+            scatterplot3d(Interactomes_GC3_T2_selected_Stage_I[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage I")                            #
     dev.off()                                                                                                                                                   #
     png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")            #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_II[,c("T2","Conections",normalization_scheme)], pch = 16)                                          #
+            scatterplot3d(Interactomes_GC3_T2_selected_Stage_II[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage II")                          #
     dev.off()                                                                                                                                                   #
     png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")           #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_III[,c("T2","Conections",normalization_scheme)], pch = 16)                                         #
+            scatterplot3d(Interactomes_GC3_T2_selected_Stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III")                        #
     dev.off()                                                                                                                                                   #
   ###############################################################################################################################################################
-    # FindClusters_resolution          #          
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
-            scatterplot3d(merged_expression_table_normalized_stage_I[,c("T2","Conections",normalization_scheme)], pch = 16)
-    dev.off()
-    # FindClusters_resolution          #               
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
-            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16)
-    dev.off()  
-      # FindClusters_resolution          #               
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")                                      #
-            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16)
-    dev.off()     
-    ####################################################################################################################################################
+    # FindClusters_resolution          #                                                                                                                        #
+    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")            #
+            scatterplot3d(merged_expression_table_normalized_stage_I[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage I")                      #
+    dev.off()                                                                                                                                                   #
+    # FindClusters_resolution          #                                                                                                                        #
+    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")           #
+            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage II")                    #
+    dev.off()                                                                                                                                                   #
+      # FindClusters_resolution          #                                                                                                                      #
+    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")          #
+            scatterplot3d(merged_expression_table_normalized_stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III")                  #
+    dev.off()                                                                                                                                                   #
+    #############################################################################################################################################################
     # Only Variable Labels on the outside (no axis labels)
     Interactomes_GC3_T2_mean <- ggpairs(Interactomes_GC3_T2_selected[,c("T2","GC3","AveExp","Conections")], axisLabels = "none")
     
