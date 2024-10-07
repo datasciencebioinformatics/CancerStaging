@@ -207,51 +207,46 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_III$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_III$Expr,        mean(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE))  
     merged_expression_table_normalized_stage_III$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_III$Conections,  mean(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE))    
     merged_expression_table_normalized_stage_III$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_III$T2,          mean(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE))        
+    
+  
+  
+  
+  
+  
+    
+    #########################################################################################################################################
+    # Three countour plots will be created
+    # One with the average expression
+    # Second with the expression per patient
+    # Third with the z-score 
+    
+  
     #########################################################################################################################################
     # Filter up Average expression greater than zero
     merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0,]
     merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0,]
     merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0,]
+        
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Expr. vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
+    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": Stage II Expr. vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
+    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III Expr. vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
     
- 
-    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
-    m4<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          a
-    #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_I.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
+    png(filename=paste(output_dir,"countour_T2_Coonections_avg_",normalization_scheme,"_Stage_all.png",sep=""), width = 15, height = 5, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
     #########################################################################################################################################    
-    m1<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
-    #########################################################################################################################################    
-    # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_II.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
-    dev.off()  
-    #########################################################################################################################################      
-    #########################################################################################################################################    
-    m1<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-100",sep=""))+ geom_contour()  + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III AveExpv vs .Conections : 0-25",sep=""))+ geom_contour()  + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
-    #########################################################################################################################################    
-    # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_III.png",sep=""), width = 25, height = 25, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
-    dev.off()  
+    # Filter up Average expression greater than zero
+    Interactomes_GC3_T2_selected_Stage_I  <-Interactomes_GC3_T2_selected_Stage_I[Interactomes_GC3_T2_selected_Stage_I$AveExp>0,]
+    Interactomes_GC3_T2_selected_Stage_II <-Interactomes_GC3_T2_selected_Stage_II[Interactomes_GC3_T2_selected_Stage_II$AveExp>0,]
+    Interactomes_GC3_T2_selected_Stage_III <-Interactomes_GC3_T2_selected_Stage_III[Interactomes_GC3_T2_selected_Stage_III$AveExp>0,]
+        
+    m1<-ggplot(Interactomes_GC3_T2_selected_Stage_I,   aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I Average Expr. vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
+    m2<-ggplot(Interactomes_GC3_T2_selected_Stage_II,  aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II Average Expr. vs .Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
+    m3<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III Average Expr. vs  Conections : 0-50",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
     
-    #########################################################################################################################################            
-    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": z_score AveExpv vs. Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")    
-    #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 10, height = 10, res=600, units = "cm")  
-            m1
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 15, height = 5, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
-    #########################################################################################################################################    
-
-}
+    #########################################################################################################################################
