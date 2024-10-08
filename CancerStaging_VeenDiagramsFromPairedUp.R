@@ -15,6 +15,10 @@ for (normalization_scheme in normalization_schemes)
   selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
   selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
 
+  rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
+  rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
+  rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
+
   selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
   selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
   selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
