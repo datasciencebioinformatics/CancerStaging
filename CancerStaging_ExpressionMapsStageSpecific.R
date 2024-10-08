@@ -454,5 +454,38 @@ for (normalization_scheme in normalization_schemes)
     #########################################################################################################################################    
   
 }
+#########################################################################################################################################    
+merged_expression_table_normalized_stage_I$Stage<-"Stage I"
+merged_expression_table_normalized_stage_II$Stage<-"Stage II"	
+merged_expression_table_normalized_stage_III$Stage<-"Stage III"
+
+Interactomes_GC3_T2_selected_Stage_I$Stage<-"Stage I"
+Interactomes_GC3_T2_selected_Stage_II$Stage<-"Stage II"	
+Interactomes_GC3_T2_selected_Stage_III$Stage<-"Stage III"					
+
+# Merge the three stages
+merged_expression_table_normalized_all<-rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)   
+
+# Merge the three stages
+Interactomes_GC3_T2_selected_all<-rbind(Interactomes_GC3_T2_selected_Stage_I,Interactomes_GC3_T2_selected_Stage_II,Interactomes_GC3_T2_selected_Stage_III)
+#########################################################################################################################################
+# Three countour plots will be created
+# One with the average expression
+# Second with the expression per patient
+# Third with the z-score 
+#########################################################################################################################################
+# Filter up Average expression greater than zero
+merged_expression_table_normalized_all  <-merged_expression_table_normalized_all[merged_expression_table_normalized_all$Expr>0,]
+Interactomes_GC3_T2_selected_all  <-Interactomes_GC3_T2_selected_all[Interactomes_GC3_T2_selected_all$AveExp>0,]
   
-  
+
+m1<-ggplot(merged_expression_table_normalized_all, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr, shape=Stage)) + geom_density_2d() + theme_bw() 
+m2<-ggplot(Interactomes_GC3_T2_selected_all, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp, shape=Stage)) + geom_density_2d() + theme_bw() 
+m3<-ggplot(merged_expression_table_normalized_all, aes(Conections_z_score, T2_z_score, z = T2_z_score))  + geom_point(aes(colour=T2_z_score,shape=Stage)) + geom_density_2d() + theme_bw() 	
+
+# FindClusters_resolution               
+png(filename=paste(output_dir,"countour_T2_Coonections_all_combined_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
+    ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
+dev.off()  
+
+
