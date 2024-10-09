@@ -276,7 +276,7 @@ normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {   
-    # genes_stages_I
+    # genes_stages_I                                                
     unique_genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene
     unique_genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene
     unique_genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene
