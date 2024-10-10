@@ -79,10 +79,10 @@ if (TCGA_project != "ALL")
 }else
 {
     # Count the number of reads per project, raw, tpm, tpkm
-    dim(reads_count_per_project_raw[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_raw[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_raw[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_raw[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_raw[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-READ"]])[2]+dim(reads_count_per_project_raw[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_raw[["TCGA-STAD"]])[2]
-    dim(reads_count_per_project_fpkm[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-READ"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-STAD"]])[2]
-    dim(reads_count_per_project_tpm[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_tpm[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-READ"]])[2]+dim(reads_count_per_project_tpm[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_tpm[["TCGA-STAD"]])[2]    
-
+    dim(reads_count_per_project_raw[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_raw[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_raw[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_raw[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_raw[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-READ"]])[2]+dim(reads_count_per_project_raw[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_raw[["TCGA-STAD"]])[2]+reads_count_per_project_raw[["TCGA-THCA"]])[2]
+    dim(reads_count_per_project_fpkm[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-READ"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_fpkm[["TCGA-STAD"]])[2]+reads_count_per_project_fpkm[["TCGA-THCA"]])[2]
+    dim(reads_count_per_project_tpm[["TCGA-BRCA"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LIHC"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LUAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-LUSC"]])[2]+dim(reads_count_per_project_tpm[["TCGA-PRAD"]])[2]+dim(reads_count_per_project_tpm[["TCGA-READ"]])[2]+dim(reads_count_per_project_tpm[["TCGA-SKCM"]])[2]+dim(reads_count_per_project_tpm[["TCGA-STAD"]])[2]+reads_count_per_project_tpm[["TCGA-THCA"]])[2]    
+    
     # Take name of all samples
     all_samples<-c(colnames(reads_count_per_project_raw[["TCGA-BRCA"]]),
     colnames(reads_count_per_project_raw[["TCGA-LIHC"]]),
@@ -91,8 +91,9 @@ if (TCGA_project != "ALL")
     colnames(reads_count_per_project_raw[["TCGA-PRAD"]]),
     colnames(reads_count_per_project_raw[["TCGA-READ"]]),
     colnames(reads_count_per_project_raw[["TCGA-SKCM"]]),
-    colnames(reads_count_per_project_raw[["TCGA-STAD"]]))    
-
+    colnames(reads_count_per_project_raw[["TCGA-STAD"]]),
+    colnames(reads_count_per_project_raw[["TCGA-THCA"]]))
+                   
     # Split metadata per project
     merged_data_patient_info_BRCA<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-BRCA",]
     merged_data_patient_info_LIHC<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-LIHC",]
@@ -102,6 +103,7 @@ if (TCGA_project != "ALL")
     merged_data_patient_info_READ<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-READ",]
     merged_data_patient_info_SKCM<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-SKCM",]
     merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-STAD",]    
+    merged_data_patient_info_STAD<-merged_data_patient_info[merged_data_patient_info$project_id == "TCGA-THCA",]    
 
     # Count the number of reads per project
     df_reads_count_all_projects_raw<-cbind(reads_count_per_project_raw[["TCGA-BRCA"]],
@@ -111,7 +113,8 @@ if (TCGA_project != "ALL")
     reads_count_per_project_raw[["TCGA-PRAD"]],
     reads_count_per_project_raw[["TCGA-READ"]],
     reads_count_per_project_raw[["TCGA-SKCM"]],
-    reads_count_per_project_raw[["TCGA-STAD"]])
+    reads_count_per_project_raw[["TCGA-STAD"]],
+    reads_count_per_project_raw[["TCGA-THCA"]])
     
     # Count the number of reads per project
     df_reads_count_all_projects_fpkm<-cbind(reads_count_per_project_fpkm[["TCGA-BRCA"]],
@@ -121,7 +124,8 @@ if (TCGA_project != "ALL")
     reads_count_per_project_fpkm[["TCGA-PRAD"]],
     reads_count_per_project_fpkm[["TCGA-READ"]],
     reads_count_per_project_fpkm[["TCGA-SKCM"]],
-    reads_count_per_project_fpkm[["TCGA-STAD"]])
+    reads_count_per_project_fpkm[["TCGA-STAD"]],
+    reads_count_per_project_raw[["TCGA-THCA"]])
     
     # Count the number of reads per project
     df_reads_count_all_projects_tpm<-cbind(reads_count_per_project_tpm[["TCGA-BRCA"]],
@@ -131,7 +135,8 @@ if (TCGA_project != "ALL")
     reads_count_per_project_tpm[["TCGA-PRAD"]],
     reads_count_per_project_tpm[["TCGA-READ"]],
     reads_count_per_project_tpm[["TCGA-SKCM"]],
-    reads_count_per_project_tpm[["TCGA-STAD"]])
+    reads_count_per_project_tpm[["TCGA-STAD"]],
+    reads_count_per_project_raw[["TCGA-THCA"]])
     
 }
 # Use only data that has read counts
