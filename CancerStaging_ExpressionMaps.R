@@ -236,9 +236,9 @@ for (normalization_scheme in normalization_schemes)
     # sd calculates the standard deviation in R.
     # weighted average
     # Z-score for AveExp_expression
-    melt_expression_interactomes$AveExp_z_score <- calculate_z(melt_expression_interactomes$AveExp, 
-                             mean(melt_expression_interactomes$AveExp, na.rm = TRUE),
-                             sd(melt_expression_interactomes$AveExp, na.rm = TRUE))  
+    melt_expression_interactomes$AveExp_z_score <- calculate_z(melt_expression_interactomes$Expr, 
+                             mean(melt_expression_interactomes$Expr, na.rm = TRUE),
+                             sd(melt_expression_interactomes$Expr, na.rm = TRUE))  
     # Z-score for AveExp_expression
     melt_expression_interactomes$Conections_z_score <- calculate_z(melt_expression_interactomes$Conections, 
                              mean(melt_expression_interactomes$Conections, na.rm = TRUE),
