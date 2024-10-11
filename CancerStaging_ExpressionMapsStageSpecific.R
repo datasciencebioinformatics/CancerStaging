@@ -76,6 +76,7 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
@@ -272,6 +273,7 @@ for (normalization_scheme in normalization_schemes)
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
