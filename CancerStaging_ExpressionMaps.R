@@ -76,6 +76,7 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
@@ -303,13 +304,10 @@ for (normalization_scheme in normalization_schemes)
     melt_expression_interactomes<-melt_expression_interactomes[melt_expression_interactomes$T2>0,]
 
     m1<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : All points",sep=""))+ geom_contour()+ theme(legend.position="none")  # + theme(legend.position="none")
-    m2<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-100",sep=""))+ geom_contour()     + xlim(0, 100) + ylim(0, 100)     # + theme(legend.position="none")
-    m3<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-50",sep=""))+ geom_contour()      + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        
-    m4<-ggplot(melt_expression_interactomes, aes(Conections_z_score, T2_z_score, z = AveExp_z_score))  + geom_point(aes(colour=AveExp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Expv vs .Conections : 0-25",sep=""))+ geom_contour()      + xlim(0, 25) + ylim(0, 25)      #  + theme(legend.position="none")          
     #########################################################################################################################################    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4,nrow = 2,ncol = 2, common.legend = TRUE, legend="bottom")
+    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,".png",sep=""), width = 10, height = 10, res=600, units = "cm")  
+            m1
     dev.off()  
     #########################################################################################################################################      				   
 }
