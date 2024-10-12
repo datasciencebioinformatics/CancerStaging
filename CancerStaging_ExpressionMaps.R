@@ -156,7 +156,7 @@ for (normalization_scheme in normalization_schemes)
     ###########################################################################################################################################################
     # FindClusters_resolution               
     png(filename=paste(output_dir,"geom_contour_melt",normalization_scheme,".png",sep=""), width = 14, height = 14, res=600, units = "cm")  
-            ggplot(melt_expression_interactomes, aes(T2, AveExp, z = Conections))  + geom_point(aes(colour=Conections))
+            ggplot(melt_expression_interactomes, aes(T2, Expr, z = Conections))  + geom_point(aes(colour=Conections))
     dev.off()
     ###########################################################################################################################################################
     # melt_expression_interactomes
