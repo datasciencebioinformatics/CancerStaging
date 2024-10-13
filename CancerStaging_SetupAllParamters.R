@@ -9,7 +9,7 @@ tpm <- function(counts, lengths)
 }
 ####################################################################################################
 # Set name of the TCGA project
-TCGA_project <- "TCGA-BRCA"
+TCGA_project <- "TCGA-LIHC"
 
 # Execute TCGA coomand
 t1 <- try(system(paste("mkdir /home/felipe/Documents/Cancer_staging/outputfolder/"), intern = TRUE))
