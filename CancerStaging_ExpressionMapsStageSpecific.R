@@ -1,6 +1,6 @@
 #######################################################################################################################
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                               #
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
+#source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                               #
+#source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
 #######################################################################################################################
 # saveRDS                                                                                                             #
 #saveRDS(object = df_reads_count_all_projects, file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))      #
