@@ -50,7 +50,10 @@ merge_interactome_gene_symbol<-merge(x=Table2_interactoma, y=df_gene_id_symbol, 
 # fdr_paired               : fdr tumor/normal paired samples
 #############################################################################################################################
 # for each  normalization scheme
-for (normalization_scheme in names(df_reads_count_all_projects))
+normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
+
+for (normalization_scheme in normalization_schemes)
 {	
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
