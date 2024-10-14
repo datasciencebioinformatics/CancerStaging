@@ -1,10 +1,11 @@
+normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
 normalization_schemes<-c("tpm","tmm")
 #######################################################################################################################################
 # A script to caluclate entropy from lists of genes from each stage
 #######################################################################################################################################
 # Interactome data
 # for each  normalization scheme
-for (normalization_scheme in names(df_reads_count_all_projects))
+for (normalization_scheme in normalization_schemes)
 {	
 	# Take the expression data
 	# First, I will load the expression table   	
