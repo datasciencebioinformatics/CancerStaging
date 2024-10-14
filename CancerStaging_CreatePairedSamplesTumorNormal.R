@@ -75,6 +75,9 @@ paired_tumor_samples     <- paired_sample_df$tumor
 # logchange_tumor_control
 list_logchange_tumor_control<-list()
 
+normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
+
 # for each normalization scheme
 for (normalized_table_names in names(df_reads_count_all_projects))
 {  
