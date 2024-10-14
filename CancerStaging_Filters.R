@@ -1,6 +1,9 @@
+normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
+
 ####################################################################################################################
 # for each  normalization scheme
-for (normalization_scheme in names(df_reads_count_all_projects))
+for (normalization_scheme in normalization_schemes)
 {
 	# First, I will load the statistic table   	
 	normalized_statistic_table<-list_logchange_tumor_control[[normalization_scheme]]
