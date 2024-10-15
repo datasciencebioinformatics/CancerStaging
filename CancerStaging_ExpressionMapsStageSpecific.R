@@ -690,3 +690,85 @@ for (normalization_scheme in normalization_schemes)
 
 
 
+
+####################################################################################################################################################
+# Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
+# Consitency - check filters meticulously.
+# FPKM, TPM  - take these as robust.
+# Paramter to set the normalization_scheme
+normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
+normalization_schemes<-c("tpm","tmm")
+
+# For each normlization normalization_scheme
+for (normalization_scheme in normalization_schemes)
+{     
+    # genes_stages_I                                                
+    unique_genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene
+    unique_genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene
+    unique_genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene
+
+    # Stage specific genes from each stage
+    expression_table_normalized_stage_I  <-expression_table_normalized[unique_genes_stages_I,]
+    expression_table_normalized_stage_II <-expression_table_normalized[unique_genes_stages_II,]
+    expression_table_normalized_stage_III<-expression_table_normalized[unique_genes_stages_III,]
+
+    # ENSEMBL_ids
+    ENSEMBL_ids_stage_I  <-unique(intersect(rownames(expression_table_normalized_stage_I),  Interactomes_GC3_T2_merged$ENSEMBL))
+    ENSEMBL_ids_stage_II <-unique(intersect(rownames(expression_table_normalized_stage_II), Interactomes_GC3_T2_merged$ENSEMBL))
+    ENSEMBL_ids_stage_III<-unique(intersect(rownames(expression_table_normalized_stage_III),Interactomes_GC3_T2_merged$ENSEMBL))
+
+    # Set AveExp to zero Interactomes_GC3_T2_merged
+    Interactomes_GC3_T2_merged_Stage_I   <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_I,]
+    Interactomes_GC3_T2_merged_Stage_II  <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_II,]
+    Interactomes_GC3_T2_merged_Stage_III <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_III,]
+  
+    Interactomes_GC3_T2_merged_Stage_I$AveExp<-0
+    Interactomes_GC3_T2_merged_Stage_II$AveExp<-0
+    Interactomes_GC3_T2_merged_Stage_III$AveExp<-0
+    
+    # Calculate the average expression for the epression of each g
+    Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,"AveExp"]<-rowMeans(expression_table_normalized_stage_I[ENSEMBL_ids_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,"AveExp"]<-rowMeans(expression_table_normalized_stage_II[ENSEMBL_ids_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[ENSEMBL_ids_stage_III,])
+    
+    # merged_expression_interactomes
+    merged_expression_table_normalized_stage_I <-cbind(expression_table_normalized_stage_I[ENSEMBL_ids_stage_I,],Interactomes_GC3_T2_merged_Stage_I[Interactomes_GC3_T2_merged_Stage_I$ENSEMBL %in% ENSEMBL_ids_stage_I,c("T2","GC3","Conections","ENSEMBL")])
+    merged_expression_table_normalized_stage_II<-cbind(expression_table_normalized_stage_II[ENSEMBL_ids_stage_II,],Interactomes_GC3_T2_merged_Stage_II[Interactomes_GC3_T2_merged_Stage_II$ENSEMBL %in% ENSEMBL_ids_stage_II,c("T2","GC3","Conections","ENSEMBL")])  
+    merged_expression_table_normalized_stage_III<-cbind(expression_table_normalized_stage_III[ENSEMBL_ids_stage_III,],Interactomes_GC3_T2_merged_Stage_III[Interactomes_GC3_T2_merged_Stage_III$ENSEMBL %in% ENSEMBL_ids_stage_III,c("T2","GC3","Conections","ENSEMBL")])  
+
+    # Rempove NA lines
+    merged_expression_table_normalized_stage_I<-merged_expression_table_normalized_stage_I[complete.cases(merged_expression_table_normalized_stage_I), ]    
+    merged_expression_table_normalized_stage_II<-merged_expression_table_normalized_stage_II[complete.cases(merged_expression_table_normalized_stage_II), ]    
+    merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_stage_III[complete.cases(merged_expression_table_normalized_stage_III), ]    
+    
+    # Melt data.frame 
+    merged_expression_table_normalized_stage_I <- melt(data.frame(merged_expression_table_normalized_stage_I), id=c("T2","GC3","Conections","ENSEMBL"))
+    merged_expression_table_normalized_stage_II <- melt(data.frame(merged_expression_table_normalized_stage_II), id=c("T2","GC3","Conections","ENSEMBL"))
+    merged_expression_table_normalized_stage_III <- melt(data.frame(merged_expression_table_normalized_stage_III), id=c("T2","GC3","Conections","ENSEMBL"))
+
+    # Change variables
+    merged_expression_table_normalized_stage_I$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_I$variable)  
+    merged_expression_table_normalized_stage_II$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_II$variable)  
+    merged_expression_table_normalized_stage_III$variable<-gsub('\\.', '-', merged_expression_table_normalized_stage_III$variable)  
+    
+    # Set colnames
+    colnames(merged_expression_table_normalized_stage_I)[6]<-normalization_scheme
+    colnames(merged_expression_table_normalized_stage_II)[6]<-normalization_scheme
+    colnames(merged_expression_table_normalized_stage_III)[6]<-normalization_scheme
+
+    #########################################################################################################################################    
+    merged_expression_table_normalized_stage_I$Stage<-"Stage I"
+    merged_expression_table_normalized_stage_II$Stage<-"Stage II"	
+    merged_expression_table_normalized_stage_III$Stage<-"Stage III"
+    
+    Interactomes_GC3_T2_merged_Stage_I$Stage<-"Stage I"
+    Interactomes_GC3_T2_merged_Stage_II$Stage<-"Stage II"	
+    Interactomes_GC3_T2_merged_Stage_III$Stage<-"Stage III"					
+    
+    # Merge the three stages
+    merged_expression_table_normalized_all<-rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)   
+    
+    # Merge the three stages
+    Interactomes_GC3_T2_selected_all<-rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II,Interactomes_GC3_T2_merged_Stage_III)
+    #########################################################################################################################################    
+  }
