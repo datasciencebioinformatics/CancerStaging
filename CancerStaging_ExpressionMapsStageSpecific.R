@@ -580,52 +580,6 @@ for (normalization_scheme in normalization_schemes)
     colnames(merged_expression_table_normalized_stage_II)[6]<-normalization_scheme
     colnames(merged_expression_table_normalized_stage_III)[6]<-normalization_scheme
     #########################################################################################################################################
-    ####################################################################################################################################################
-    # I have two tables to be use.                                                                                                                     #
-    # First , a table with with "T2", "GC3", "Conections", "ENSEMBL" "AveExp" per gene                                                                 #
-    # Interactomes_GC3_T2_merged                                                                                                                       #
-    # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
-    # melt_expression_interactomes                                                                                                                     #
-    #############################################################################################################################################################
-    Interactomes_GC3_T2_selected_Stage_I                       <-Interactomes_GC3_T2_merged_Stage_I[,c("T2","AveExp","Conections","GC3")]   #
-    Interactomes_GC3_T2_selected_Stage_II                      <-Interactomes_GC3_T2_merged_Stage_II[,c("T2","AveExp","Conections","GC3")]  #
-    Interactomes_GC3_T2_selected_Stage_III                     <-Interactomes_GC3_T2_merged_Stage_III[,c("T2","AveExp","Conections","GC3")] #
-                                                                                                                                                                #
-    # FindClusters_resolution          #                                                                                                                        #
-    png(filename=paste(output_dir,"scatterplot3d_unique_avg_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")             #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_I[,c("T2","Conections","AveExp")], pch = 16,main="Stage I - Average Expression")       #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_unique_avg_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")            #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_II[,c("T2","Conections","AveExp")], pch = 16,main="Stage II - Average Expression")     #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_unique_avg_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")           #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_III[,c("T2","Conections","AveExp")], pch = 16,main="Stage III - Average Expression")   #
-    dev.off()                                                                                                                                                   #
-   ####################################################################################################################################################################
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_unique_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")                  #
-            scatterplot3d(merged_expression_table_normalized_stage_I[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage I- Expression per patient")    #
-    dev.off()                                                                                                                                                         #
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_unique_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")                 #
-            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage II- Expression per patient")  #
-    dev.off()                                                                                                                                                         #
-      # FindClusters_resolution          #                                                                                                                            #
-    png(filename=paste(output_dir,"scatterplot3d_unique_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")                #
-            scatterplot3d(merged_expression_table_normalized_stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III- Expression per patient")#
-    dev.off()                                                                                                                                                         #
-    ###################################################################################################################################################################
-    # Melt data.frame 
-    merged_expression_table_normalized_stage_all<-rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
-  
-    # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
-    
-    # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_unique_melt_",normalization_scheme,"_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            Interactomes_GC3_T2_melt_Stage_all
-    dev.off()
-    ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
@@ -640,17 +594,18 @@ for (normalization_scheme in normalization_schemes)
     # weighted average
     # Z-score for AveExp_expression
     # Z-score for AveExp_expression
-    merged_expression_table_normalized_stage_I$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_I$Expr), center = TRUE, scale = TRUE)      
-    merged_expression_table_normalized_stage_I$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_I$Conections), center = TRUE, scale = TRUE)  
-    merged_expression_table_normalized_stage_I$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_I$T2), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_I$Exp_z_score        <-  (merged_expression_table_normalized_stage_I$Expr-mean(merged_expression_table_normalized_stage_I$Expr))/sd(merged_expression_table_normalized_stage_I$Expr)
+    merged_expression_table_normalized_stage_I$Conections_z_score <-  (merged_expression_table_normalized_stage_I$Conections-mean(merged_expression_table_normalized_stage_I$Conections))/sd(merged_expression_table_normalized_stage_I$Conections) 
+    merged_expression_table_normalized_stage_I$T2_z_score         <-  (merged_expression_table_normalized_stage_I$T2-mean(merged_expression_table_normalized_stage_I$T2))/sd(merged_expression_table_normalized_stage_I$T2) 
 
-    merged_expression_table_normalized_stage_II$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_II$Expr), center = TRUE, scale = TRUE)      
-    merged_expression_table_normalized_stage_II$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_II$Conections), center = TRUE, scale = TRUE)  
-    merged_expression_table_normalized_stage_II$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_II$T2), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_II$Exp_z_score        <-  (merged_expression_table_normalized_stage_II$Expr-mean(merged_expression_table_normalized_stage_II$Expr))/sd(merged_expression_table_normalized_stage_II$Expr)
+    merged_expression_table_normalized_stage_II$Conections_z_score <- (merged_expression_table_normalized_stage_II$Conections-mean(merged_expression_table_normalized_stage_II$Conections))/sd(merged_expression_table_normalized_stage_II$Conections) 
+    merged_expression_table_normalized_stage_II$T2_z_score         < (merged_expression_table_normalized_stage_II$T2-mean(merged_expression_table_normalized_stage_II$T2))/sd(merged_expression_table_normalized_stage_II$T2) 
   
-    merged_expression_table_normalized_stage_III$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_III$Expr), center = TRUE, scale = TRUE)      
-    merged_expression_table_normalized_stage_III$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_III$Conections), center = TRUE, scale = TRUE)  
-    merged_expression_table_normalized_stage_III$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_III$T2), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_I$Exp_z_score        <-  (merged_expression_table_normalized_stage_I$Expr-mean(merged_expression_table_normalized_stage_I$Expr))/sd(merged_expression_table_normalized_stage_I$Expr)
+    merged_expression_table_normalized_stage_II$Conections_z_score <- (merged_expression_table_normalized_stage_II$Conections-mean(merged_expression_table_normalized_stage_II$Conections))/sd(merged_expression_table_normalized_stage_II$Conections) 
+    merged_expression_table_normalized_stage_III$T2_z_score         < (merged_expression_table_normalized_stage_III$T2-mean(merged_expression_table_normalized_stage_III$T2))/sd(merged_expression_table_normalized_stage_III$T2) 
+  
     #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
@@ -684,12 +639,16 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_unique_avg_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
             ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
-    #########################################################################################################################################
-
     #########################################################################################################################################          
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()     + theme(legend.position="none")         + xlim(0, 10) + ylim(-10, 10) 
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")        
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")        
+
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()     + theme(legend.position="none")         + xlim(0, 10) + ylim(-10, 10) 
+    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")        
+    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")          
+
+  
     
     # FindClusters_resolution               
     png(filename=paste(output_dir,"countour_T2_Coonections_unique_zscore_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
