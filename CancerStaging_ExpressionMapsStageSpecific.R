@@ -1,4 +1,4 @@
-#######################################################################################################################
+f#######################################################################################################################
 #source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                               #
 #source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
 #######################################################################################################################
@@ -770,5 +770,21 @@ for (normalization_scheme in normalization_schemes)
     
     # Merge the three stages
     Interactomes_GC3_T2_selected_all<-rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II,Interactomes_GC3_T2_merged_Stage_III)
-    #########################################################################################################################################    
+    #########################################################################################################################################        
+    merged_expression_pca_normalized_all <- prcomp(merged_expression_table_normalized_all[,c("tpm","T2","Conections")], scale. = TRUE)
+    Interactomes_GC3_T2_pca_all <- prcomp(Interactomes_GC3_T2_selected_all[,c("AveExp","T2","Conections")], scale. = TRUE)
+
+    p1<-autoplot(merged_expression_pca_normalized_all, data = merged_expression_table_normalized_all, colour = 'Stage')+ theme_bw() + ggtitle("All points")
+    p2<-autoplot(Interactomes_GC3_T2_pca_all, data = Interactomes_GC3_T2_selected_all, colour = 'Stage')+ theme_bw() + ggtitle("Average per genes")
+
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"PCAs_merged_average_",normalization_scheme,"_Stage_all.png",sep=""), width = 20, height = 15, res=600, units = "cm")  
+            ggarrange(p1,p2,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
+    dev.off()
+
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"PCA_average_",normalization_scheme,"_Stage_all.png",sep=""), width = 15, height = 15, res=600, units = "cm")  
+            autoplot(Interactomes_GC3_T2_pca_all, data = Interactomes_GC3_T2_selected_all, colour = 'Stage')+ theme_bw() + ggtitle("Average per genes")
+    dev.off()
+  
   }
