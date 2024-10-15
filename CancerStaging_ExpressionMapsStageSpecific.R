@@ -69,7 +69,12 @@ Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_df
 
 # Set rownames
 rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
-  
+
+# Filter by T2
+Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <85,]
+
+# Filter by T2
+Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
 ####################################################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
