@@ -522,15 +522,18 @@ normalization_schemes<-c("tpm","tmm")
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {   
-    # genes_stages_I                                                
-    unique_genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene
-    unique_genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene
-    unique_genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene
+    # genes_stages_I
+    genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+  
+    # Take also expression data from the normalization scheme set by "normalization_scheme"
+    expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
 
     # Stage specific genes from each stage
-    expression_table_normalized_stage_I  <-expression_table_normalized[unique_genes_stages_I,]
-    expression_table_normalized_stage_II <-expression_table_normalized[unique_genes_stages_II,]
-    expression_table_normalized_stage_III<-expression_table_normalized[unique_genes_stages_III,]
+    expression_table_normalized_stage_I  <-expression_table_normalized[genes_stages_I,]
+    expression_table_normalized_stage_II <-expression_table_normalized[genes_stages_II,]
+    expression_table_normalized_stage_III<-expression_table_normalized[genes_stages_III,]
 
     # ENSEMBL_ids
     ENSEMBL_ids_stage_I  <-unique(intersect(rownames(expression_table_normalized_stage_I),  Interactomes_GC3_T2_merged$ENSEMBL))
@@ -636,19 +639,17 @@ for (normalization_scheme in normalization_schemes)
     # weighted average
     # Z-score for AveExp_expression
     # Z-score for AveExp_expression
-    merged_expression_table_normalized_stage_I$Exp_z_score        <-  scale(merged_expression_table_normalized_stage_I$Expr, center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_I$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_I$Expr), center = TRUE, scale = TRUE)      
+    merged_expression_table_normalized_stage_I$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_I$Conections), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_I$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_I$T2), center = TRUE, scale = TRUE)  
+
+    merged_expression_table_normalized_stage_II$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_II$Expr), center = TRUE, scale = TRUE)      
+    merged_expression_table_normalized_stage_II$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_II$Conections), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_II$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_II$T2), center = TRUE, scale = TRUE)  
   
-    merged_expression_table_normalized_stage_I$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_I$Conections,  mean(merged_expression_table_normalized_stage_I$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_I$Conections, na.rm = TRUE))    
-    merged_expression_table_normalized_stage_I$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_I$T2,          mean(merged_expression_table_normalized_stage_I$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_I$T2, na.rm = TRUE))      
-
-    merged_expression_table_normalized_stage_II$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_II$Expr,        mean(merged_expression_table_normalized_stage_II$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$Expr, na.rm = TRUE))  
-    merged_expression_table_normalized_stage_II$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_II$Conections,  mean(merged_expression_table_normalized_stage_II$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$Conections, na.rm = TRUE))    
-    merged_expression_table_normalized_stage_II$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_II$T2,          mean(merged_expression_table_normalized_stage_II$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_II$T2, na.rm = TRUE))      
-
-    merged_expression_table_normalized_stage_III$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_III$Expr,        mean(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Expr, na.rm = TRUE))  
-    merged_expression_table_normalized_stage_III$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_III$Conections,  mean(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE))    
-    merged_expression_table_normalized_stage_III$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_III$T2,          mean(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE))        
-            
+    merged_expression_table_normalized_stage_III$Exp_z_score        <-  scale(as.vector(merged_expression_table_normalized_stage_III$Expr), center = TRUE, scale = TRUE)      
+    merged_expression_table_normalized_stage_III$Conections_z_score <-  scale(as.vector(merged_expression_table_normalized_stage_III$Conections), center = TRUE, scale = TRUE)  
+    merged_expression_table_normalized_stage_III$T2_z_score         <-  scale(as.vector(merged_expression_table_normalized_stage_III$T2), center = TRUE, scale = TRUE)  
     #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
@@ -656,9 +657,9 @@ for (normalization_scheme in normalization_schemes)
     # Third with the z-score 
     #########################################################################################################################################
     # Filter up Average expression greater than zero
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0,]
+    #merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0,]
+    #merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0,]
+    #merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0,]
         
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 50)      #  + theme(legend.position="none")        a
@@ -686,11 +687,17 @@ for (normalization_scheme in normalization_schemes)
 
     #########################################################################################################################################
     # Filter up Average expression greater than zero
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Exp_z_score>0,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Exp_z_score>0,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Exp_z_score>0,]
+    #merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Exp_z_score>0,]
+    #merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Exp_z_score>0,]
+    #merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Exp_z_score>0,]
+
+    #t<-merged_expression_table_normalized_stage_I
+    #t$Exp_z_score<-merged_expression_table_normalized_stage_I$Exp_z_score+10
+    #t$Conections_z_score<-merged_expression_table_normalized_stage_I$Conections_z_score+10
+    # t$T2_z_score<-merged_expression_table_normalized_stage_I$T2_z_score+10
+  
         
-    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()     + theme(legend.position="none")        
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()     + theme(legend.position="none")         + xlim(0, 10) + ylim(-10, 10) 
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")        
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()    + theme(legend.position="none")        
     
