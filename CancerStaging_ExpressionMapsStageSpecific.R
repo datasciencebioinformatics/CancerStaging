@@ -170,50 +170,7 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_III,"Stages"]<-"Stage III"
     #########################################################################################################################################    
   
-    ####################################################################################################################################################
-    # I have two tables to be use.                                                                                                                     #
-    # First , a table with with "T2", "GC3", "Conections", "ENSEMBL" "AveExp" per gene                                                                 #
-    # Interactomes_GC3_T2_merged                                                                                                                       #
-    # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
-    # melt_expression_interactomes                                                                                                                     #
-    #############################################################################################################################################################
-    Interactomes_GC3_T2_selected_Stage_I                       <-Interactomes_GC3_T2_merged_Stage_I[,c("T2","AveExp","Conections","GC3")]   #
-    Interactomes_GC3_T2_selected_Stage_II                      <-Interactomes_GC3_T2_merged_Stage_II[,c("T2","AveExp","Conections","GC3")]  #
-    Interactomes_GC3_T2_selected_Stage_III                     <-Interactomes_GC3_T2_merged_Stage_III[,c("T2","AveExp","Conections","GC3")] #
-                                                                                                                                                                #
-    # FindClusters_resolution          #                                                                                                                        #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")             #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_I[,c("T2","Conections","AveExp")], pch = 16,main="Stage I - Average Expression")       #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")            #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_II[,c("T2","Conections","AveExp")], pch = 16,main="Stage II - Average Expression")     #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")           #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_III[,c("T2","Conections","AveExp")], pch = 16,main="Stage III - Average Expression")   #
-    dev.off()                                                                                                                                                   #
-   ####################################################################################################################################################################
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")                  #
-            scatterplot3d(merged_expression_table_normalized_stage_I[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage I- Expression per patient")    #
-    dev.off()                                                                                                                                                         #
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")                 #
-            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage II- Expression per patient")  #
-    dev.off()                                                                                                                                                         #
-      # FindClusters_resolution          #                                                                                                                            #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")                #
-            scatterplot3d(merged_expression_table_normalized_stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III- Expression per patient")#
-    dev.off()                                                                                                                                                         #
-    ###################################################################################################################################################################
-  
-    # Only Variable Labels on the outside (no axis labels)
-    #Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
-    
-    # FindClusters_resolution
-    #png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-    #        Interactomes_GC3_T2_melt_Stage_all
-    #dev.off()
-    ###################################################################################################################################################################
+   ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
@@ -399,49 +356,6 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
     #########################################################################################################################################    
   
-    ####################################################################################################################################################
-    # I have two tables to be use.                                                                                                                     #
-    # First , a table with with "T2", "GC3", "Conections", "ENSEMBL" "AveExp" per gene                                                                 #
-    # Interactomes_GC3_T2_merged                                                                                                                       #
-    # Second, a table with with "T2", "GC3", "Conections", "ENSEMBL" "Exp"    per patient                                                              #
-    # melt_expression_interactomes                                                                                                                     #
-    #############################################################################################################################################################
-    Interactomes_GC3_T2_selected_Stage_I                       <-Interactomes_GC3_T2_merged_Stage_I[,c("T2","AveExp","Conections","GC3")]   #
-    Interactomes_GC3_T2_selected_Stage_II                      <-Interactomes_GC3_T2_merged_Stage_II[,c("T2","AveExp","Conections","GC3")]  #
-    Interactomes_GC3_T2_selected_Stage_III                     <-Interactomes_GC3_T2_merged_Stage_III[,c("T2","AveExp","Conections","GC3")] #
-                                                                                                                                                                #
-    # FindClusters_resolution          #                                                                                                                        #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_unique_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")             #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_I[,c("T2","Conections","AveExp")], pch = 16,main="Stage I - Average Expression")       #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_unique_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")            #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_II[,c("T2","Conections","AveExp")], pch = 16,main="Stage II - Average Expression")     #
-    dev.off()                                                                                                                                                   #
-    png(filename=paste(output_dir,"scatterplot3d_avg_",normalization_scheme,"_unique_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")           #
-            scatterplot3d(Interactomes_GC3_T2_selected_Stage_III[,c("T2","Conections","AveExp")], pch = 16,main="Stage III - Average Expression")   #
-    dev.off()                                                                                                                                                   #
-   ####################################################################################################################################################################
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_unique_stage_I.png",sep=""), width = 24, height = 24, res=600, units = "cm")                  #
-            scatterplot3d(merged_expression_table_normalized_stage_I[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage I- Expression per patient")    #
-    dev.off()                                                                                                                                                         #
-    # FindClusters_resolution          #                                                                                                                              #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_unique_stage_II.png",sep=""), width = 24, height = 24, res=600, units = "cm")                 #
-            scatterplot3d(merged_expression_table_normalized_stage_II[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage II- Expression per patient")  #
-    dev.off()                                                                                                                                                         #
-      # FindClusters_resolution          #                                                                                                                            #
-    png(filename=paste(output_dir,"scatterplot3d_melt_",normalization_scheme,"_unique_stage_III.png",sep=""), width = 24, height = 24, res=600, units = "cm")                #
-            scatterplot3d(merged_expression_table_normalized_stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III- Expression per patient")#
-    dev.off()                                                                                                                                                         #
-    ###################################################################################################################################################################
-  
-    # Only Variable Labels on the outside (no axis labels)
-    #Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
-    
-    # FindClusters_resolution
-    #png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_unique_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-    #        Interactomes_GC3_T2_melt_Stage_all
-    #dev.off()
     ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
