@@ -77,31 +77,6 @@ Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merge
 # Filter by T2
 Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
 ####################################################################################################################################################
-# Path to files of selected_genes                                                                                                             # 
-# genes_stages_I
-selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
-selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
-selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
-
-rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
-rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
-rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
-
-selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
-selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
-selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
-#######################################################################################################################################                                                                                                                                     #
-unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
-unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
-unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
-#######################################################################################################################################
-# Set the field stages
-Interactomes_GC3_T2_merged$Stages<-"overllapping"
-
-Interactomes_GC3_T2_merged[unique_stage_I,"Stages"]<-"Stage I"
-Interactomes_GC3_T2_merged[unique_stage_II,"Stages"]<-"Stage II"
-Interactomes_GC3_T2_merged[unique_stage_III,"Stages"]<-"Stage III"
-#########################################################################################################################################    
 
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
@@ -169,6 +144,35 @@ for (normalization_scheme in normalization_schemes)
     colnames(merged_expression_table_normalized_stage_I)[6]<-normalization_scheme
     colnames(merged_expression_table_normalized_stage_II)[6]<-normalization_scheme
     colnames(merged_expression_table_normalized_stage_III)[6]<-normalization_scheme
+
+    #########################################################################################################################################        
+    selected_genes_Stage_I_gene      <- genes_stages_I
+    selected_genes_Stage_II_gene     <- genes_stages_II
+    selected_genes_Stage_III_gene    <- genes_stages_III
+    #######################################################################################################################################                                                                                                                                     #
+    unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
+    unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
+    unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
+    #######################################################################################################################################
+    # Melt data.frame 
+    merged_expression_table_normalized_all_stages <- rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
+  
+    # Set the field stages
+    Interactomes_GC3_T2_merged$Stages                   <-"overlapping"
+    merged_expression_table_normalized_all_stages$Stages<-"overlapping"
+
+    merged_expression_table_normalized_all_stages$ENSEMBL
+
+    # Set stages 
+    Interactomes_GC3_T2_merged[unique_stage_I,"Stages"]<-"Stage I"
+    Interactomes_GC3_T2_merged[unique_stage_II,"Stages"]<-"Stage II"
+    Interactomes_GC3_T2_merged[unique_stage_III,"Stages"]<-"Stage III"
+
+    merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_I,"Stages"]<-"Stage I"
+    merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_II,"Stages"]<-"Stage II"
+    merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_III,"Stages"]<-"Stage III"
+    #########################################################################################################################################    
+  
     ####################################################################################################################################################
     # I have two tables to be use.                                                                                                                     #
     # First , a table with with "T2", "GC3", "Conections", "ENSEMBL" "AveExp" per gene                                                                 #
@@ -204,8 +208,6 @@ for (normalization_scheme in normalization_schemes)
             scatterplot3d(merged_expression_table_normalized_stage_III[,c("T2","Conections",normalization_scheme)], pch = 16,main="Stage III- Expression per patient")#
     dev.off()                                                                                                                                                         #
     ###################################################################################################################################################################
-    # Melt data.frame 
-    merged_expression_table_normalized_stage_all<-rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
   
     # Only Variable Labels on the outside (no axis labels)
     Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
@@ -218,6 +220,7 @@ for (normalization_scheme in normalization_schemes)
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
+    colnames(merged_expression_table_normalized_all_stages)[6]<-"Expr"
 
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
@@ -259,9 +262,9 @@ for (normalization_scheme in normalization_schemes)
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color =  "yellow")
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": All points Stage III Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "red") + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "yellow")    
     
-    m4 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("T2 All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-    m5 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Conections), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-    m6 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=Expr)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Expr), linetype="dashed", color = "red")    + ggtitle(paste("Expr. All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m4 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$T2), linetype="dashed", color = "red")    + ggtitle(paste("T2 All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m5 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$Conections), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m6 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Expr)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$Expr), linetype="dashed", color = "red")    + ggtitle(paste("Expr. All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
 
     # FindClusters_resolution               
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 20, res=600, units = "cm")  
