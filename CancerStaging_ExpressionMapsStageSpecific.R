@@ -1,4 +1,4 @@
-f#######################################################################################################################
+#######################################################################################################################
 #source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                               #
 #source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                                   #
 #######################################################################################################################
@@ -255,6 +255,7 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<100,]
     merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<100,]
     merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<100,]
+    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<100,]    
         
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)        + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "yellow")   +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color =   "yellow")   
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color =  "yellow")
@@ -265,7 +266,7 @@ for (normalization_scheme in normalization_schemes)
     m6 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Expr)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()         +      geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$Expr), linetype="dashed", color = "red")    + ggtitle(paste("Expr. All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
 
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 20, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 30, height = 25, res=600, units = "cm")  
             ggarrange(m1,m2,m3,m4,m5,m6, nrow = 2,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
       
