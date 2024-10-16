@@ -71,11 +71,38 @@ Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_df
 rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 
 # Filter by T2
-Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <85,]
+Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <=85,]
+Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=100,]
 
 # Filter by T2
 Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
 ####################################################################################################################################################
+# Path to files of selected_genes                                                                                                             # 
+# genes_stages_I
+selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
+
+rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
+rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
+rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
+
+selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
+selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
+selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
+#######################################################################################################################################                                                                                                                                     #
+unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
+unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
+unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
+#######################################################################################################################################
+# Set the field stages
+Interactomes_GC3_T2_merged$Stages<-"overllapping"
+
+Interactomes_GC3_T2_merged[unique_stage_I,"Stages"]<-"Stage I"
+Interactomes_GC3_T2_merged[unique_stage_II,"Stages"]<-"Stage II"
+Interactomes_GC3_T2_merged[unique_stage_III,"Stages"]<-"Stage III"
+#########################################################################################################################################    
+
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
 # FPKM, TPM  - take these as robust.
@@ -224,54 +251,35 @@ for (normalization_scheme in normalization_schemes)
     # Third with the z-score 
     #########################################################################################################################################
     # Filter up Average expression greater than zero
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0,]
+    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<100,]
+    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<100,]
+    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<100,]
         
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)        + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color = "yellow")   +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color =   "yellow")   
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color =  "yellow")
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": All points Stage III Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "red") + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "yellow")    
     
-    m4 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2 )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score  All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-    m5 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data=mean_sdl, geom="pointrange", color="red")+ theme_bw()  +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score  All points: ",normalization_scheme,sep=""))  +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-
-    
+    m4 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("T2 All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m5 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Conections), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m6 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=Expr)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Expr), linetype="dashed", color = "red")    + ggtitle(paste("Expr. All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
 
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,m4, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 20, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,m4,m5,m6, nrow = 2,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
-
-    # FindClusters_resolution               
-    png(filename=paste(output_dir,"boxplot_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 15, res=600, units = "cm")  
-            ggarrange(m4,m5,nrow = 1,ncol = 2, common.legend = TRUE, legend="bottom")
-    dev.off()    
-    #########################################################################################################################################    
-    # Filter up Average expression greater than zero
-    Interactomes_GC3_T2_selected_Stage_I  <-Interactomes_GC3_T2_selected_Stage_I[Interactomes_GC3_T2_selected_Stage_I$AveExp>0,]
-    Interactomes_GC3_T2_selected_Stage_II <-Interactomes_GC3_T2_selected_Stage_II[Interactomes_GC3_T2_selected_Stage_II$AveExp>0,]
-    Interactomes_GC3_T2_selected_Stage_III <-Interactomes_GC3_T2_selected_Stage_III[Interactomes_GC3_T2_selected_Stage_III$AveExp>0,]
-        
-    m1<-ggplot(Interactomes_GC3_T2_selected_Stage_I,   aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage I Average Expr.",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)    + geom_vline(xintercept=mean(Interactomes_GC3_T2_selected_Stage_I$Conections), linetype="dashed", color = "red")     +  geom_hline(yintercept=mean(Interactomes_GC3_T2_selected_Stage_I$T2), linetype="dashed", color = "red")    + geom_vline(xintercept=median(Interactomes_GC3_T2_selected_Stage_I$T2), linetype="dashed", color = "yellow")     +  geom_hline(yintercept=median(Interactomes_GC3_T2_selected_Stage_I$Conections),   linetype="dashed", color = "yellow")    
-    m2<-ggplot(Interactomes_GC3_T2_selected_Stage_II,  aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage II Average Expr.",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)   + geom_vline(xintercept=mean(Interactomes_GC3_T2_selected_Stage_II$Conections), linetype="dashed", color = "red")    +  geom_hline(yintercept=mean(Interactomes_GC3_T2_selected_Stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(Interactomes_GC3_T2_selected_Stage_II$T2), linetype="dashed", color = "yellow")    +  geom_hline(yintercept=median(Interactomes_GC3_T2_selected_Stage_II$Conections),  linetype="dashed", color = "yellow") 
-    m3<-ggplot(Interactomes_GC3_T2_selected_Stage_III, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III Average Expr.",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)  + geom_vline(xintercept=mean(Interactomes_GC3_T2_selected_Stage_III$Conections), linetype="dashed", color = "red")   +  geom_hline(yintercept=mean(Interactomes_GC3_T2_selected_Stage_III$T2), linetype="dashed", color = "red")  + geom_vline(xintercept=median(Interactomes_GC3_T2_selected_Stage_III$T2), linetype="dashed", color = "yellow")   +  geom_hline(yintercept=median(Interactomes_GC3_T2_selected_Stage_III$Conections), linetype="dashed", color = "yellow")
-    
-    # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_avg_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
-    dev.off()  
-    #########################################################################################################################################
-
-    #########################################################################################################################################
+      
     # Filter up Average expression greater than zero        
-    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()    + xlim(-1,1)+ylim(-0.1,0.1)      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2_z_score), linetype="dashed", color = "red")        + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$Conections_z_score), linetype="dashed", color = "yellow") 
-    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()    + xlim(-1,1)+ylim(-0.1,0.1)    + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "red")      + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "yellow")      
-    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()  +  xlim(-1,1)+ylim(-0.1,0.1)   + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "yellow")  
-  
-    
+    m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage I Z-score",sep=""))+ geom_contour()        + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2_z_score), linetype="dashed", color = "red")        + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$Conections_z_score), linetype="dashed", color = "yellow") 
+    m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "red")      + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "yellow")      
+    m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()    + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "yellow")  
+
+    m4 <- ggplot(merged_expression_table_normalized_all, aes(x=Stage, y=T2_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2_z_score), linetype="dashed", color = "red")    + ggtitle(paste("T2 z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m5 <- ggplot(merged_expression_table_normalized_all, aes(x=Stage, y=Conections_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Conections_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m6 <- ggplot(merged_expression_table_normalized_all, aes(x=Stage, y=Exp_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$Exp_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Expr. Z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+      
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 10, res=600, units = "cm")  
-            ggarrange(m1,m2,m3,nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
+    png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 20, res=600, units = "cm")  
+            ggarrange(m1,m2,m3,m4,m5,m6, nrow = 2,ncol = 3, common.legend = TRUE, legend="bottom")
     dev.off()  
     #########################################################################################################################################    
 }
@@ -465,7 +473,14 @@ for (normalization_scheme in normalization_schemes)
     #########################################################################################################################################    
   
 }
-#########################################################################################################################################    
+
+
+
+
+
+
+
+
 merged_expression_table_normalized_stage_I$Stage<-"Stage I"
 merged_expression_table_normalized_stage_II$Stage<-"Stage II"	
 merged_expression_table_normalized_stage_III$Stage<-"Stage III"
