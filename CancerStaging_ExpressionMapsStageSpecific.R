@@ -216,7 +216,7 @@ for (normalization_scheme in normalization_schemes)
 
     #########################################################################################################################################
     # Visualize: Specify the comparisons you want
-    my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"))
+    my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"), c("Stage I", "overllapping"),c("Stage II", "overllapping"),c("Stage III", "overllapping"))
     #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
@@ -232,8 +232,8 @@ for (normalization_scheme in normalization_schemes)
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color =  "yellow")
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,  ": Stage III Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "red") + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections), linetype="dashed", color = "yellow")    
     
-    m4 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2 )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score", normalization_scheme,sep=""))
-    m5 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data=mean_sdl, geom="pointrange", color="red")+ theme_bw()  +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score",normalization_scheme,sep=""))
+    m4 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2 )+ theme_bw()   +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score :", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m5 <- ggplot(Interactomes_GC3_T2_merged, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data=mean_sdl, geom="pointrange", color="red")+ theme_bw()  +  geom_hline(yintercept=median(Interactomes_GC3_T2_merged$T2), linetype="dashed", color = "red")    + ggtitle(paste("Z-score :",normalization_scheme,sep=""))  +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
 
     
 
@@ -243,7 +243,7 @@ for (normalization_scheme in normalization_schemes)
     dev.off()  
 
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"boxplot_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 20, height = 10, res=600, units = "cm")  
+    png(filename=paste(output_dir,"boxplot_melt_",normalization_scheme,"_Stage_all.png",sep=""), width = 25, height = 15, res=600, units = "cm")  
             ggarrange(m4,m5,nrow = 1,ncol = 2, common.legend = TRUE, legend="bottom")
     dev.off()    
     #########################################################################################################################################    
