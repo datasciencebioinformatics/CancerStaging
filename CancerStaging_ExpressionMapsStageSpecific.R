@@ -207,12 +207,12 @@ for (normalization_scheme in normalization_schemes)
     ###################################################################################################################################################################
   
     # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
+    #Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
     
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            Interactomes_GC3_T2_melt_Stage_all
-    dev.off()
+    #png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    #        Interactomes_GC3_T2_melt_Stage_all
+    #dev.off()
     ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
@@ -436,12 +436,12 @@ for (normalization_scheme in normalization_schemes)
     ###################################################################################################################################################################
   
     # Only Variable Labels on the outside (no axis labels)
-    Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
+    #Interactomes_GC3_T2_melt_Stage_all   <- ggpairs(merged_expression_table_normalized_stage_all[,c("T2","GC3",normalization_scheme,"Conections")], axisLabels = "none")
     
     # FindClusters_resolution
-    png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_unique_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
-            Interactomes_GC3_T2_melt_Stage_all
-    dev.off()
+    #png(filename=paste(output_dir,"correaltion_matrix_melt_",normalization_scheme,"_unique_stages_all.png",sep=""), width = 20, height = 20, res=600, units = "cm")  
+    #        Interactomes_GC3_T2_melt_Stage_all
+    #dev.off()
     ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
