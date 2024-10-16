@@ -152,7 +152,6 @@ for (normalization_scheme in normalization_schemes)
     unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
     unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
     unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
-    #######################################################################################################################################
     # Melt data.frame 
     merged_expression_table_normalized_all_stages <- rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
   
@@ -168,9 +167,16 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_I,"Stages"]<-"Stage I"
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_II,"Stages"]<-"Stage II"
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_III,"Stages"]<-"Stage III"
+
+    merged_expression_table_normalized_all_stages<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages != "overlapping",]
+    Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Stages != "overlapping",]
+
+    merged_expression_table_normalized_stage_I<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage I",]
+    merged_expression_table_normalized_stage_II<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage II",]
+    merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
     #########################################################################################################################################    
   
-   ###################################################################################################################################################################
+    ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
@@ -200,7 +206,6 @@ for (normalization_scheme in normalization_schemes)
 
     # Melt data.frame 
     merged_expression_table_normalized_all_stages <- rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
-  
 
     #########################################################################################################################################
     # Visualize: Specify the comparisons you want
