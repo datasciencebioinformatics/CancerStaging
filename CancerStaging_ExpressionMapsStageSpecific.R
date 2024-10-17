@@ -73,6 +73,8 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 # Filter by T2
 Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <=85,]
 Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=1600,]
+limit_expr=10000
+#limit_expr=100
 
 # Filter by T2
 Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
@@ -82,7 +84,7 @@ Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
@@ -190,10 +192,10 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
     merged_expression_table_normalized_stage_overlapping<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="overlapping",]
  
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<10000,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<10000,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<10000,]
-    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<10000,]    
+    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<limit_expr,]
+    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<limit_expr,]
+    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<limit_expr,]
+    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<limit_expr,]    
 
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
@@ -268,7 +270,7 @@ for (normalization_scheme in normalization_schemes)
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
@@ -405,10 +407,10 @@ for (normalization_scheme in normalization_schemes)
     # Third with the z-score 
     #########################################################################################################################################
     # Filter up Average expression greater than zero
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<10000,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<10000,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<10000,]
-    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<10000,]    
+    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<limit_expr,]
+    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<limit_expr,]
+    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<limit_expr,]
+    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<limit_expr,]    
         
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)        + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "yellow")   +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color =   "yellow")   
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color =  "yellow")
