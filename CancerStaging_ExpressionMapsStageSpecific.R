@@ -72,7 +72,7 @@ rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 
 # Filter by T2
 Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <=85,]
-Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=100,]
+Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=1600,]
 
 # Filter by T2
 Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
@@ -144,14 +144,15 @@ for (normalization_scheme in normalization_schemes)
     colnames(merged_expression_table_normalized_stage_II)[6]<-normalization_scheme
     colnames(merged_expression_table_normalized_stage_III)[6]<-normalization_scheme
 
+    #######################################################################################################################################                                                                                                                                     #
+    unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
+    unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
+    unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
     #########################################################################################################################################        
     selected_genes_Stage_I_gene      <- genes_stages_I
     selected_genes_Stage_II_gene     <- genes_stages_II
     selected_genes_Stage_III_gene    <- genes_stages_III
     #######################################################################################################################################                                                                                                                                     #
-    unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
-    unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
-    unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
     # Melt data.frame 
     merged_expression_table_normalized_all_stages <- rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
   
@@ -166,21 +167,33 @@ for (normalization_scheme in normalization_schemes)
 
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_I,"Stages"]<-"Stage I"
     merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_II,"Stages"]<-"Stage II"
-    merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_III,"Stages"]<-"Stage III"
-
-    merged_expression_table_normalized_all_stages<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages != "overlapping",]
-    Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Stages != "overlapping",]
-
-    merged_expression_table_normalized_stage_I<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage I",]
-    merged_expression_table_normalized_stage_II<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage II",]
-    merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
+    merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$ENSEMBL %in% unique_stage_III,"Stages"]<-"Stage III"    
     #########################################################################################################################################    
   
     ###################################################################################################################################################################
     colnames(merged_expression_table_normalized_stage_I)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_II)[6]<-"Expr"
     colnames(merged_expression_table_normalized_stage_III)[6]<-"Expr"
-    colnames(merged_expression_table_normalized_all_stages)[6]<-"Expr"
+    colnames(merged_expression_table_normalized_all_stages)[6]<-"Expr"    
+    #########################################################################################################################################
+    # Visualize: Specify the comparisons you want
+    my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"), c("Stage I", "overlapping"),c("Stage II", "overlapping"),c("Stage III", "overlapping"))
+    #########################################################################################################################################
+    # Three countour plots will be created
+    # One with the average expression
+    # Second with the expression per patient
+    # Third with the z-score 
+    #########################################################################################################################################
+    # Filter up Average expression greater than zero
+    merged_expression_table_normalized_stage_I<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage I",]
+    merged_expression_table_normalized_stage_II<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage II",]
+    merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
+    merged_expression_table_normalized_stage_overlapping<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="overlapping",]
+ 
+    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<100,]
+    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<100,]
+    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<100,]
+    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<100,]    
 
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
@@ -204,23 +217,12 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_III$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_III$Conections,  mean(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$Conections, na.rm = TRUE))    
     merged_expression_table_normalized_stage_III$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_III$T2,          mean(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_III$T2, na.rm = TRUE))        
 
-    # Melt data.frame 
-    merged_expression_table_normalized_all_stages <- rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III)
+    merged_expression_table_normalized_stage_overlapping$Exp_z_score        <-  calculate_z(merged_expression_table_normalized_stage_overlapping$Expr,        mean(merged_expression_table_normalized_stage_overlapping$Expr, na.rm = TRUE),sd(merged_expression_table_normalized_stage_overlapping$Expr, na.rm = TRUE))  
+    merged_expression_table_normalized_stage_overlapping$Conections_z_score <-  calculate_z(merged_expression_table_normalized_stage_overlapping$Conections,  mean(merged_expression_table_normalized_stage_overlapping$Conections, na.rm = TRUE),sd(merged_expression_table_normalized_stage_overlapping$Conections, na.rm = TRUE))    
+    merged_expression_table_normalized_stage_overlapping$T2_z_score         <-  calculate_z(merged_expression_table_normalized_stage_overlapping$T2,          mean(merged_expression_table_normalized_stage_overlapping$T2, na.rm = TRUE),sd(merged_expression_table_normalized_stage_overlapping$T2, na.rm = TRUE))        
 
-    #########################################################################################################################################
-    # Visualize: Specify the comparisons you want
-    my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"), c("Stage I", "overlapping"),c("Stage II", "overlapping"),c("Stage III", "overlapping"))
-    #########################################################################################################################################
-    # Three countour plots will be created
-    # One with the average expression
-    # Second with the expression per patient
-    # Third with the z-score 
-    #########################################################################################################################################
-    # Filter up Average expression greater than zero
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<100,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<100,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<100,]
-    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<100,]    
+    merged_expression_table_normalized_all_stages<-rbind(merged_expression_table_normalized_stage_I,merged_expression_table_normalized_stage_II,merged_expression_table_normalized_stage_III, merged_expression_table_normalized_stage_overlapping)  
+  
         
     m1<-ggplot(merged_expression_table_normalized_stage_I, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)        + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_I$Conections), linetype="dashed", color = "yellow")   +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_I$T2), linetype="dashed", color =   "yellow")   
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections, T2, z = Expr))  + geom_point(aes(colour=Expr)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ geom_contour()  + xlim(0, 50) + ylim(0, 60)       + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color = "red")   + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$T2), linetype="dashed", color =  "yellow")
@@ -240,9 +242,9 @@ for (normalization_scheme in normalization_schemes)
     m2<-ggplot(merged_expression_table_normalized_stage_II, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage II Z-score",sep=""))+ geom_contour()      + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "red")      + geom_vline(xintercept=median(merged_expression_table_normalized_stage_II$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_II$Conections_z_score), linetype="dashed", color = "yellow")      
     m3<-ggplot(merged_expression_table_normalized_stage_III, aes(Conections_z_score, T2_z_score, z = Exp_z_score))  + geom_point(aes(colour=Exp_z_score)) + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": Stage III Z-score",sep=""))+ geom_contour()    + geom_vline(xintercept=mean(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "red") +  geom_hline(yintercept=mean(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "red")     + geom_vline(xintercept=median(merged_expression_table_normalized_stage_III$T2_z_score), linetype="dashed", color = "yellow") +  geom_hline(yintercept=median(merged_expression_table_normalized_stage_III$Conections_z_score), linetype="dashed", color = "yellow")  
 
-    m4 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=T2_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$T2_z_score), linetype="dashed", color = "red")    + ggtitle(paste("T2 z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-    m5 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Conections_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$Conections_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
-    m6 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Exp_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()          +  geom_hline(yintercept=median(merged_expression_table_normalized_all_stages$Exp_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Expr. Z-score: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")
+    m4 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=T2_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           +  geom_hline(yintercept=mean(merged_expression_table_normalized_all_stages$T2_z_score), linetype="dashed", color = "red")    + ggtitle(paste("T2 z-score: ", normalization_scheme,sep="")) 
+    m5 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Conections_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()   +  geom_hline(yintercept=mean(merged_expression_table_normalized_all_stages$Conections_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Connectivity z-score: ", normalization_scheme,sep="")) 
+    m6 <- ggplot(merged_expression_table_normalized_all_stages, aes(x=Stages, y=Exp_z_score)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()          +  geom_hline(yintercept=mean(merged_expression_table_normalized_all_stages$Exp_z_score), linetype="dashed", color = "red")    + ggtitle(paste("Expr. Z-score: ", normalization_scheme,sep="")) 
       
     # FindClusters_resolution               
     png(filename=paste(output_dir,"countour_T2_Coonections_zscore_",normalization_scheme,"_Stage_all.png",sep=""), width = 30, height = 25, res=600, units = "cm")  
