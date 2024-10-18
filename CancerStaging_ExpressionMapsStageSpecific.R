@@ -248,9 +248,10 @@ for (normalization_scheme in normalization_schemes)
     dev.off()    
   
   # Histograms for T2
-  h1<-ggplot(unique(merged_expression_table_normalized_all_sel[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=T2, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()     + xlim(0, 50)
-  h2<-ggplot(unique(merged_expression_table_normalized_all_sel[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=GC3, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()    + xlim(0, 100)
-  h3<-ggplot(unique(merged_expression_table_normalized_all_sel[,c("ENSEMBL","T2","Expr","Stages")]), aes(x=Expr, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()  + xlim(0, 10000)
+  
+  h1<-ggplot(unique(merged_expression_table_normalized_all_stages[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=T2, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()     + xlim(0, 50)
+  h2<-ggplot(unique(merged_expression_table_normalized_all_stages[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=GC3, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()    + xlim(0, 100)
+  h3<-ggplot(unique(merged_expression_table_normalized_all_stages[,c("ENSEMBL","T2","Expr","Stages")]), aes(x=Expr, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity") + theme_bw()  + xlim(0, 10000)
 
   # FindClusters_resolution               
   png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_histogram.png",sep=""), width = 25, height = 15, res=600, units = "cm")            
