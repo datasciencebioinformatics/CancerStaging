@@ -71,9 +71,9 @@ Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_df
 rownames(Interactomes_GC3_T2_merged)<-Interactomes_GC3_T2_merged$ENSEMBL
 
 # Filter by T2
-Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <=85,]
-Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=1600,]
-limit_expr=10000
+#Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$T2 <=85,]
+#Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merged$Conections <=1600,]
+#limit_expr=10000
 #limit_expr=100
 
 # Filter by T2
