@@ -193,10 +193,10 @@ for (normalization_scheme in normalization_schemes)
     merged_expression_table_normalized_stage_III<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="Stage III",]
     merged_expression_table_normalized_stage_overlapping<-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Stages=="overlapping",]
  
-    merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<limit_expr,]
-    merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<limit_expr,]
-    merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<limit_expr,]
-    merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<limit_expr,]    
+    #merged_expression_table_normalized_stage_I  <-merged_expression_table_normalized_stage_I[merged_expression_table_normalized_stage_I$Expr>0 & merged_expression_table_normalized_stage_I$Expr<limit_expr,]
+    #merged_expression_table_normalized_stage_II <-merged_expression_table_normalized_stage_II[merged_expression_table_normalized_stage_II$Expr>0 & merged_expression_table_normalized_stage_II$Expr<limit_expr,]
+    #merged_expression_table_normalized_stage_III <-merged_expression_table_normalized_stage_III[merged_expression_table_normalized_stage_III$Expr>0  & merged_expression_table_normalized_stage_III$Expr<limit_expr,]
+    #merged_expression_table_normalized_all_stages <-merged_expression_table_normalized_all_stages[merged_expression_table_normalized_all_stages$Expr>0  & merged_expression_table_normalized_all_stages$Expr<limit_expr,]    
 
     # Conections, T2, AvgExpression
     # Combine AvgExpression, Conections, T2
