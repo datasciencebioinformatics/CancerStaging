@@ -202,6 +202,16 @@ for (normalization_scheme in normalization_schemes)
             plot<-ggarrange(m4, m5, m6, m7, m8, m9, m10, m11,m12, m1,m2,m3, nrow = 4,ncol = 3, common.legend = TRUE, legend="bottom")
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()  
+
+    h1<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=T2, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity", bins=5) + theme_bw()     + xlim(0, 50)
+    h2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Stages")]), aes(x=GC3, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity", bins=5) + theme_bw()    + xlim(0, 100)
+    h3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Stages")]), aes(x=AveExp, color=Stages)) +  geom_histogram(fill="white", alpha=0.5, position="identity", bins=5) + theme_bw()  + xlim(0, 10000)
+    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_histogram.png",sep=""), width = 25, height = 15, res=600, units = "cm")            
+          plot<-ggarrange(h1, h2, h3, nrow = 1, common.legend = TRUE, legend="bottom") 
+          annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14))  
+    dev.off()    
 }
 
 
