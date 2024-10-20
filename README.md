@@ -59,7 +59,7 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpeci
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
 #### 14- Create Expression maps ExpressionMaps
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMapsStageSpecific.R")
 
 #### 15- Summarty of metadata
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_MetadataSummary.R")
