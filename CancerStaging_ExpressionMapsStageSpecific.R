@@ -78,7 +78,11 @@ Interactomes_GC3_T2_merged<-Interactomes_GC3_T2_merged[Interactomes_GC3_T2_merge
 
 # Filter by T2
 Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
-####################################################################################################################################################
+################################################################################################################################
+saveRDS(object = Interactomes_GC3_T2_merged, file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))                 #
+saveRDS(object = normalization_schemes    , file = paste(output_dir,"normalization_schemes.rds",sep=""))                       #
+saveRDS(object = expression_table_normalized    , file = paste(output_dir,"expression_table_normalized.rds",sep=""))           # 
+################################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
 # FPKM, TPM  - take these as robust.
@@ -91,6 +95,10 @@ Interactomes_GC3_T2_merged<-na.omit(Interactomes_GC3_T2_merged)
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm")
 normalization_schemes<-c("tpm","tmm")
 
+
+
+
+
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {     
@@ -100,7 +108,7 @@ for (normalization_scheme in normalization_schemes)
     genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
   
     # Take also expression data from the normalization scheme set by "normalization_scheme"
-    expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
+    expression_table_normalized<-expression_table_normalized[[normalization_scheme]]
 
     # Stage specific genes from each stage
     expression_table_normalized_stage_I  <-expression_table_normalized[genes_stages_I,list_of_comparisson[["sample_stage_I"]]]
