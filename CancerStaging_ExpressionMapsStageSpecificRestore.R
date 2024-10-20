@@ -8,13 +8,6 @@ normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_sche
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
 list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
 ###########################################################################################################
-# Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
-# Consitency - check filters meticulously.
-# FPKM, TPM  - take these as robust.
-# Paramter to set the normalization_scheme
-normalization_schemes<-c("tpm","fpkm","tmm","rpkm")
-normalization_schemes<-c("tpm","tmm")
-
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {     
