@@ -123,6 +123,11 @@ for (normalization_scheme in normalization_schemes)
     h2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) +geom_density() +  theme_bw()    + xlim(0, 100)
     h3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=AveExp, color=Stages)) + geom_density() +  theme_bw()  + xlim(0, 10000)
     h4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages)) + geom_density() +  theme_bw()  + xlim(0, 10000)
+
+    i1<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_density() +   theme_bw()     + xlim(0, 50)
+    i2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) +geom_density() +  theme_bw()    + xlim(0, 100)
+    i3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=AveExp, color=Stages)) + geom_density() +  theme_bw()  + xlim(0, 10000)
+    i4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages)) + geom_density() +  theme_bw()  + xlim(0, 10000)    
     
     # FindClusters_resolution               
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_histogram.png",sep=""), width = 30, height = 15, res=600, units = "cm")            
