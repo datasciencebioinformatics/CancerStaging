@@ -135,3 +135,35 @@ for (normalization_scheme in normalization_schemes)
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
     dev.off()    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Merge dataset GC3_T2 with Expression Stage I
+Interactomes_GC3_T2_expr_stageI_unique<-cbind(Interactomes_GC3_T2_merged[unique_stage_I,],expression_table_normalized[unique_stage_I,list_of_comparisson[["sample_stage_I"]]])
+
+# Merge dataset GC3_T2 with Expression Stage II
+Interactomes_GC3_T2_expr_stageII_unique<-cbind(Interactomes_GC3_T2_merged[unique_stage_II,],expression_table_normalized[unique_stage_II,list_of_comparisson[["sample_stage_II"]]])
+
+# Merge dataset GC3_T2 with Expression Stage III
+Interactomes_GC3_T2_expr_stageIII_unique<-cbind(Interactomes_GC3_T2_merged[unique_stage_III,],expression_table_normalized[unique_stage_III,list_of_comparisson[["sample_stage_III"]]])
+
+# Melt data.frames
+Interactomes_GC3_T2_expr_stageI_unique   <-na.omit(melt(Interactomes_GC3_T2_expr_stageI_unique, id = c("T2", "GC3", "Conections", "ENSEMBL")))
+Interactomes_GC3_T2_expr_stageII_unique  <-na.omit(melt(Interactomes_GC3_T2_expr_stageII_unique, id = c("T2", "GC3", "Conections", "ENSEMBL")))
+Interactomes_GC3_T2_expr_stageIII_unique <-na.omit(melt(Interactomes_GC3_T2_expr_stageIII_unique, id = c("T2", "GC3", "Conections", "ENSEMBL")))
+
+
+t1<-ggplot(Interactomes_GC3_T2_expr_stageI_unique, aes(Conections, T2, z = value))   + geom_density_2d_filled(alpha = 0.5) + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points only Stage I genes Expr. ",sep=""))+  geom_vline(xintercept=mean(Interactomes_GC3_T2_expr_stageI_unique$T2), linetype="dashed", color = "red")   +  geom_hline(yintercept=mean(Interactomes_GC3_T2_expr_stageI_unique$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(Interactomes_GC3_T2_expr_stageI_unique$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(Interactomes_GC3_T2_expr_stageI_unique$T2), linetype="dashed", color =   "yellow")   + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  
+t2<-ggplot(Interactomes_GC3_T2_expr_stageII_unique, aes(Conections, T2, z = value))   + geom_density_2d_filled(alpha = 0.5) + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points only Stage II genes Expr. ",sep=""))+  geom_vline(xintercept=mean(Interactomes_GC3_T2_expr_stageII_unique$T2), linetype="dashed", color = "red")   +  geom_hline(yintercept=mean(Interactomes_GC3_T2_expr_stageII_unique$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(Interactomes_GC3_T2_expr_stageII_unique$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(Interactomes_GC3_T2_expr_stageII_unique$T2), linetype="dashed", color =   "yellow")   + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))
+t3<-ggplot(Interactomes_GC3_T2_expr_stageIII_unique, aes(Conections, T2, z = value))   + geom_density_2d_filled(alpha = 0.5) + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points only Stage III genes Expr. ",sep=""))+  geom_vline(xintercept=mean(Interactomes_GC3_T2_expr_stageIII_unique$T2), linetype="dashed", color = "red")   +  geom_hline(yintercept=mean(Interactomes_GC3_T2_expr_stageIII_unique$T2), linetype="dashed", color = "red")     + geom_vline(xintercept=median(Interactomes_GC3_T2_expr_stageIII_unique$Conections), linetype="dashed", color = "yellow")  +  geom_hline(yintercept=median(Interactomes_GC3_T2_expr_stageIII_unique$T2), linetype="dashed", color =   "yellow")   + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))
+
