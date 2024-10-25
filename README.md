@@ -58,6 +58,11 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpeci
 #### 13- Calculate shannon entrpopy for each stage
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
+
+Gene expressions were assessed in combination with the gene conectivity (number of conections a gene has in the interactome), the GC levels of third codon positions (GC3) and Thymine composition in second codon position (T2). For each gene, we assessed both the average gene expression among all patients per stage, and also the expression per patients of each stage. For the assessement, box plots with gene expression are shown. In addition to 3D dotplots, countour plots and density plots were created with either T2 and GC3. Finally histograms, were generated.
+
+As expressões de cada gêne foram avaliadas em combinação com a conectividade (número de conexões que um gene possui no interactoma), os níveis de GC nas posições do terceiro códon (GC3), e a composição da timina na posição do segundo códon (T2). Para cada gene, avaliamos tanto a expressão gênica média entre todos os pacientes por estágio, quanto a expressão por pacientes de cada estágio. Para a avaliação, são mostrados box plots com expressão gênica. Além dos gráficos de pontos 3D, gráficos de contagem e gráficos de densidade foram criados com T2 e GC3. Finalmente foram gerados histogramas.
+
 #### 14- Create Expression maps ExpressionMaps
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMapsStageSpecific.R")
 
