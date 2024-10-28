@@ -71,9 +71,9 @@ for (normalization_scheme in normalization_schemes)
     colnames(Interactomes_GC3_T2_merged_all_patient)[4]<-normalization_scheme
 
     # Take values from each stage
-    Interactomes_GC3_T2_merged_Stage_I<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage I",]
-    Interactomes_GC3_T2_merged_Stage_II<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage II",]
-    Interactomes_GC3_T2_merged_Stage_III<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage III",]
+    Interactomes_GC3_T2_merged_Stage_I_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage I",]
+    Interactomes_GC3_T2_merged_Stage_II_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage II",]
+    Interactomes_GC3_T2_merged_Stage_III_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage III",]
     #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
