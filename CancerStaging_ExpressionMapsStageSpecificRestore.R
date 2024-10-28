@@ -64,15 +64,25 @@ for (normalization_scheme in normalization_schemes)
     # Take ensembl ids
     ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
 
-    # I stopped here
-    
+    # Copy the epxression table
+    expression_table_normalized_cp<-expression_table_normalized[ENSEMBL_IDs,]
+
+    # Add ENSEMBL to the table
+    expression_table_normalized_cp$ENSEMBL<-rownames(expression_table_normalized_cp)
+
+    # Melt table
+    expression_table_normalized_melt<-melt(expression_table_normalized_cp,ids="ENSEMBL")
+
+    # Merge tables
+    expression_table_normalized_melt<-merge(expression_table_normalized_melt,Interactomes_GC3_T2_merged_all,by="ENSEMBL")
+
     # Rename collumns
-    colnames(Interactomes_GC3_T2_merged_all_patient)[4]<-normalization_scheme
+    colnames(expression_table_normalized_melt)[3]<-normalization_scheme
 
     # Take values from each stage
-    Interactomes_GC3_T2_merged_Stage_I_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage I",]
-    Interactomes_GC3_T2_merged_Stage_II_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage II",]
-    Interactomes_GC3_T2_merged_Stage_III_patient<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage III",]
+    Interactomes_GC3_T2_merged_Stage_I_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage I",]
+    Interactomes_GC3_T2_merged_Stage_II_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage II",]
+    Interactomes_GC3_T2_merged_Stage_III_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage III",]
     #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
