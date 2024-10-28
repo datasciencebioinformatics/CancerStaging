@@ -61,6 +61,20 @@ for (normalization_scheme in normalization_schemes)
     # Merge Stages
     Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
     #########################################################################################################################################
+    # Take ensembl ids
+    ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
+
+    # Merge data.frame
+    Interactomes_GC3_T2_merged_all_patient<-melt(cbind(Interactomes_GC3_T2_merged_all[ENSEMBL_IDs,],expression_table_normalized[ENSEMBL_IDs,]),ids=colnames(Interactomes_GC3_T2_merged_all))
+
+    # Rename collumns
+    colnames(Interactomes_GC3_T2_merged_all_patient)[4]<-normalization_scheme
+
+    # Take values from each stage
+    Interactomes_GC3_T2_merged_Stage_I<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage I",]
+    Interactomes_GC3_T2_merged_Stage_II<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage II",]
+    Interactomes_GC3_T2_merged_Stage_III<-Interactomes_GC3_T2_merged_all_patient[Interactomes_GC3_T2_merged_all_patient$Stages == "Stage III",]
+    #########################################################################################################################################
     # Three countour plots will be created
     # One with the average expression
     # Second with the expression per patient
