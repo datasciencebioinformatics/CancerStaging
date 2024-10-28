@@ -231,7 +231,8 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
-    # FindClusters_resolution              png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
+    # FindClusters_resolution              
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
             plot<-ggarrange(boxplots_plot, dotplot_plot ,countour_plot,density_plot,  nrow = 4,ncol = 1, common.legend = TRUE, legend="bottom")
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
@@ -271,7 +272,8 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
-    # FindClusters_resolution              png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
+    # FindClusters_resolution              
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
             plot<-ggarrange(boxplots_plot, dotplot_plot ,countour_plot,density_plot,  nrow = 4,ncol = 1, common.legend = TRUE, legend="bottom")
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
@@ -293,22 +295,6 @@ for (normalization_scheme in normalization_schemes)
           plot<-ggarrange(h1, h2, h3,h4,i1, i2, i3, i4, nrow = 2, ncol=4, common.legend = TRUE, legend="bottom") 
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
     dev.off()        
-
-    
-    
-    
-    
-    
-    
-        
-
-
-
-
-
-
-
-
 
     
 }
