@@ -64,9 +64,8 @@ for (normalization_scheme in normalization_schemes)
     # Take ensembl ids
     ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
 
-    # Merge data.frame
-    Interactomes_GC3_T2_merged_all_patient<-melt(cbind(Interactomes_GC3_T2_merged_all[ENSEMBL_IDs,],expression_table_normalized[ENSEMBL_IDs,]),ids=colnames(Interactomes_GC3_T2_merged_all))
-
+    # I stopped here
+    
     # Rename collumns
     colnames(Interactomes_GC3_T2_merged_all_patient)[4]<-normalization_scheme
 
