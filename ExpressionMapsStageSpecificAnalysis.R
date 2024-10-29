@@ -60,19 +60,19 @@ for (normalization_scheme in normalization_schemes)
 
     # Merge Stages
     Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
-    #########################################################################################################################################
-    Interactomes_GC3_T2_merged_all$AveExp
-    Interactomes_GC3_T2_merged_all[,c("T2","GC3","Conections","AveExp")]
-    
+    #########################################################################################################################################   
     pca_res_T2_Connections <- prcomp(Interactomes_GC3_T2_merged_all[,c("T2","Conections","AveExp")], scale. = TRUE) 
     pca_res_GC3_Connections <- prcomp(Interactomes_GC3_T2_merged_all[,c("GC3","Conections","AveExp")], scale. = TRUE) 
     
-    pca_T2  <-autoplot(pca_res, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("T2, Conections, AveExp")
-    pca_GC3 <-autoplot(pca_res, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("GC3, Conections, AveExp")
+    pca_T2  <-autoplot(pca_res_T2_Connections, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("T2, Conections, AveExp")
+    pca_GC3 <-autoplot(pca_res_GC3_Connections, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("GC3, Conections, AveExp")
 
-    pca_res <- prcomp(Interactomes_GC3_T2_merged_all[,c("T2","Conections","AveExp")], scale. = TRUE) 
-    autoplot(pca_res, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw()
+    # Arrange density plot
+    pcas_plot<-ggarrange(pca_T2, pca_GC3, nrow = 1,ncol = 2, common.legend = TRUE, legend="bottom")  
+       
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas.png",sep=""), width = 20, height = 10, res=1200, units = "cm")          
+        print(annotate_figure(pcas_plot, top = text_grob(paste(normalization_scheme,TCGA_project,sep=" : "), face = "bold", size = 14)))
+    dev.off()    
 
-
-    
 }
