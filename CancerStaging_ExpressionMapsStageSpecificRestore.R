@@ -112,9 +112,9 @@ for (normalization_scheme in normalization_schemes)
     ## Arrange density plot
     #dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
   
-    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "yellow", high = "red")
-    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "yellow", high = "red")
-    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "yellow", high = "red")
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "red", high = "yellow")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "red", high = "yellow")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + geom_point(aes(colour=AveExp)) + scale_colour_gradient(low = "red", high = "yellow")
 
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
@@ -168,9 +168,9 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     #dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
   
-    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3) 
-    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3)
-    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3)
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3) + scale_colour_gradient(low = "red", high = "yellow")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)           +   guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(25, 85, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85)) + geom_point(aes(colour=AveExp), size=3) + scale_colour_gradient(low = "red", high = "yellow")
 
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
@@ -225,18 +225,18 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
   
-    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))
-    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))
-    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
 
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
-    # FindClusters_resolution              
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
-            plot<-ggarrange(boxplots_plot, dotplot_plot ,countour_plot,density_plot,  nrow = 4,ncol = 1, common.legend = TRUE, legend="bottom")
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+            plot<-ggarrange(countour_plot,density_plot,  nrow = 2,ncol = 1, common.legend = TRUE, legend="bottom")
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
-    dev.off()
+    dev.off()    
     
     
     # Implementing the Z score formula in R is quite straightforward. 
@@ -266,19 +266,27 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
   
-    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections,  GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))
-    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, GC3, z = AveExp))  +  theme_bw()  + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(25,85)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))
-    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections,GC3, z = AveExp))  +  theme_bw()  + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(25,85)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections,  GC3, z = AveExp))   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(25,85)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))  + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, GC3, z = AveExp))  +  theme_bw()  + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(25,85)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))  + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections,GC3, z = AveExp))  +  theme_bw()  + ggtitle(paste(normalization_scheme,   ": All points Stage III Expr. ",sep=""))   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(25,85)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(25, 85, by = 10), limits = c(25, 85))  + geom_point(aes(colour=AveExp), size=3)  + scale_colour_gradient(low = "red", high = "yellow")
 
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
-    # FindClusters_resolution              
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3_perPatient.png",sep=""), width = 30, height = 50, res=600, units = "cm")  
-            plot<-ggarrange(boxplots_plot, dotplot_plot ,countour_plot,density_plot,  nrow = 4,ncol = 1, common.legend = TRUE, legend="bottom")
-            print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
-    dev.off()
 
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3_perPatient.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+            plot<-ggarrange(countour_plot,density_plot,  nrow = 2,ncol = 1, common.legend = TRUE, legend="bottom")
+            print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()       
+
+    # Arrange density plot
+    boxplots_plot<-ggarrange(m4, m5, m6, m7, nrow = 1,ncol = 4, common.legend = TRUE, legend="bottom")    
+
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots_perpatient.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
+        boxplots_plot
+    dev.off()
     
     h1<-ggplot(unique(expression_table_normalized_melt[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_density() +   theme_bw()     + xlim(0, 50)
     h2<-ggplot(unique(expression_table_normalized_melt[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) +geom_density() +  theme_bw()    + xlim(0, 100)
