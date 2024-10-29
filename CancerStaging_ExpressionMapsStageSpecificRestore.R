@@ -295,9 +295,3 @@ for (normalization_scheme in normalization_schemes)
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
     dev.off()            
 }
-
-
-
-
-
-
