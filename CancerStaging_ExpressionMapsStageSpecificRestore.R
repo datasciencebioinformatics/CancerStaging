@@ -278,7 +278,6 @@ for (normalization_scheme in normalization_schemes)
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
 
-
     
     h1<-ggplot(unique(expression_table_normalized_melt[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_density() +   theme_bw()     + xlim(0, 50)
     h2<-ggplot(unique(expression_table_normalized_melt[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) +geom_density() +  theme_bw()    + xlim(0, 100)
@@ -294,9 +293,7 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram_perpatient.png",sep=""), width = 30, height = 30, res=600, units = "cm")            
           plot<-ggarrange(h1, h2, h3,h4,i1, i2, i3, i4, nrow = 2, ncol=4, common.legend = TRUE, legend="bottom") 
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
-    dev.off()        
-
-    
+    dev.off()            
 }
 
 
