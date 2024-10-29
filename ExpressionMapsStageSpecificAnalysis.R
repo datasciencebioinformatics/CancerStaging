@@ -15,6 +15,22 @@ for (normalization_scheme in normalization_schemes)
     genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
     genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
     genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+
+    # Take unique I, II and II
+    unique_stage_I  =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_stages_III)),genes_stages_I)
+    unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
+    unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
+
+    # data.frame
+    df_genes_stages<-data.frame(genes=unique(c(genes_stages_I,genes_stages_II,genes_stages_III)),Stages="overlapping")
+
+    # Stages
+    rownames(df_genes_stages)<-df_genes_stages$genes
+        
+    df_genes_stage_I   <-data.frame(genes_stages_I,stage="Stage I")
+    df_genes_stage_II  <-data.frame(genes_stages_I,stage="Stage II")
+    df_genes_stage_III <-data.frame(genes_stages_I,stage="Stage III")
+
   
     # Take also expression data from the normalization scheme set by "normalization_scheme"
     expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
