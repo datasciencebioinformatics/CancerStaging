@@ -285,8 +285,17 @@ for (normalization_scheme in normalization_schemes)
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()       
 
+
+
+    m4 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()            + ggtitle(paste("T2", normalization_scheme,sep=" : "))                   +  stat_compare_means(comparisons = my_comparisons, method = "t.test")  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))
+    m5 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()    + ggtitle(paste("Connectivity", normalization_scheme,sep=" : ")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")          + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12)) 
+    m6 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=AveExp)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()        + ggtitle(paste("Expr.", normalization_scheme,sep=" : "))          +  stat_compare_means(comparisons = my_comparisons, method = "t.test")        + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))
+    m7 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=GC3)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()           + ggtitle(paste("GC3", normalization_scheme,sep=" : "))          +  stat_compare_means(comparisons = my_comparisons, method = "t.test")             + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))
+
     # Arrange density plot
     boxplots_plot<-ggarrange(m4, m5, m6, m7, nrow = 1,ncol = 4, common.legend = TRUE, legend="bottom")    
+
+
 
     # FindClusters_resolution          
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots_perpatient.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
