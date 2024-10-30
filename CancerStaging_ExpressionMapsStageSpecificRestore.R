@@ -139,7 +139,7 @@ for (normalization_scheme in normalization_schemes)
 
     # FindClusters_resolution          
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
-        boxplots_plot
+        print(boxplots_plot)
     dev.off()
     
     
@@ -289,7 +289,7 @@ for (normalization_scheme in normalization_schemes)
 
     # FindClusters_resolution          
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots_perpatient.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
-        boxplots_plot
+        print(boxplots_plot)
     dev.off()
     
     h1<-ggplot(unique(expression_table_normalized_melt[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_density() +   theme_bw()     + xlim(0, 50)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
