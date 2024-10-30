@@ -89,11 +89,11 @@ for (normalization_scheme in normalization_schemes)
 
     pca_res_GC3_Connections_z_score <- prcomp(Interactomes_GC3_T2_merged_all[,c("T2_score","GC3_score","AveExp_score")], scale. = TRUE) 
     
-    pca_T2_zscore  <-autoplot(pca_res_GC3_Connections_z_score, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("Z-score T2, Z-score Conections, Z-score AveExp")
+    pca_T2_zscore  <-autoplot(pca_res_GC3_Connections_z_score, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle(paste(normalization_scheme,"Z-score T2, Z-score Conections, Z-score AveExp",sep=" : "))
     
        
     # FindClusters_resolution          
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_zscore.png",sep=""), width = 8, height = 8, res=1200, units = "cm")          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_zscore.png",sep=""), width = 12, height = 12, res=1200, units = "cm")          
         pca_T2_zscore
     dev.off()    
     
