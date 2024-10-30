@@ -21,6 +21,7 @@ calculate_z <- function(X, X_mean, S)
 library(ggplot2)
 library("readr")
 library("reshape2")
+library(ggfortify)
 #library(AnnotationHub)
 #library (edgeR)
 #library (EDASeq)
@@ -40,6 +41,7 @@ library("reshape2")
 library("ggpubr")
 library("gridExtra")
 #library("ggVennDiagram")
+
 
 
 #library(metR)
