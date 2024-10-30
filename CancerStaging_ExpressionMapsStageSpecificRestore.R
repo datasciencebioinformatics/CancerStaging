@@ -8,9 +8,6 @@ normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_sche
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
 list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
 ###########################################################################################################
-# Data frame to store genes and stages                                                                    #
-df_genes_stage<-data.frame(Genes=c(),Normalization_scheme=c())                                            #
-###########################################################################################################
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {     
@@ -66,9 +63,6 @@ for (normalization_scheme in normalization_schemes)
     
     # Merge Stages
     Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
-    ###########################################################################################################
-    # Data frame to store genes and stages                                                                    #
-    df_genes_stage<-rbind(df_genes_stage,data.frame(Genes=unique(c(unique_stage_I,unique_stage_II,unique_stage_III)),Normalization_scheme=normalization_scheme))
     ###########################################################################################################
     # Take ensembl ids
     ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
