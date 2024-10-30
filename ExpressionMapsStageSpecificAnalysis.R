@@ -81,6 +81,12 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas.png",sep=""), width = 20, height = 10, res=1200, units = "cm")          
         print(annotate_figure(pcas_plot, top = text_grob(paste(normalization_scheme,TCGA_project,sep=" : "), face = "bold", size = 14)))
     dev.off()    
+    #########################################################################################################################################   
+    # Transform values into z-score
+
+
+
+    
 }
 # Merge data.frame to analyze normalization schemes
 df_genes_stage<-merge(df_genes_stage,Interactomes_GC3_T2_merged_all,by="ENSEMBL")
