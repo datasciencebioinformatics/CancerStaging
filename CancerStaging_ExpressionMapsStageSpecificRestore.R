@@ -179,7 +179,7 @@ for (normalization_scheme in normalization_schemes)
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_GC3.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             plot<-ggarrange(countour_plot,density_plot,  nrow = 2,ncol = 1, common.legend = TRUE, legend="bottom")
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
@@ -195,7 +195,7 @@ for (normalization_scheme in normalization_schemes)
     i4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()  + xlim(0, 10000)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
     
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 30, height = 30, res=600, units = "cm")            
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 30, height = 15, res=600, units = "cm")            
           plot<-ggarrange(h1, h2, h3,h4,i1, i2, i3, i4, nrow = 2, ncol=4, common.legend = TRUE, legend="bottom") 
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
     dev.off()        
