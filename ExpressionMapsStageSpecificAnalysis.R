@@ -86,12 +86,12 @@ for (normalization_scheme in normalization_schemes)
 df_genes_stage<-merge(df_genes_stage,Interactomes_GC3_T2_merged_all,by="ENSEMBL")
 
 # Merge data.frame to analyze normalization schemes
-pca_res_df_genes_stage <- prcomp(df_genes_stage[,c("T2","GC3","Conections","AveExp")], scale. = TRUE) 
+pca_res_df_genes_stage <- prcomp(df_genes_stage[,c("T2","Conections","AveExp")], scale. = TRUE) 
 
 # Merge data.frame to analyze normalization schemes
-pca_res_df_genes_stage  <-autoplot(pca_res_df_genes_stage, data = df_genes_stage, colour = 'Normalization_scheme') +  theme_bw() + ggtitle("T2, GC3, Conections, AveExp")
+pca_res_df_genes_stage  <-autoplot(pca_res_df_genes_stage, data = df_genes_stage, colour = 'Normalization_scheme') +  theme_bw() + ggtitle("T2, Conections, AveExp")
 
 # FindClusters_resolution          
-png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_tmm_tpm.png",sep=""), width = 10, height = 10, res=600, units = "cm")          
+png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_tmm_tpm.png",sep=""), width = 15, height = 10, res=600, units = "cm")          
     pca_res_df_genes_stage
 dev.off()    
