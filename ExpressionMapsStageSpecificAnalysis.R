@@ -83,6 +83,20 @@ for (normalization_scheme in normalization_schemes)
     dev.off()    
     #########################################################################################################################################   
     # Transform values into z-score
+    Interactomes_GC3_T2_merged_all$T2_score  <-calculate_z(Interactomes_GC3_T2_merged_all$T2,mean(Interactomes_GC3_T2_merged_all$T2),sd(Interactomes_GC3_T2_merged_all$T2))
+    Interactomes_GC3_T2_merged_all$GC3_score <-calculate_z(Interactomes_GC3_T2_merged_all$GC3,mean(Interactomes_GC3_T2_merged_all$GC3),sd(Interactomes_GC3_T2_merged_all$GC3))
+    Interactomes_GC3_T2_merged_all$AveExp_score <-calculate_z(Interactomes_GC3_T2_merged_all$AveExp,mean(Interactomes_GC3_T2_merged_all$AveExp),sd(Interactomes_GC3_T2_merged_all$AveExp))
+
+    pca_res_GC3_Connections_z_score <- prcomp(Interactomes_GC3_T2_merged_all[,c("T2_score","GC3_score","AveExp_score")], scale. = TRUE) 
+    
+    pca_T2_zscore  <-autoplot(pca_res_GC3_Connections_z_score, data = Interactomes_GC3_T2_merged_all, colour = 'Stages') +  theme_bw() + ggtitle("Z-score T2, Z-score Conections, Z-score AveExp")
+    
+       
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_zscore.png",sep=""), width = 8, height = 8, res=1200, units = "cm")          
+        pca_T2_zscore
+    dev.off()    
+    
 
 
 
