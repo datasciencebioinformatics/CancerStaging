@@ -137,9 +137,12 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     boxplots_plot<-ggarrange(m4, m5, m6, m7, nrow = 1,ncol = 4, common.legend = TRUE, legend="bottom")    
 
+
     # FindClusters_resolution          
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
-        print(boxplots_plot)
+    dev.off()
+    dev.off()    
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots.png",sep=""), width = 30, height = 15, res=600, units = "cm")      
+        m4
     dev.off()
     
     
@@ -286,6 +289,10 @@ for (normalization_scheme in normalization_schemes)
 
     # Arrange density plot
     boxplots_plot<-ggarrange(m4, m5, m6, m7, nrow = 1,ncol = 4, common.legend = TRUE, legend="bottom")    
+
+
+    dev.off()
+    dev.off()
 
     # FindClusters_resolution          
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_boxplots_perpatient.png",sep=""), width = 30, height = 15, res=600, units = "cm")  
