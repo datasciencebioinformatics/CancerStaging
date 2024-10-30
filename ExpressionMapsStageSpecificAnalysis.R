@@ -8,6 +8,9 @@ normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_sche
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
 list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
 ###########################################################################################################
+# Data frame to store genes and stages                                                                    #
+df_genes_stage<-data.frame(ENSEMBL=c(),Normalization_scheme=c())                                            #
+
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {     
@@ -54,6 +57,10 @@ for (normalization_scheme in normalization_schemes)
     unique_stage_II   =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
     unique_stage_III  =intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
 
+    # Data frame to store genes and stages                                                                    #
+    df_genes_stage<-rbind(df_genes_stage,data.frame(ENSEMBL=unique(c(unique_stage_I,unique_stage_II,unique_stage_III)),Normalization_scheme=normalization_scheme))
+    ###########################################################################################################
+
     Interactomes_GC3_T2_merged_Stage_I    <-na.omit(Interactomes_GC3_T2_merged_Stage_I[unique_stage_I,])
     Interactomes_GC3_T2_merged_Stage_II   <-na.omit(Interactomes_GC3_T2_merged_Stage_II[unique_stage_II,])
     Interactomes_GC3_T2_merged_Stage_III  <-na.omit(Interactomes_GC3_T2_merged_Stage_III[unique_stage_III,])
@@ -74,5 +81,17 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas.png",sep=""), width = 20, height = 10, res=1200, units = "cm")          
         print(annotate_figure(pcas_plot, top = text_grob(paste(normalization_scheme,TCGA_project,sep=" : "), face = "bold", size = 14)))
     dev.off()    
-
 }
+# Merge data.frame to analyze normalization schemes
+df_genes_stage<-merge(df_genes_stage,Interactomes_GC3_T2_merged_all,by="ENSEMBL")
+
+# Merge data.frame to analyze normalization schemes
+pca_res_df_genes_stage <- prcomp(df_genes_stage[,c("T2","GC3","Conections","AveExp")], scale. = TRUE) 
+
+# Merge data.frame to analyze normalization schemes
+pca_res_df_genes_stage  <-autoplot(pca_res_df_genes_stage, data = df_genes_stage, colour = 'Normalization_scheme') +  theme_bw() + ggtitle("T2, GC3, Conections, AveExp")
+
+# FindClusters_resolution          
+png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_pcas_tmm_tpm.png",sep=""), width = 10, height = 10, res=600, units = "cm")          
+    pca_res_df_genes_stage
+dev.off()    
