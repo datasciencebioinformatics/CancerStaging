@@ -8,16 +8,27 @@ sample_stage_III<-unique(merged_data_patient_info[merged_data_patient_info$stage
 sample_normal   <-unique(merged_data_patient_info[,"sample_id"])
 
 # biomarkers
-biomarkers<-data.frame(SYMBOL=c("AKR1B10","GPX2","KRT13","KRT14","KRT16","KRT6B","NTS","S100A7","SPRR1B","SPRR2A"),
-ENSEMBL=c("ENSG00000198074","ENSG00000176153","ENSG00000171401", "ENSG00000186847","ENSG00000186832", "ENSG00000185479", "ENSG00000133636","ENSG00000143556", "ENSG00000169469", "ENSG00000241794"))
+#biomarkers<-data.frame(SYMBOL=c("AKR1B10","GPX2","KRT13","KRT14","KRT16","KRT6B","NTS","S100A7","SPRR1B","SPRR2A"),
+#ENSEMBL=c("ENSG00000198074","ENSG00000176153","ENSG00000171401", "ENSG00000186847","ENSG00000186832", "ENSG00000185479", "ENSG00000133636","ENSG00000143556", "ENSG00000169469", "ENSG00000241794"))
 
 # data frame with results
 df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c(), log2foldchange_stage_I=c(), pvalue_stage_I=c(), mean_stage_II=c(), sd_stage_II=c(), log2foldchange_stage_II=c(), pvalue_stage_II=c(), mean_stage_III=c(), sd_stage_III=c(), log2foldchange_stage_III=c(), pvalue_stage_III=c())
 
+# df_rowmeans
+df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control[["tpm"]]),sample_normal]))))
+
+# Set ENSEMBL
+df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
+
+# Set biomarkers
+biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 3.0,]
+
+# biomarker_ENSEMBL
 for (biomarker_ENSEMBL in biomarkers$ENSEMBL)
 {
 	# SYMBOL
-	gene_symbol<-biomarkers[biomarkers$ENSEMBL==biomarker_ENSEMBL,"SYMBOL"]
+	#gene_symbol<-biomarkers[biomarkers$ENSEMBL==biomarker_ENSEMBL,"SYMBOL"]
+	gene_symbol<-"Teste"
 	
 	# Statistic for stage I
 	mean_stage_I           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_I])))
@@ -43,6 +54,9 @@ for (biomarker_ENSEMBL in biomarkers$ENSEMBL)
 df_results$fdr_stage_I<-p.adjust(df_results$pvalue_stage_I, method="fdr")
 df_results$fdr_stage_II<-p.adjust(df_results$pvalue_stage_II, method="fdr")
 df_results$fdr_stage_III<-p.adjust(df_results$pvalue_stage_III, method="fdr")
+
+# Save TSV file with genes from Stage3
+write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
 
 
 # Save TSV file with genes from Stage3
