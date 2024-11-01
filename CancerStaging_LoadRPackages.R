@@ -41,7 +41,8 @@ library("ggplot2")
 library("ggpubr")
 library("gridExtra")
 #library("ggVennDiagram")
-
+library("TxDb.Hsapiens.UCSC.hg19.knownGene")
+library("GGally")
 
 
 #library(metR)
