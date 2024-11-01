@@ -17,6 +17,9 @@ df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c()
 # Selected genes
 list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
 
+# Selected genes
+list_logchange_tumor_control_selected<-list_logchange_tumor_control_selected[list_logchange_tumor_control_selected$tumor_genes=="yes",]
+
 # df_rowmeans
 df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
 
