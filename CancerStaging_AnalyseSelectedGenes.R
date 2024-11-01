@@ -14,14 +14,17 @@ sample_normal   <-unique(merged_data_patient_info[,"sample_id"])
 # data frame with results
 df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c(), log2foldchange_stage_I=c(), pvalue_stage_I=c(), mean_stage_II=c(), sd_stage_II=c(), log2foldchange_stage_II=c(), pvalue_stage_II=c(), mean_stage_III=c(), sd_stage_III=c(), log2foldchange_stage_III=c(), pvalue_stage_III=c())
 
+# Selected genes
+list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
+
 # df_rowmeans
-df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control[["tpm"]]),sample_normal]))))
+df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
 
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
-biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 3.0,]
+biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 4.0,]
 
 # biomarker_ENSEMBL
 for (biomarker_ENSEMBL in biomarkers$ENSEMBL)
@@ -55,8 +58,36 @@ df_results$fdr_stage_I<-p.adjust(df_results$pvalue_stage_I, method="fdr")
 df_results$fdr_stage_II<-p.adjust(df_results$pvalue_stage_II, method="fdr")
 df_results$fdr_stage_III<-p.adjust(df_results$pvalue_stage_III, method="fdr")
 
+# slected_tumor_genes
+slected_tumor_genes<-na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,])
+
+expression_stage_I       <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_I]))
+expression_stage_II      <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_II]))
+expression_stage_III     <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_III]))
+expression_stage_control <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))
+
+expression_stage_I$Stages       <-"Stage I"
+expression_stage_II$Stages      <-"Stage II"
+expression_stage_III$Stages     <-"Stage III"
+expression_stage_control$Stages <-"Control"
+
+
+expression_stage_I$Stages       <-"Tumor"
+expression_stage_II$Stages      <-"Tumor"
+expression_stage_III$Stages     <-"Tumor"
+expression_stage_control$Stages <-"Control"
+
+expression_all_stages<-rbind(expression_stage_I,expression_stage_II,expression_stage_III,expression_stage_control)
+
+# Take the expression of selected genes
+list_logchange_tumor_control_selected
+
+
 # Save TSV file with genes from Stage3
 write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
+
+df_results[df_results$ENSEMBL=="ENSG00000218336",]
+list_logchange_tumor_control[["tpm"]]["ENSG00000218336",]
 
 
 # Save TSV file with genes from Stage3
