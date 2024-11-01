@@ -64,10 +64,10 @@ df_results$fdr_stage_III<-p.adjust(df_results$pvalue_stage_III, method="fdr")
 # slected_tumor_genes
 slected_tumor_genes<-na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,])
 
-expression_stage_I      <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_I])
-expression_stage_II     <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_II])
-expression_stage_III    <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_III])
-expression_stage_normal <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal])
+expression_stage_I      <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_I])
+expression_stage_II     <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_II])
+expression_stage_III    <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_III])
+expression_stage_normal <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_normal])
 
 expression_stage_I$ENSEMBL<-rownames(expression_stage_I)
 expression_stage_II$ENSEMBL<-rownames(expression_stage_II)
