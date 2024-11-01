@@ -93,7 +93,12 @@ expression_stage_normal$Stages <-"Control"
 expression_all_stages<-rbind(expression_stage_I,expression_stage_II,expression_stage_III,expression_stage_normal)
 
 # change box plot line colors by groups
-p_stage_tumor<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)) +   geom_boxplot()+ facet_wrap(~ENSEMBL, ncol = 2, scales="free")+ theme_bw()
+p_stage_tumor<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)) +   geom_boxplot()+ facet_wrap(~ENSEMBL, ncol = 3, scales="free")+ theme_bw()
+
+# FindClusters_resolution
+png(filename=paste(output_dir,"boplot_selected.png",sep=""), width = 28, height = 14, res=600, units = "cm")
+	p_stage_tumor
+dev.off()
 
 
 
