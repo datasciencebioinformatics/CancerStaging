@@ -61,26 +61,37 @@ df_results$fdr_stage_III<-p.adjust(df_results$pvalue_stage_III, method="fdr")
 # slected_tumor_genes
 slected_tumor_genes<-na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,])
 
-expression_stage_I       <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_I]))
-expression_stage_II      <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_II]))
-expression_stage_III     <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_III]))
-expression_stage_control <-melt(data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))
+expression_stage_I      <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_I])
+expression_stage_II     <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_II])
+expression_stage_III    <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_stage_III])
+expression_stage_normal <-data.frame(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal])
+
+expression_stage_I$ENSEMBL<-rownames(expression_stage_I)
+expression_stage_II$ENSEMBL<-rownames(expression_stage_II)
+expression_stage_III$ENSEMBL<-rownames(expression_stage_III)
+expression_stage_normal$ENSEMBL<-rownames(expression_stage_normal)
+
+expression_stage_I          <-melt(expression_stage_I)
+expression_stage_II          <-melt(expression_stage_II)
+expression_stage_III        <-melt(expression_stage_III)
+expression_stage_normal     <-melt(expression_stage_normal)
 
 expression_stage_I$Stages       <-"Stage I"
 expression_stage_II$Stages      <-"Stage II"
 expression_stage_III$Stages     <-"Stage III"
-expression_stage_control$Stages <-"Control"
+expression_stage_normal$Stages <-"Control"
 
 
 expression_stage_I$Stages       <-"Tumor"
 expression_stage_II$Stages      <-"Tumor"
 expression_stage_III$Stages     <-"Tumor"
-expression_stage_control$Stages <-"Control"
+expression_stage_normal$Stages <-"Control"
 
-expression_all_stages<-rbind(expression_stage_I,expression_stage_II,expression_stage_III,expression_stage_control)
+expression_all_stages<-rbind(expression_stage_I,expression_stage_II,expression_stage_III,expression_stage_normal)
 
-# Take the expression of selected genes
-list_logchange_tumor_control_selected
+# change box plot line colors by groups
+p_stage_tumor<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)) +   geom_boxplot()+ facet_wrap(~ENSEMBL, ncol = 2, scales="free")+ theme_bw()
+
 
 
 # Save TSV file with genes from Stage3
