@@ -107,7 +107,6 @@ png(filename=paste(output_dir,"boplot_selected.png",sep=""), width = 28, height 
 dev.off()
 
 
-
 # Save TSV file with genes from Stage3
 write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
 
@@ -117,3 +116,6 @@ list_logchange_tumor_control[["tpm"]]["ENSG00000218336",]
 
 # Save TSV file with genes from Stage3
 write_tsv(na.omit(df_results), paste(output_dir,"/Figure_2_biomarkers.tsv",sep=""))			
+################################################################################################################
+# Visualize: Specify the comparisons you want
+my_comparisons <- list( c("Stage I", "Control"), c("Stage II", "Control"), c("Stage III", "Control"))
