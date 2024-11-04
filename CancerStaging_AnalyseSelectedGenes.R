@@ -53,9 +53,15 @@ for (biomarker_ENSEMBL in biomarkers$ENSEMBL)
 	sd_stage_III             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III]))) 
 	log2foldchange_stage_III <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
 	pvalue_stage_III         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value  
-	
+
+	# Statistic for stage III
+	mean_control           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])))
+	sd_control             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))) 
+	log2foldchange_control <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
+	pvalue_control         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value  
+		
 	# df_results
-	df_results<-rbind(df_results, data.frame(ENSEMBL=biomarker_ENSEMBL, SYMBOL=gene_symbol, mean_stage_I=mean_stage_I, sd_stage_I=sd_stage_I, log2foldchange_stage_I=log2foldchange_stage_I, pvalue_stage_I=pvalue_stage_I, mean_stage_II=mean_stage_II, sd_stage_II=sd_stage_II, log2foldchange_stage_II=log2foldchange_stage_II, pvalue_stage_II=pvalue_stage_II, mean_stage_III=mean_stage_III, sd_stage_III=sd_stage_III, log2foldchange_stage_III=log2foldchange_stage_III, pvalue_stage_III=pvalue_stage_III))
+	df_results<-rbind(df_results, data.frame(ENSEMBL=biomarker_ENSEMBL, SYMBOL=gene_symbol, mean_stage_I=mean_stage_I, sd_stage_I=sd_stage_I, log2foldchange_stage_I=log2foldchange_stage_I, pvalue_stage_I=pvalue_stage_I, mean_stage_II=mean_stage_II, sd_stage_II=sd_stage_II, log2foldchange_stage_II=log2foldchange_stage_II, pvalue_stage_II=pvalue_stage_II, mean_stage_III=mean_stage_III, sd_stage_III=sd_stage_III, log2foldchange_stage_III=log2foldchange_stage_III, pvalue_stage_III=pvalue_stage_III, mean_control=mean_control, sd_control=sd_control, log2foldchange_control=log2foldchange_control, pvalue_control=pvalue_control))
 }
 df_results$fdr_stage_I<-p.adjust(df_results$pvalue_stage_I, method="fdr")
 df_results$fdr_stage_II<-p.adjust(df_results$pvalue_stage_II, method="fdr")
