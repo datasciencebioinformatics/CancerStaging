@@ -117,4 +117,3 @@ list_logchange_tumor_control[["tpm"]]["ENSG00000218336",]
 
 # Save TSV file with genes from Stage3
 write_tsv(na.omit(df_results), paste(output_dir,"/Figure_2_biomarkers.tsv",sep=""))			
-
