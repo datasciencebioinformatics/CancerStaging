@@ -139,7 +139,7 @@ p_stage_stages<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages
 
 
 # FindClusters_resolution
-png(filename=paste(output_dir,"boplot_selected_per_stage.png",sep=""), width = 32, height = 24, res=600, units = "cm")
+png(filename=paste(output_dir,"boplot_selected_per_stage.png",sep=""), width = 32, height = 12, res=600, units = "cm")
 	p_stage_stages
 dev.off()
 
