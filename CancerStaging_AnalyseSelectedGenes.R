@@ -17,6 +17,8 @@ df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c()
 # List of stage specific genes
 stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
 
+log2change_Stage_i[intersect(which(log2change_Stage_i$FDR<=threshold_FDR), which(log2change_Stage_i$log2change>=threshold_stage)),"Category"]<-paste("Per stage genes", sep="")
+
 ###################################################################################################################################################
 # "A total of 4968 up-regulated tumor genes were obtained by comparing all tumor against all normal samples (fdr <=0.05). 
 # Among these, 1603 tumor genes are ketpt after filtering for log2foldchange >= 1. Moreover, 6 tumor genes genes whose average expression in normal 
@@ -30,60 +32,29 @@ stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
 # df_rowmeans
 #df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
 #####################################################################################################################################################
+tpm_stage_I<-selected_genes_Stage_I_data
+tpm_stage_II<-selected_genes_Stage_II_data
+tpm_stage_III<-selected_genes_Stage_III_data
+
+tpm_stage_I$Stage<-"Stage I"
+tpm_stage_II$Stage<-"Stage II"
+tpm_stage_III$Stage<-"Stage III"
+
+tpm_stage_all_genes<-rbind(tpm_stage_I,tpm_stage_II,tpm_stage_III)
+
 # Rowmeans for the stage-specific genes
-df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[stage_specific_genes,sample_normal]))))
+df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(tpm_stage_all_genes),sample_normal]))))
 #####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
 biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 4.0,]
-
-# biomarker_ENSEMBL
-for (biomarker_ENSEMBL in biomarkers$ENSEMBL)
-{
-	# SYMBOL
-	#gene_symbol<-biomarkers[biomarkers$ENSEMBL==biomarker_ENSEMBL,"SYMBOL"]
-	gene_symbol<-"Teste"
-	
-	# Statistic for stage I
-	mean_stage_I           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_I])))
-	sd_stage_I             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_I]))) 
-	log2foldchange_stage_I <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_I])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
-	pvalue_stage_I         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_I])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value
-	
-	# Statistic for stage II
-	mean_stage_II           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_II])))
-	sd_stage_II             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_II]))) 
-	log2foldchange_stage_II <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_II])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
-	pvalue_stage_II         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_II])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value
-	
-	# Statistic for stage III
-	mean_stage_III           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III])))
-	sd_stage_III             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III]))) 
-	log2foldchange_stage_III <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
-	pvalue_stage_III         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_stage_III])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value  
-
-	# Statistic for stage III
-	mean_control           <-mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])))
-	sd_control             <-sd(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))) 
-	log2foldchange_control <-log(mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])))/mean(as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal]))),2)
-	pvalue_control         <-t.test(x=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), y=as.vector(t(normalized_expression_table[biomarker_ENSEMBL,sample_normal])), paired = FALSE, alternative = "two.sided")$p.value  
-		
-	# df_results
-	df_results<-rbind(df_results, data.frame(ENSEMBL=biomarker_ENSEMBL, SYMBOL=gene_symbol, mean_stage_I=mean_stage_I, sd_stage_I=sd_stage_I, log2foldchange_stage_I=log2foldchange_stage_I, pvalue_stage_I=pvalue_stage_I, mean_stage_II=mean_stage_II, sd_stage_II=sd_stage_II, log2foldchange_stage_II=log2foldchange_stage_II, pvalue_stage_II=pvalue_stage_II, mean_stage_III=mean_stage_III, sd_stage_III=sd_stage_III, log2foldchange_stage_III=log2foldchange_stage_III, pvalue_stage_III=pvalue_stage_III, mean_control=mean_control, sd_control=sd_control, log2foldchange_control=log2foldchange_control, pvalue_control=pvalue_control))
-}
-df_results$fdr_stage_I<-p.adjust(df_results$pvalue_stage_I, method="fdr")
-df_results$fdr_stage_II<-p.adjust(df_results$pvalue_stage_II, method="fdr")
-df_results$fdr_stage_III<-p.adjust(df_results$pvalue_stage_III, method="fdr")
-
-# slected_tumor_genes
-slected_tumor_genes<-na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,])
-
-expression_stage_I      <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_I])
-expression_stage_II     <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_II])
-expression_stage_III    <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_stage_III])
-expression_stage_normal <-data.frame(normalized_expression_table[rownames(slected_tumor_genes),sample_normal])
+#####################################################################################################################################################
+expression_stage_I      <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_I])
+expression_stage_II     <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_II])
+expression_stage_III    <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_III])
+expression_stage_normal <-data.frame(normalized_expression_table[rownames(biomarkers),sample_normal])
 
 expression_stage_I$ENSEMBL<-rownames(expression_stage_I)
 expression_stage_II$ENSEMBL<-rownames(expression_stage_II)
@@ -110,19 +81,16 @@ my_comparisons <- list( c("Tumor", "Control"))
 p_stage_tumor<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)) +   geom_boxplot()+ facet_wrap(~ENSEMBL, ncol = 3, scales="free")+ theme_bw()  
 
 # FindClusters_resolution
-png(filename=paste(output_dir,"boplot_selected.png",sep=""), width = 28, height = 14, res=600, units = "cm")
+png(filename=paste(output_dir,"boplot_selected.png",sep=""), width = 28, height = 28, res=600, units = "cm")
 	p_stage_tumor
 dev.off()
 
 # Save TSV file with genes from Stage3
-write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][df_results$ENSEMBL,]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
+write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][rownames(biomarkers),1:4]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
 
-df_results[df_results$ENSEMBL=="ENSG00000218336",]
-list_logchange_tumor_control[["tpm"]]["ENSG00000218336",]
-
-
+################################################################################################################
 # Save TSV file with genes from Stage3
-write_tsv(na.omit(df_results), paste(output_dir,"/Figure_2_biomarkers.tsv",sep=""))			
+write_tsv(tpm_stage_all_genes[rownames(biomarkers),], paste(output_dir,"/Figure_2_biomarkers.tsv",sep=""))			
 ################################################################################################################
 # Visualize: Specify the comparisons you want
 my_comparisons <- list( c("Stage I", "Control"), c("Stage II", "Control"), c("Stage III", "Control"))
@@ -137,9 +105,8 @@ expression_all_stages<-rbind(expression_stage_I,expression_stage_II,expression_s
 # change box plot line colors by groups
 p_stage_stages<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)) +   geom_boxplot()+ facet_wrap(~ENSEMBL, ncol = 3, scales="free")+ theme_bw() 
 
-
 # FindClusters_resolution
-png(filename=paste(output_dir,"boplot_selected_per_stage.png",sep=""), width = 32, height = 12, res=600, units = "cm")
+png(filename=paste(output_dir,"boplot_selected_per_stage.png",sep=""), width = 32, height = 32, res=600, units = "cm")
 	p_stage_stages
 dev.off()
 
