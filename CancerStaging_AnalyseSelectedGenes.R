@@ -14,15 +14,25 @@ sample_normal   <-unique(merged_data_patient_info[,"sample_id"])
 # data frame with results
 df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c(), log2foldchange_stage_I=c(), pvalue_stage_I=c(), mean_stage_II=c(), sd_stage_II=c(), log2foldchange_stage_II=c(), pvalue_stage_II=c(), mean_stage_III=c(), sd_stage_III=c(), log2foldchange_stage_III=c(), pvalue_stage_III=c())
 
+# List of stage specific genes
+stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
+
+###################################################################################################################################################
+# "A total of 4968 up-regulated tumor genes were obtained by comparing all tumor against all normal samples (fdr <=0.05). 
+# Among these, 1603 tumor genes are ketpt after filtering for log2foldchange >= 1. Moreover, 6 tumor genes genes whose average expression in normal 
+# samples were tpm<=4, because have good signal-to-noise."
 # Selected genes
-list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
+#list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
 
 # Selected genes
-list_logchange_tumor_control_selected<-list_logchange_tumor_control_selected[list_logchange_tumor_control_selected$tumor_genes=="yes",]
+#list_logchange_tumor_control_selected<-list_logchange_tumor_control_selected[list_logchange_tumor_control_selected$tumor_genes=="yes",]
 
 # df_rowmeans
-df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
-
+#df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
+#####################################################################################################################################################
+# Rowmeans for the stage-specific genes
+df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[stage_specific_genes,sample_normal]))))
+#####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
