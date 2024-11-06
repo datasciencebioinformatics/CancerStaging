@@ -62,6 +62,18 @@ merged_ranked_genes[unique_stage_I,"Stages"] <- "Stage I"
 merged_ranked_genes[unique_stage_II,"Stages"] <- "Stage II"
 merged_ranked_genes[unique_stage_III,"Stages"] <- "Stage III"
 #####################################################################################################################################################
+# Select genes and collumns
+selected_logchange_tumor_control<-list_logchange_tumor_control[["tpm"]][,c("gene", "log2change_all_samples", "pvalue_all_samples", "fdr_all_samples","tumor_genes")]
+
+# Change the colnames
+colnames(selected_logchange_tumor_control)<-c("Gene","log2change","pvalue","fdr","tumor")
+
+# Merge ranked genes
+merged_ranked_genes_information<-merge(merged_ranked_genes,selected_logchange_tumor_control,by="Gene")
+
+# Re-order genes
+merged_ranked_genes_information<-merged_ranked_genes_information[,c("Gene","RowMeans","rank_by_s2n","log2change","pvalue","fdr","tumor","Stages")]
+#####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
