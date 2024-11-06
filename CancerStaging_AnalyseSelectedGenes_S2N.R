@@ -1,36 +1,32 @@
 ###################################################################################################################################################
 # First, I will load the expression table   	
-normalized_expression_table<-na.omit(df_reads_count_all_projects[["tpm"]])
-
-# Take the samples ids
-sample_stage_I  <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage I","sample_id"])                                                          #
-sample_stage_II <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage II","sample_id"])                                                         #
+normalized_expression_table<-na.omit(df_reads_count_all_projects[["tpm"]])                                                                       #
+                                                                                                                                                 #
+# Take the samples ids                                                                                                                           #
+sample_stage_I  <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage I","sample_id"])                                       #
+sample_stage_II <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage II","sample_id"])                                      #
 sample_stage_III<-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage III","sample_id"])   
 sample_normal   <-unique(merged_data_patient_info[,"sample_id"])
-
-# biomarkers
-#biomarkers<-data.frame(SYMBOL=c("AKR1B10","GPX2","KRT13","KRT14","KRT16","KRT6B","NTS","S100A7","SPRR1B","SPRR2A"),
-#ENSEMBL=c("ENSG00000198074","ENSG00000176153","ENSG00000171401", "ENSG00000186847","ENSG00000186832", "ENSG00000185479", "ENSG00000133636","ENSG00000143556", "ENSG00000169469", "ENSG00000241794"))
 
 # data frame with results
 df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c(), log2foldchange_stage_I=c(), pvalue_stage_I=c(), mean_stage_II=c(), sd_stage_II=c(), log2foldchange_stage_II=c(), pvalue_stage_II=c(), mean_stage_III=c(), sd_stage_III=c(), log2foldchange_stage_III=c(), pvalue_stage_III=c())
 
 # List of stage specific genes
 stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
-
-log2change_Stage_i[intersect(which(log2change_Stage_i$FDR<=threshold_FDR), which(log2change_Stage_i$log2change>=threshold_stage)),"Category"]<-paste("Per stage genes", sep="")
 ###################################################################################################################################################
 # "A total of 4968 up-regulated tumor genes were obtained by comparing all tumor against all normal samples (fdr <=0.05). 
 # Among these, 1603 tumor genes are ketpt after filtering for log2foldchange >= 1. Moreover, 6 tumor genes genes whose average expression in normal 
 # samples were tpm<=4, because have good signal-to-noise."
 # Selected genes
-#list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
 
-# Selected genes
-#list_logchange_tumor_control_selected<-list_logchange_tumor_control_selected[list_logchange_tumor_control_selected$tumor_genes=="yes",]
 
-# df_rowmeans
-#df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
+which(merged_data_patient_info$sample_id %in% colnames(normalized_expression_table))
+
+c(sample_stage_I,sample_stage_II,sample_stage_III)
+c(sample_normal)
+
+normalized_expression_table
+
 #####################################################################################################################################################
 tpm_stage_I<-selected_genes_Stage_I_data
 tpm_stage_II<-selected_genes_Stage_II_data
