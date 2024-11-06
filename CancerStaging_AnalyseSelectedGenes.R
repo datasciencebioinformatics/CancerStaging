@@ -26,32 +26,47 @@ stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
 # Among these, 1603 tumor genes are ketpt after filtering for log2foldchange >= 1. Moreover, 6 tumor genes genes whose average expression in normal 
 # samples were tpm<=4, because have good signal-to-noise."
 # Selected genes
-#list_logchange_tumor_control_selected<-list_logchange_tumor_control[["tpm"]][which(list_logchange_tumor_control[["tpm"]]$log2change_all_samples>1),]
 
-# Selected genes
-#list_logchange_tumor_control_selected<-list_logchange_tumor_control_selected[list_logchange_tumor_control_selected$tumor_genes=="yes",]
+# Vector to store samples labels
+df_sample_labels<-data.frame(Samples=unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)),Tumor=1)
 
-# df_rowmeans
-#df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(list_logchange_tumor_control_selected),sample_normal]))))
+# Storesamples
+rownames(df_sample_labels)<-df_sample_labels$Samples
+ 
+# Assert label to samples
+df_sample_labels[sample_normal,"Tumor"]<-0
+
+
+# Sort Table and df_sample_labels
+normalized_expression_table<- na.omit(normalized_expression_table[stage_specific_genes,c(unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)))])
+df_sample_labels           <- df_sample_labels[c(unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal))),]
 #####################################################################################################################################################
-tpm_stage_I<-selected_genes_Stage_I_data
-tpm_stage_II<-selected_genes_Stage_II_data
-tpm_stage_III<-selected_genes_Stage_III_data
-
-tpm_stage_I$Stage<-"Stage I"
-tpm_stage_II$Stage<-"Stage II"
-tpm_stage_III$Stage<-"Stage III"
-
-tpm_stage_all_genes<-rbind(tpm_stage_I,tpm_stage_II,tpm_stage_III)
-
+ranked_genes<-data.frame(rank_by_s2n=rank_by_s2n(normalized_expression_table, as.vector(df_sample_labels$Tumor)))
+#####################################################################################################################################################
 # Rowmeans for the stage-specific genes
-df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[rownames(tpm_stage_all_genes),sample_normal]))))
+df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[,sample_normal]))))
+
+df_rowmeans$Gene<-rownames(df_rowmeans)
+ranked_genes$Gene<-rownames(ranked_genes)
+
+# Merge genes
+merged_ranked_genes<-merge(df_rowmeans,ranked_genes,by="Gene")
+
+# Set rownames
+rownames(merged_ranked_genes)<-merged_ranked_genes$Gene
+
+# Stages collumn
+merged_ranked_genes$Stages<-""
+
+merged_ranked_genes[unique_stage_I,"Stages"] <- "Stage I"
+merged_ranked_genes[unique_stage_II,"Stages"] <- "Stage II"
+merged_ranked_genes[unique_stage_III,"Stages"] <- "Stage III"
 #####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
-biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 1.0,]
+biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 2.0,]
 #####################################################################################################################################################
 expression_stage_I      <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_I])
 expression_stage_II     <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_II])
