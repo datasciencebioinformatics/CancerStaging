@@ -74,6 +74,35 @@ merged_ranked_genes_information<-merge(merged_ranked_genes,selected_logchange_tu
 # Re-order genes
 merged_ranked_genes_information<-merged_ranked_genes_information[,c("Gene","RowMeans","rank_by_s2n","log2change","pvalue","fdr","tumor","Stages")]
 #####################################################################################################################################################
+# Path to files of selected_genes                                                                                                             # 
+# genes_stages_I
+selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
+
+rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
+rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
+rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
+
+selected_genes_Stage_merged<-rbind(selected_genes_Stage_I_data[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage I"),"Gene"],],
+selected_genes_Stage_II_data[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage II"),"Gene"],],
+selected_genes_Stage_III_data[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage III"),"Gene"],])
+
+# Set stage
+selected_genes_Stage_merged$Stage<-""
+
+selected_genes_Stage_merged[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage I"),"Gene"],"Stage"]<-"Stage I"
+selected_genes_Stage_merged[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage II"),"Gene"],"Stage"]<-"Stage II"
+selected_genes_Stage_merged[merged_ranked_genes_information[which(merged_ranked_genes_information$Stages=="Stage III"),"Gene"],"Stage"]<-"Stage III"
+
+# Set rownames
+rownames(merged_ranked_genes_information)<-merged_ranked_genes_information$Gene
+#####################################################################################################################################################
+# Save TSV file with genes from Stage3
+write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][rownames(biomarkers),1:4]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
+
+
+#####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
