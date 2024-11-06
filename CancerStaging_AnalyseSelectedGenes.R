@@ -28,13 +28,13 @@ stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
 # Selected genes
 
 # Vector to store samples labels
-df_sample_labels<-data.frame(Samples=unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)),Tumor=1)
+df_sample_labels<-data.frame(Samples=unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)),Tumor=0)
 
 # Storesamples
 rownames(df_sample_labels)<-df_sample_labels$Samples
  
 # Assert label to samples
-df_sample_labels[sample_normal,"Tumor"]<-0
+df_sample_labels[sample_normal,"Tumor"]<-1
 
 
 # Sort Table and df_sample_labels
@@ -103,18 +103,19 @@ df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
 merged_ranked_genes_information<-merged_ranked_genes_information[merged_ranked_genes_information$RowMeans <= 4.0,]
+merged_ranked_genes_information[merged_ranked_genes_information$log2change>1,]
 selected_genes_Stage_merged<-selected_genes_Stage_merged[rownames(merged_ranked_genes_information),]
 #####################################################################################################################################################
 # Save TSV file with genes from Stage3
 write_tsv(merged_ranked_genes_information, paste(output_dir,"/Statistic_Tumor_Genes.tsv",sep=""))			
-write_tsv(selected_genes_Stage_merged, paste(output_dir,"/Statistic_Stage_Specific_Genes.tsv",sep=""))
+write_tsv(selected_genes_Stage_merged,     paste(output_dir,"/Statistic_Stage_Specific_Genes.tsv",sep=""))
 #####################################################################################################################################################
+biomarkers<-rownames(selected_genes_Stage_merged)
 
-
-expression_stage_I      <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_I])
-expression_stage_II     <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_II])
-expression_stage_III    <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_III])
-expression_stage_normal <-data.frame(normalized_expression_table[rownames(biomarkers),sample_normal])
+expression_stage_I      <-data.frame(normalized_expression_table[biomarkers,sample_stage_I])
+expression_stage_II     <-data.frame(normalized_expression_table[biomarkers,sample_stage_II])
+expression_stage_III    <-data.frame(normalized_expression_table[biomarkers,sample_stage_III])
+expression_stage_normal <-data.frame(normalized_expression_table[biomarkers,sample_normal])
 
 expression_stage_I$ENSEMBL<-rownames(expression_stage_I)
 expression_stage_II$ENSEMBL<-rownames(expression_stage_II)
@@ -144,13 +145,6 @@ p_stage_tumor<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages)
 png(filename=paste(output_dir,"boplot_selected.png",sep=""), width = 28, height = 28, res=600, units = "cm")
 	p_stage_tumor
 dev.off()
-
-# Save TSV file with genes from Stage3
-write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][rownames(biomarkers),1:4]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
-
-################################################################################################################
-# Save TSV file with genes from Stage3
-write_tsv(tpm_stage_all_genes[rownames(biomarkers),], paste(output_dir,"/Figure_2_biomarkers.tsv",sep=""))			
 ################################################################################################################
 # Visualize: Specify the comparisons you want
 my_comparisons <- list( c("Stage I", "Control"), c("Stage II", "Control"), c("Stage III", "Control"))
@@ -169,5 +163,4 @@ p_stage_stages<-ggplot(expression_all_stages, aes(x=Stages, y=value, fill=Stages
 png(filename=paste(output_dir,"boplot_selected_per_stage.png",sep=""), width = 32, height = 32, res=600, units = "cm")
 	p_stage_stages
 dev.off()
-
 
