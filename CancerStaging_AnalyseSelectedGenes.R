@@ -1,11 +1,16 @@
+###################################################################################################################################################
+# All tumor and control samples
+colData_tumor  <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor",])
+colData_normal <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal",])
+###################################################################################################################################################
 # First, I will load the expression table   	
-normalized_expression_table<-na.omit(df_reads_count_all_projects[["tpm"]])
-
-# Take the samples ids
-sample_stage_I  <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage I","sample_id"])                                                          #
-sample_stage_II <-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage II","sample_id"])                                                         #
-sample_stage_III<-unique(merged_data_patient_info[merged_data_patient_info$stages=="Stage III","sample_id"])   
-sample_normal   <-unique(merged_data_patient_info[,"sample_id"])
+normalized_expression_table<-na.omit(df_reads_count_all_projects[["tpm"]])                                                                       #
+                                                                                                                                                 #
+# Take the samples ids                                                                                                                           #
+sample_stage_I  <-unique(colData_tumor[colData_tumor$stages=="Stage I","sample_id"])                                       #
+sample_stage_II <-unique(colData_tumor[colData_tumor$stages=="Stage II","sample_id"])                                      #
+sample_stage_III<-unique(colData_tumor[colData_tumor$stages=="Stage III","sample_id"])   
+sample_normal   <-unique(colData_normal[,"sample_id"])
 
 # biomarkers
 #biomarkers<-data.frame(SYMBOL=c("AKR1B10","GPX2","KRT13","KRT14","KRT16","KRT6B","NTS","S100A7","SPRR1B","SPRR2A"),
@@ -16,9 +21,6 @@ df_results<-data.frame(ENSEMBL=c(), SYMBOL=c(), mean_stage_I=c(), sd_stage_I=c()
 
 # List of stage specific genes
 stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
-
-log2change_Stage_i[intersect(which(log2change_Stage_i$FDR<=threshold_FDR), which(log2change_Stage_i$log2change>=threshold_stage)),"Category"]<-paste("Per stage genes", sep="")
-
 ###################################################################################################################################################
 # "A total of 4968 up-regulated tumor genes were obtained by comparing all tumor against all normal samples (fdr <=0.05). 
 # Among these, 1603 tumor genes are ketpt after filtering for log2foldchange >= 1. Moreover, 6 tumor genes genes whose average expression in normal 
@@ -49,7 +51,7 @@ df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[r
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
-biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 4.0,]
+biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 1.0,]
 #####################################################################################################################################################
 expression_stage_I      <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_I])
 expression_stage_II     <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_II])
