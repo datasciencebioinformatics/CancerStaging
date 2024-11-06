@@ -98,17 +98,19 @@ selected_genes_Stage_merged[merged_ranked_genes_information[which(merged_ranked_
 # Set rownames
 rownames(merged_ranked_genes_information)<-merged_ranked_genes_information$Gene
 #####################################################################################################################################################
-# Save TSV file with genes from Stage3
-write_tsv(na.omit(list_logchange_tumor_control[["tpm"]][rownames(biomarkers),1:4]), paste(output_dir,"/Figure_2_biomarkers_Tumor_Genes.tsv",sep=""))			
-
-
-#####################################################################################################################################################
 # Set ENSEMBL
 df_rowmeans$ENSEMBL <- rownames(df_rowmeans)
 
 # Set biomarkers
-biomarkers<-df_rowmeans[df_rowmeans$RowMeans <= 2.0,]
+merged_ranked_genes_information<-merged_ranked_genes_information[merged_ranked_genes_information$RowMeans <= 4.0,]
+selected_genes_Stage_merged<-selected_genes_Stage_merged[rownames(merged_ranked_genes_information),]
 #####################################################################################################################################################
+# Save TSV file with genes from Stage3
+write_tsv(merged_ranked_genes_information, paste(output_dir,"/Statistic_Tumor_Genes.tsv",sep=""))			
+write_tsv(selected_genes_Stage_merged, paste(output_dir,"/Statistic_Stage_Specific_Genes.tsv",sep=""))
+#####################################################################################################################################################
+
+
 expression_stage_I      <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_I])
 expression_stage_II     <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_II])
 expression_stage_III    <-data.frame(normalized_expression_table[rownames(biomarkers),sample_stage_III])
