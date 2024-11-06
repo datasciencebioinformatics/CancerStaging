@@ -18,6 +18,7 @@ calculate_z <- function(X, X_mean, S)
 }
 
 # Packages and data use throught 
+library("dslice")
 library(ggplot2)
 library("readr")
 library("reshape2")
