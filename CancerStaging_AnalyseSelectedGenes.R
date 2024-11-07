@@ -28,19 +28,43 @@ stage_specific_genes<-c(unique_stage_I, unique_stage_II, unique_stage_III)
 # Selected genes
 
 # Vector to store samples labels
-df_sample_labels<-data.frame(Samples=unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)),Tumor=0)
+df_sample_labels<-data.frame(Samples=unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)),Tumor=1)
 
 # Storesamples
 rownames(df_sample_labels)<-df_sample_labels$Samples
  
 # Assert label to samples
-df_sample_labels[sample_normal,"Tumor"]<-1
+df_sample_labels[sample_normal,"Tumor"]<-0
 
 
 # Sort Table and df_sample_labels
 normalized_expression_table<- na.omit(normalized_expression_table[stage_specific_genes,c(unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)))])
 df_sample_labels           <- df_sample_labels[c(unique(c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal))),]
 #####################################################################################################################################################
+# Signal to-noise, calculated from the difference of means normal and tumor samples (m0 - m1), divided by the sum of standard deviation of nmormal 
+# with tumor samples (sd0 + sd1). s2n <- (m0 - m1)/(sd0 + sd1).
+# Normalized table
+expmat<-normalized_expression_table
+
+# Labvels for each sample
+label <-as.vector(df_sample_labels$Tumor)
+
+# Take only tumor (1) and only normal (0) samples
+x0 <- expmat[, which(label == 0)]
+x1 <- expmat[, which(label == 1)]
+
+# Calculate the average of only tumor (0) and only normal (1) samples
+m0 <- apply(x0, 1, mean)
+m1 <- apply(x1, 1, mean)
+
+# Calculate the sd of only tumor (0) and only normal (1) samples
+sd0 <- apply(x0, 1, sd)
+sd1 <- apply(x1, 1, sd)
+
+# Calculate the s2n ratio
+s2n <- data.frame(s2n=(m0 - m1)/(sd0 + sd1))
+
+# Calculate the ranked gene information
 ranked_genes<-data.frame(rank_by_s2n=rank_by_s2n(normalized_expression_table, as.vector(df_sample_labels$Tumor)))
 #####################################################################################################################################################
 # Rowmeans for the stage-specific genes
@@ -48,12 +72,20 @@ df_rowmeans<-data.frame(RowMeans=(na.omit(rowMeans(normalized_expression_table[,
 
 df_rowmeans$Gene<-rownames(df_rowmeans)
 ranked_genes$Gene<-rownames(ranked_genes)
+s2n$Gene<-rownames(s2n)
 
 # Merge genes
 merged_ranked_genes<-merge(df_rowmeans,ranked_genes,by="Gene")
 
+# Merge genes
+merged_ranked_genes<-merge(s2n,merged_ranked_genes,by="Gene")
+
 # Set rownames
 rownames(merged_ranked_genes)<-merged_ranked_genes$Gene
+
+# Omit na
+merged_ranked_genes<-na.omit(merged_ranked_genes)
+
 
 # Stages collumn
 merged_ranked_genes$Stages<-""
@@ -72,7 +104,7 @@ colnames(selected_logchange_tumor_control)<-c("Gene","log2change","pvalue","fdr"
 merged_ranked_genes_information<-merge(merged_ranked_genes,selected_logchange_tumor_control,by="Gene")
 
 # Re-order genes
-merged_ranked_genes_information<-merged_ranked_genes_information[,c("Gene","RowMeans","rank_by_s2n","log2change","pvalue","fdr","tumor","Stages")]
+merged_ranked_genes_information<-merged_ranked_genes_information[,c("Gene","RowMeans","rank_by_s2n","s2n","log2change","pvalue","fdr","tumor","Stages")]
 #####################################################################################################################################################
 # Path to files of selected_genes                                                                                                             # 
 # genes_stages_I
