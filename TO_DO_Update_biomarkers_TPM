@@ -20,13 +20,31 @@ To do : A) To re-generate the table to same with criteria. B) To transform the f
 
 # Page 11
 # Table 2.  Biomarkers whose fold change is ≥100 and average RPKM ≤ 2.
-To do : A) To re-generate the table to same with criteria. B) To re-lable Table 2 to Table 3.
+To do : A) To re-generate the table to same with criteria. B) To re-label Table 2 to Table 3.
 
+# Page 12 
+# Table 3. Differential expression of hubs from DEGS.
+# Considering that the average connection score of up-regulated genes across every three stages was 30 by reference to the IntAct reactome, we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
+To do : A) To re-generate the table to same with criteria. B) To re-label Table 3 to Table 4.
 
+# Page 14 
+# Table 3. Differential expression of hubs from DEGS.
+# Among DEGS that were common to two stages, i.e., those corresponding to the intersections of Venn diagram (Figure 1B) between two stages, we found the hubs of Tables 4.
+# In Table 4, we present 16 hubs with the largest fold changes (>19) found for stage III.
+To do : A) To re-generate the table to same with criteria. B) To re-label Table 4 to Table 5.
 
+# Page 16
+# Table 5. Distribution of up-regulated genes per hallmark among stage in LUSC.
+# We investigated the proportion of up-regulated genes that compose several hallmarks as available from the MSigDB (Liberzon et al., 2015; https://www.gsea-msigdb.org/gsea/msigdb/human/genesets.jsp?collection=H) for each stage. The hallmarks that we considered here were: Androgen response, Angiogenesis, Apoptosis, DNA Repair,	E2F, Oestrogen early, Oestrogen late, Fatty acid metabolism, G2M checkpoint, Glycolysis, Hedgehog, Heme metabolism, Hypoxia, IL2_STAT5, IL6_JACK_STAT3, Inflamatory response, Interferon α response, Interferon γ response, KRAS, Mitotic spindle, mTORC1, MYC V1, MYC V2, Myogenesis, Notch, Oxidative phosphorylation, P53, Peroxisome, PI3K/AKT/mTOR, Reactive oxigen, TGFβ, TNFα, Unfolded protein response, and Wnt β-Catenin.  
+To do : A) To re-generate the same criteria to update hallmarks B) To re-label Table 5 to Table 6.
 
+# Page 17
+# Paragraph discussing hallmark results must be updated.
+# Despite the small differences among stages, one can observe from Table 5 that the increase in gene number (n = 49, which are 42, i.e. ~5%, when redundancy due to cross-talk between hallmarks is removed) from stage I to stage III occurs mainly in the hallmarks of: DNA repair (ADRM1, ARL6IP1, CDA, CSTF3, ITPA, MRPL40, NT5C, TMED2), E2F (ANP32E, CDC25B, CDKN2C, LBR, ORC2, RPA1, ZW10), G2M checkpoint (CDC25B, CDKN2C, PRMT5, SQLE), Glycolysis (FUT8, IDH1, RPE), mTORC1 (ABCF2, GOT1, IDH1, PSMC2, PSMC6, RPA1, SERPINH1, SQLE), MYC V1 (ABCE1, ERH, HSP90AB1, ORC2, PSMA7, PSMC6, PSMD7, PTGES3, RPS5, RUVBL2, VBP1), and Oxidative phosphorylation (COX6B1, COX6C, COX7A2L, IDH1, NDUFS8, SUPV3L1, TIMM13, TIMM9, UQCRFS1).  
 
-In table 2, we present the biomarkers whose fold change is ≥100 and average RPKM ≤ 2, which should warrant significant signal-to-noise ratio (Figure 2). The markers that met these criteria had average RPKM ≥ 100.
+# Page 18
+# Figure 3: Summary of funcional analysis with ClusterProfiler. 
+
 
 
 
