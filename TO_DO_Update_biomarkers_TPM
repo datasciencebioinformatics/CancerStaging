@@ -14,11 +14,11 @@ To do : To re-generate the histogramwith CancerStaging_ExpressionMapsStageSpecif
 Figure 3. Contour plots of gene expression in function of T2 and vertex connectivity for LUSC stages. Most up-regulated CDSs are T2 < 30% and corresponding protein connectivity extends below this threshold over staging, which denotes a tendency for disordered proteins typical of signaling pathways. 
 To do : To re-generate the histogram with CancerStaging_ExpressionMapsStageSpecificRestore.R
 
-# Page 10
+# Page 10 OK
 # Figure 2: Boxplots of biomarker expression from LUSC (see Tables 2).
 To do : A) To re-generate the table to same with criteria. B) To transform the figure 2 into table 2.
 
-# Page 11
+# Page 11  OK
 # Table 2.  Biomarkers whose fold change is ≥100 and average RPKM ≤ 2.
 To do : A) To re-generate the table to same with criteria. B) To re-label Table 2 to Table 3.
 
