@@ -6,7 +6,7 @@ To do : To re-run scripts with TPM, then to replace the numbers in the table.
 # Figure 1. RNA-seq sample composition and gene expression heterogeneity. A: PCA of tumor genes contrasting paired tumor and normal samples. B: Venn diagram of malignant up-regulated genes common to every stage (center) and DEGS (periphery).
 To do : To re-generate the figure with CancerStaging_VeenDiagramsFromPairedUp.R   
 
-# Page 8
+# Page 8 Ok
 Figure 2. Nucleotide distributions of genes among LUSC stages. A. GC3 (%). B. T2 (%). Red is for stage I, green for stage II and blue for stage III. 
 To do : To re-generate the histogramwith CancerStaging_ExpressionMapsStageSpecificRestore.R
 
