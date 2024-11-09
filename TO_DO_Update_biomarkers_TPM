@@ -1,8 +1,8 @@
-# Page 7 
+# Page 7 OK
 # Table 1. Statistics of up-regulated genes in the three LUSC stages.
 To do : To re-run scripts with TPM, then to replace the numbers in the table.
 
-# Page 7
+# Page 7 OK
 # Figure 1. RNA-seq sample composition and gene expression heterogeneity. A: PCA of tumor genes contrasting paired tumor and normal samples. B: Venn diagram of malignant up-regulated genes common to every stage (center) and DEGS (periphery).
 To do : To re-generate the figure with CancerStaging_VeenDiagramsFromPairedUp.R   
 
