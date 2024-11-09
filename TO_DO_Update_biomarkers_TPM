@@ -10,7 +10,7 @@ To do : To re-generate the figure with CancerStaging_VeenDiagramsFromPairedUp.R
 Figure 2. Nucleotide distributions of genes among LUSC stages. A. GC3 (%). B. T2 (%). Red is for stage I, green for stage II and blue for stage III. 
 To do : To re-generate the histogramwith CancerStaging_ExpressionMapsStageSpecificRestore.R
 
-# Page 9
+# Page 9 Ok
 Figure 3. Contour plots of gene expression in function of T2 and vertex connectivity for LUSC stages. Most up-regulated CDSs are T2 < 30% and corresponding protein connectivity extends below this threshold over staging, which denotes a tendency for disordered proteins typical of signaling pathways. 
 To do : To re-generate the histogram with CancerStaging_ExpressionMapsStageSpecificRestore.R
 
