@@ -24,7 +24,8 @@ To do : A) To re-generate the table to same with criteria. B) To re-label Table 
 
 # Page 12
 # Table 3. Differential expression of hubs from DEGS.
-# Considering that the average connection score of up-regulated genes across every three stages was 30 by reference to the IntAct reactome, we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
+# Take connectivity
+# Considering that the average connection score of up-regulated genes across every three stages was 30 by reference to the IntAct reactome, we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control
 To do : A) To re-generate the table to same with criteria. B) To re-label Table 3 to Table 4.
 
 # Page 14 
