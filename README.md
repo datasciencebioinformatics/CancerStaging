@@ -58,13 +58,16 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindStageSpeci
 #### 13- Calculate shannon entrpopy for each stage
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CaclulateShannonEntropy.R")
 
-#### 14- Create Expression maps ExpressionMaps
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMapsStageSpecificRestore.R")
+#### 14- Calculate shannon entrpopy for each stage
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_VeenDiagramsFromPairedUp")
 
 #### 15- Create Expression maps ExpressionMaps
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMapsStageSpecificRestore.R")
+
+#### 16- Create Expression maps ExpressionMaps
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMapsStageSpecificAnalysis.R")
 
-#### 16- Summarty of metadata
+#### 17- Summarty of metadata
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_MetadataSummary.R")
 
 Gene expressions were assessed in combination with the gene conectivity (number of conections a gene has in the interactome), the GC levels of third codon positions (GC3) and Thymine composition in second codon position (T2). For each gene, we assessed both the average gene expression among all patients per stage, and also the expression per patients of each stage. For the assessement, box plots with gene expression are shown. In addition to 3D dotplots, countour plots and density plots were created with either T2 and GC3. Finally histograms, were generated.
