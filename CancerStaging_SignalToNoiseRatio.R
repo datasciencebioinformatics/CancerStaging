@@ -1,5 +1,5 @@
 #Moreover, through investigation of biomarkers in up-regulated genes, we found 52 genes with fold changes larger than 50 in tumor, and average TPM ≤ 10 (Table S1). In table 2, we present the biomarkers whose fold change is ≥100 and average TPM ≤ 2, which should warrant significant signal-to-noise ratio (Figure 2). The markers that met these criteria had average T`PM ≥ 100.
-
+normalization_scheme<-"tpm"
 ###################################################################################################################################################
 # All tumor and control samples
 colData_tumor  <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor",])
@@ -80,5 +80,5 @@ selected_genes<-df_FC[df_FC$FC>=50 & df_FC$Mean_normal<=10,]
 write_tsv(selected_genes, paste(output_dir,"/selected_genes.tsv",sep=""))
 
 # Take selected genes
-selected_genes<-df_FC[which(df_FC$FC>100)& df_FC$Mean_normal<=10,"Gene"]
+selected_genes<-df_FC[which(df_FC$FC>100 & df_FC$Mean_normal<=10),]
 
