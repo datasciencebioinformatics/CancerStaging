@@ -54,5 +54,12 @@ colnames(df_selected_conectivity)<-c("Gene","Connectivity","Stage")
 # Mer data.frame
 df_selected_conectivity<-merge(df_selected_conectivity,df_FC,by="Gene")[,c("Gene", "Connectivity", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor","FC")]
 
+# Set colnames
+colnames(df_selected_conectivity)<-c("Gene", "Cnx", "Stage", "Avg.normal", "sd.normal", "Avg.tumor","sd.tumor","FC")
+
+# Re-order table
+df_selected_conectivity<-df_selected_conectivity[,c("Gene","Avg.normal", "sd.normal","Avg.tumor","sd.tumor","FC", "Cnx","Stage")]
+
+
 # Save TSV file with genes from Stage3
-write_tsv(df_selected_conectivity, paste(output_dir,"/selected_genes.tsv",sep=""))
+write_tsv(df_selected_conectivity, paste(output_dir,"/selected_conectivity.tsv",sep=""))
