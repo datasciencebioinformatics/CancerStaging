@@ -22,7 +22,7 @@ To do : A) To re-generate the table to same with criteria. B) To transform the f
 # Table 2.  Biomarkers whose fold change is ≥100 and average RPKM ≤ 2.
 To do : A) To re-generate the table to same with criteria. B) To re-label Table 2 to Table 3.
 
-# Page 12 
+# Page 12 OK
 # Table 3. Differential expression of hubs from DEGS.
 # Considering that the average connection score of up-regulated genes across every three stages was 30 by reference to the IntAct reactome, we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
 To do : A) To re-generate the table to same with criteria. B) To re-label Table 3 to Table 4.
