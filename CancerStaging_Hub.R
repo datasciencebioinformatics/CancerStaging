@@ -60,11 +60,21 @@ colnames(df_selected_conectivity)<-c("Gene", "Cnx", "Stage", "Avg.normal", "sd.n
 # Re-order table
 df_selected_conectivity<-df_selected_conectivity[,c("Gene","Avg.normal", "sd.normal","Avg.tumor","sd.tumor","FC", "Cnx","Stage")]
 
-
 # Save TSV file with genes from Stage3
 write_tsv(df_selected_conectivity, paste(output_dir,"/selected_conectivity.tsv",sep=""))
 
 #######################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
 # Path to files of selected_genes                                                                                                             # 
 # genes_stages_I
 selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
@@ -85,9 +95,9 @@ stage_II_III  =unique(intersect(selected_genes_Stage_II_gene,selected_genes_Stag
 
 
 # Considering that the average connection score of up-regulated genes across the 1722 of the three stages combined was 50.06 by reference to the IntAct reactome,
-intersect_conectivity_stage_I_II   <- connectivity[which(stage_I_II %in% names(connectivity))]
-intersect_conectivity_stage_I_III  <- connectivity[which(stage_I_III %in% names(connectivity))]
-intersect_conectivity_stage_II_III < -connectivity[which(stage_II_III %in% names(connectivity))]
+intersect_conectivity_stage_I_II   <- stage_I_II[which(stage_I_II %in% names(connectivity))]
+intersect_conectivity_stage_I_III  <- stage_I_III[which(stage_I_III %in% names(connectivity))]
+intersect_conectivity_stage_II_III <- stage_II_III[which(stage_II_III %in% names(connectivity))]
 
 # we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. 
 intersect_conectivity_stage_I_II <-intersect_conectivity_stage_I_II[which(intersect_conectivity_stage_I_II>75)]
@@ -95,34 +105,32 @@ intersect_conectivity_stage_I_III<-intersect_conectivity_stage_I_III[which(inter
 intersect_conectivity_stage_II_III<-intersect_conectivity_stage_II_III[which(intersect_conectivity_stage_II_III>75)]
 
 # Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
-selected_genes<-df_FC[df_FC$Mean_normal<=4.5,]
+selected_genes<-df_FC[df_FC$Mean_normal<=4.1,]
 
 # Store conectivity
-df_selected_conectivity_stage_I_II<-data.frame(intersect_conectivity_stage_I_II[names(intersect_conectivity_stage_I_II) %in% selected_genes$Gene])
-df_selected_conectivity_stage_I_III<-data.frame(intersect_conectivity_stage_I_III[names(intersect_conectivity_stage_I_III) %in% selected_genes$Gene])
-df_selected_conectivity_stage_II_III<-data.frame(intersect_conectivity_stage_II_III[names(intersect_conectivity_stage_II_III) %in% selected_genes$Gene])
-
+df_selected_conectivity_stage_I_II<-data.frame(Gene=intersect_conectivity_stage_I_II[intersect_conectivity_stage_I_II %in% selected_genes$Gene])
+df_selected_conectivity_stage_I_III<-data.frame(Gene=intersect_conectivity_stage_I_III[intersect_conectivity_stage_I_III %in% selected_genes$Gene])
+df_selected_conectivity_stage_II_III<-data.frame(Gene=intersect_conectivity_stage_II_III[intersect_conectivity_stage_II_III %in% selected_genes$Gene])
 
 # Add stage
 df_selected_conectivity_stage_I_II$Stage  <-"Stages_I_II"
 df_selected_conectivity_stage_I_III$Stage <-"Stages_I_III"
 df_selected_conectivity_stage_II_III$Stage<-"Stages_II_III"
 
-colnames(df_selected_conectivity_stage_I_II)<-c("Gene","Connectivity","Stage")
-colnames(df_selected_conectivity_stage_I_III)<-c("Gene","Connectivity","Stage")
-colnames(df_selected_conectivity_stage_II_III)<-c("Gene","Connectivity","Stage")
+colnames(df_selected_conectivity_stage_I_II)<-c("Gene","Stage")
+colnames(df_selected_conectivity_stage_I_III)<-c("Gene","Stage")
+colnames(df_selected_conectivity_stage_II_III)<-c("Gene","Stage")
 
 # Merge data.frame
-df_selected_conectivity_stage_all<-rbind(df_selected_conectivity_stage_I_II,df_selected_conectivity_stage_I_III,df_selected_conectivity_stage_II_III)
+df_selected_conectivity_stage_all<-unique(rbind(df_selected_conectivity_stage_I_II,df_selected_conectivity_stage_I_III,df_selected_conectivity_stage_II_III))
 
 # Mer data.frame
-df_selected_conectivity<-merge(df_selected_conectivity_stage_all,df_FC,by="Gene")[,c("Gene", "Connectivity", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor","FC")]
+#df_selected_conectivity<-merge(df_selected_conectivity_stage_all,df_FC,by="Gene")[,c("Gene", "Connectivity", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor","FC")]
+df_selected_conectivity<-merge(df_selected_conectivity_stage_all,df_FC,by="Gene")[,c("Gene", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor","FC")]
 
-# Set colnames
-colnames(df_selected_conectivity)<-c("Gene", "Cnx", "Stage", "Avg.normal", "sd.normal", "Avg.tumor","sd.tumor","FC")
 
-# Re-order table
-df_selected_conectivity<-df_selected_conectivity[,c("Gene","Avg.normal", "sd.normal","Avg.tumor","sd.tumor","FC", "Cnx","Stage")]
+# df_selected_conectivity
+df_selected_conectivity<-merge(data.frame(Gene=names(connectivity),Cnx=as.vector(connectivity)),unique(df_selected_conectivity[,-c(2)]),by="Gene")
 
 # Save TSV file with genes from Stage3
 write_tsv(df_selected_conectivity, paste(output_dir,"/selected_conectivity_2.tsv",sep=""))
