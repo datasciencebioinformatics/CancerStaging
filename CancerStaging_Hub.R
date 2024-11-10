@@ -52,7 +52,7 @@ df_selected_conectivity<-rbind(df_selected_conectivity_Stage_I,df_selected_conec
 colnames(df_selected_conectivity)<-c("Gene","Connectivity","Stage")
 
 # Mer data.frame
-df_selected_conectivity<-merge(df_selected_conectivity,df_FC,by="Gene")[,c("Gene", "Connectivity", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor")]
+df_selected_conectivity<-merge(df_selected_conectivity,df_FC,by="Gene")[,c("Gene", "Connectivity", "Stage", "Mean_normal", "sd_normal", "Mean_tumor","sd_tumor","FC")]
 
 # Save TSV file with genes from Stage3
 write_tsv(df_selected_conectivity, paste(output_dir,"/selected_genes.tsv",sep=""))
