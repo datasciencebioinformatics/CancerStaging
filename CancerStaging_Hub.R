@@ -84,25 +84,23 @@ stage_I_III   =unique(intersect(selected_genes_Stage_I_gene,selected_genes_Stage
 stage_II_III  =unique(intersect(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
 
 
-
 # Considering that the average connection score of up-regulated genes across the 1722 of the three stages combined was 50.06 by reference to the IntAct reactome,
-intersect_conectivity_stage_I_II   <-connectivity[names(connectivity) %in% stage_I_II]
-intersect_conectivity_stage_I_III  <-connectivity[names(connectivity) %in% stage_I_III]
-intersect_conectivity_stage_II_III  <-connectivity[names(connectivity) %in% stage_II_III]
+intersect_conectivity_stage_I_II   <-connectivity[which(names(connectivity) %in% stage_I_II)]
+intersect_conectivity_stage_I_III  <-connectivity[which(names(connectivity) %in% stage_I_III)]
+intersect_conectivity_stage_II_III  <-connectivity[which(names(connectivity) %in% stage_II_III)]
 
 # we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. 
 intersect_conectivity_stage_I_II <-intersect_conectivity_stage_I_II[which(intersect_conectivity_stage_I_II>75)]
 intersect_conectivity_stage_I_III<-intersect_conectivity_stage_I_III[which(intersect_conectivity_stage_I_III>75)]
 intersect_conectivity_stage_II_III<-intersect_conectivity_stage_II_III[which(intersect_conectivity_stage_II_III>75)]
 
-
-
-# Store conectivity
-df_selected_conectivity_stage_I_II<-data.frame(intersect_conectivity[names(intersect_conectivity_stage_I_II) %in% selected_genes$Gene])
-df_selected_conectivity_stage_I_III<-data.frame(intersect_conectivity[names(intersect_conectivity_stage_I_III) %in% selected_genes$Gene])
-df_selected_conectivity_stage_I_III<-data.frame(intersect_conectivity[names(intersect_conectivity_stage_OI_III) %in% selected_genes$Gene])
-
+# Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
+selected_genes<-df_FC[df_FC$Mean_normal<=4.5,]
 
 # Store conectivity
-df_selected_conectivity<-data.frame(intersect_conectivity[names(intersect_conectivity) %in% selected_genes$Gene])
+df_selected_conectivity_stage_I_II<-data.frame(intersect_conectivity_stage_I_II[names(intersect_conectivity_stage_I_II) %in% selected_genes$Gene])
+df_selected_conectivity_stage_I_III<-data.frame(intersect_conectivity_stage_I_III[names(intersect_conectivity_stage_I_III) %in% selected_genes$Gene])
+df_selected_conectivity_stage_II_III<-data.frame(intersect_conectivity_stage_II_III[names(intersect_conectivity_stage_II_III) %in% selected_genes$Gene])
+
+
 
