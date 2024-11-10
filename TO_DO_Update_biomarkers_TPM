@@ -28,10 +28,10 @@ To do : A) To re-generate the table to same with criteria. B) To re-label Table 
 # Considering that the average connection score of up-regulated genes across every three stages was 30 by reference to the IntAct reactome, we chose 50 as a threshold above which to consider a protein with a higher connection score as a hub. Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control
 To do : A) To re-generate the table to same with criteria. B) To re-label Table 3 to Table 4.
 
-# Page 13 
+# Page 13 To Check with Carels
 # Differential expression of hubs of DEGS common to two stages.
 # Among DEGS that were common to two stages, i.e., those corresponding to the intersections of Venn diagram (Figure 1B) between two stages, we found the hubs of Tables 5.
-# Take the intersecting genes among Stage I and II
+# Take the intersecting genes among Stage I and II     - obs. genes found from all the three intersections are the same !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # Take the intersecting genes among Stage I and III
 # Take the intersecting genes among Stage I and II
 # Table 5. Differential expression of hubs of DEGS common to two stages.
