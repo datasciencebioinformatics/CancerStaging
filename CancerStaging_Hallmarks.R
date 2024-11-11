@@ -6,8 +6,18 @@ library("fgsea")
 msigdb.hs = getMsigdb(org = 'hs', id = 'SYM', version = '7.4')
 
 # retrieeve the hallmarks gene sets
-subsetCollection(msigdb.hs, 'h')
+# 50 hallmarks
+hallmarks_gene_set<-subsetCollection(msigdb.hs, 'h')
+
+# log2FC of genes for stages, I, II, III
+rankData_stage_I   <- 
+rankData_stage_II  <- 
+rankData_stage_III <- 
+
 # check the hallmarks against the paper
+fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, rankData_stage_I, minSize = 15, maxSize = 500)
+fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, rankData_stage_II, minSize = 15, maxSize = 500)
+fgseaRes_stage_III <- fgsea(hallmarks_gene_set, rankData_stage_III, minSize = 15, maxSize = 500)
 
 
 # Perform gene set enrichment analysis
