@@ -5,6 +5,8 @@
 
 
 # Perform gene set enrichment analysis
+# Install msigdb packages.
+# fgsea
 # Genes from stage I     (numGene, n)    : number of genes of this stage associated to Hallmark X.
 # Genes from stage I     (%)             : percentage of genes of this stage associated to Hallmark X.
 # Genes from stage II    (numGene, n)    : number of genes of this stage associated to Hallmark X.
