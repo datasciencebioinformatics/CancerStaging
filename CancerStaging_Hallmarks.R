@@ -2,11 +2,11 @@ library("msigdb")
 library("fgsea")
 
 # Install msigdb packages.
-#use the custom accessor to select a specific version of MSigDB
+# use the custom accessor to select a specific version of MSigDB
 msigdb.hs = getMsigdb(org = 'hs', id = 'SYM', version = '7.4')
 
 # retrieeve the hallmarks gene sets
-# subsetCollection(msigdb.hs, 'h')
+subsetCollection(msigdb.hs, 'h')
 # check the hallmarks against the paper
 
 
