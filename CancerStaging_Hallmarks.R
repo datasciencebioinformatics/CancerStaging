@@ -33,15 +33,20 @@ genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl
 genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% names(vc_rankData_stage_II),]
 genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% names(vc_rankData_stage_III),]
 
+genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
+genes_rankData_stage_II  <- genes_rankData_stage_II[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
+genes_rankData_stage_III <- genes_rankData_stage_III[match(unique(genes_rankData_stage_III$ensembl_gene_id), genes_rankData_stage_III$ensembl_gene_id),]
+
 rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
 rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
 rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
 
-genes_rankData_stage_I[names(vc_rankData_stage_I)]
-
+names(vc_rankData_stage_I)   <- genes_rankData_stage_I[names(vc_rankData_stage_I),"entrezgene_id"]
+names(vc_rankData_stage_II)  <- genes_rankData_stage_I[names(vc_rankData_stage_II),"entrezgene_id"]
+names(vc_rankData_stage_III) <- genes_rankData_stage_I[names(vc_rankData_stage_III),"entrezgene_id"]
 
 # check the hallmarks against the paper
-fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, vc_rankData_stage_I, minSize = 15, maxSize = 500)
+fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, vc_rankData_stage_I), minSize = 15, maxSize = 500,scoreType = "pos")
 fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, vc_rankData_stage_II, minSize = 15, maxSize = 500)
 fgseaRes_stage_III <- fgsea(hallmarks_gene_set, vc_rankData_stage_III, minSize = 15, maxSize = 500)
 
