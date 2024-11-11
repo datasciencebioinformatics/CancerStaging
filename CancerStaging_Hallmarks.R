@@ -10,14 +10,23 @@ msigdb.hs = getMsigdb(org = 'hs', id = 'SYM', version = '7.4')
 hallmarks_gene_set<-subsetCollection(msigdb.hs, 'h')
 
 # log2FC of genes for stages, I, II, III
-rankData_stage_I   <- 
-rankData_stage_II  <- 
-rankData_stage_III <- 
+df_rankData_stage_I   <- na.omit(df_FC[selected_genes_Stage_I_gene,c("Gene","FC")])
+df_rankData_stage_II  <- na.omit(df_FC[selected_genes_Stage_II_gene,c("Gene","FC")])
+df_rankData_stage_III <- na.omit(df_FC[selected_genes_Stage_III_gene,c("Gene","FC")]) 
+
+vc_rankData_stage_I   <- df_rankData_stage_I$FC
+vc_rankData_stage_II  <- df_rankData_stage_II$FC
+vc_rankData_stage_III <- df_rankData_stage_III$FC
+
+names(vc_rankData_stage_I)   <- df_rankData_stage_I$Gene
+names(vc_rankData_stage_II)  <- df_rankData_stage_II$Gene
+names(vc_rankData_stage_III) <- df_rankData_stage_III$Gene
+
 
 # check the hallmarks against the paper
-fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, rankData_stage_I, minSize = 15, maxSize = 500)
-fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, rankData_stage_II, minSize = 15, maxSize = 500)
-fgseaRes_stage_III <- fgsea(hallmarks_gene_set, rankData_stage_III, minSize = 15, maxSize = 500)
+fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, vc_rankData_stage_I, minSize = 15, maxSize = 500)
+fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, vc_rankData_stage_II, minSize = 15, maxSize = 500)
+fgseaRes_stage_III <- fgsea(hallmarks_gene_set, vc_rankData_stage_III, minSize = 15, maxSize = 500)
 
 
 # Perform gene set enrichment analysis
