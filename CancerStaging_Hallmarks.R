@@ -1,6 +1,9 @@
 library("msigdb")
 library("fgsea")
 
+# Load mart tables
+mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
+
 # Install msigdb packages.
 # use the custom accessor to select a specific version of MSigDB
 msigdb.hs = getMsigdb(org = 'hs', id = 'SYM', version = '7.4')
@@ -22,12 +25,25 @@ names(vc_rankData_stage_I)   <- df_rankData_stage_I$Gene
 names(vc_rankData_stage_II)  <- df_rankData_stage_II$Gene
 names(vc_rankData_stage_III) <- df_rankData_stage_III$Gene
 
+genes_rankData_stage_I    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id"),values=names(vc_rankData_stage_I),mart=mart)
+genes_rankData_stage_II   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id"),values=names(vc_rankData_stage_II),mart=mart)
+genes_rankData_stage_III  <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id"),values=names(vc_rankData_stage_III),mart=mart)
+
+genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% names(vc_rankData_stage_I),]
+genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% names(vc_rankData_stage_II),]
+genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% names(vc_rankData_stage_III),]
+
+rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
+rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
+rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
+
+genes_rankData_stage_I[names(vc_rankData_stage_I)]
+
 
 # check the hallmarks against the paper
 fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, vc_rankData_stage_I, minSize = 15, maxSize = 500)
 fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, vc_rankData_stage_II, minSize = 15, maxSize = 500)
 fgseaRes_stage_III <- fgsea(hallmarks_gene_set, vc_rankData_stage_III, minSize = 15, maxSize = 500)
-
 
 # Perform gene set enrichment analysis
 # Install msigdb packages.
