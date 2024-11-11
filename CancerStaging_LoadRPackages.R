@@ -48,7 +48,7 @@ library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 library("GGally")
 library("ggVennDiagram")
 library("clusterProfiler")
-
+library("fgsea")
 
 #library(metR)
 #library("ggpairs")
