@@ -109,7 +109,8 @@ for (hallmarks in names(pathways))
                  symbol_Stage_III=symbol_Stage_III))
   }  
 }
-colnames(results_hallmark)<-results_hallmark[,c("hallmarks","symbol_Stage_I","genes_n_Stage_I","genes_per_Stage_I","symbol_Stage_II","genes_n_Stage_II","genes_per_Stage_II","symbol_Stage_III","genes_n_Stage_III","genes_per_Stage_III")]
+# results_hallmark
+results_hallmark<-results_hallmark[,c("hallmarks","symbol_Stage_I","genes_n_Stage_I","genes_per_Stage_I","symbol_Stage_II","genes_n_Stage_II","genes_per_Stage_II","symbol_Stage_III","genes_n_Stage_III","genes_per_Stage_III")]
 
 # Save TSV file with genes from Stage3
 write_tsv(results_hallmark, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
