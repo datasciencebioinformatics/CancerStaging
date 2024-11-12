@@ -70,8 +70,16 @@ source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionMaps
 #### 17- Summarty of metadata
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_MetadataSummary.R")
 
-#### 18- Summarty of metadata
+#### 18- Summarty of CancerStaging_Hallmarks
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_Hallmarks.R")
+
+#### 19- Summarty of CancerStaging_SignalToNoiseRatio
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SignalToNoiseRatio.R")
+
+#### 20- Summarty of CancerStaging_Hub
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_Hub.R")
+
+
 
 Gene expressions were assessed in combination with the gene conectivity (number of conections a gene has in the interactome), the GC levels of third codon positions (GC3) and Thymine composition in second codon position (T2). For each gene, we assessed both the average gene expression among all patients per stage, and also the expression per patients of each stage. For the assessement, box plots with gene expression are shown. In addition to 3D dotplots, countour plots and density plots were created with either T2 and GC3. Finally histograms, were generated.
 
