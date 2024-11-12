@@ -17,7 +17,8 @@ calculate_z <- function(X, X_mean, S)
   return((X-X_mean)/S)
 }
 
-# Packages and data use throught 
+# Packages and data use throught
+libreary("ReactomePA")
 library("dslice")
 library(ggplot2)
 library("readr")
