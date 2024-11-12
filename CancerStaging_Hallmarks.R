@@ -50,6 +50,15 @@ rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entre
 rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
 rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
 
+symgbol_genes_rankData_stage_I   <- genes_rankData_stage_I
+symgbol_genes_rankData_stage_II  <- genes_rankData_stage_II
+symgbol_genes_rankData_stage_III <- genes_rankData_stage_III
+
+rownames(expr_stage_I_symbol)   <- genes_rankData_stage_I[rownames(expr_stage_I),"hgnc_symbol"]
+rownames(expr_stage_II_symbol)  <- genes_rankData_stage_II[rownames(expr_stage_II),"hgnc_symbol"]
+rownames(expr_stage_III_symbol) <- genes_rankData_stage_III[rownames(expr_stage_III),"hgnc_symbol"]
+
+
 geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
 geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
@@ -65,6 +74,10 @@ for (hallmarks in names(pathways))
   # Take the genes
   pathways[[hallmarks]]
 
+  symbol_Stage_I<-paste(genes_rankData_stage_I[rownames(expr_stage_I) %in% pathways[[hallmarks]],"hgnc_symbol"],collapse=" , ")
+  symbol_Stage_II<-paste(genes_rankData_stage_II[rownames(expr_stage_II) %in% pathways[[hallmarks]],"hgnc_symbol"],collapse=" , ")
+  symbol_Stage_III<-genes_rankData_stage_III[rownames(expr_stage_III) %in% pathways[[hallmarks]],"hgnc_symbol"]
+
   # Take number of genes from this ptahway on stage I
   genes_Stage_I<-paste(rownames(expr_stage_I)[rownames(expr_stage_I) %in% pathways[[hallmarks]]],collapse=" , ")
   genes_Stage_II<-paste(rownames(expr_stage_II)[rownames(expr_stage_II) %in% pathways[[hallmarks]]],collapse=" , ")
@@ -75,6 +88,7 @@ for (hallmarks in names(pathways))
   genes_n_Stage_II<-sum(rownames(expr_stage_II) %in% pathways[[hallmarks]])
   genes_n_Stage_III<-sum(rownames(expr_stage_III) %in% pathways[[hallmarks]])
 
+  print(data.frame(hallmark=hallmarks,symbol_Stage_I=symbol_Stage_I,symbol_Stage_II=symbol_Stage_II,symbol_Stage_III=hallmarks))
   print(data.frame(hallmark=hallmarks,genes_Stage_I=genes_Stage_I,genes_Stage_II=genes_Stage_II,genes_Stage_III=genes_Stage_III))
   print(data.frame(hallmark=hallmarks,genes_n_Stage_I=genes_n_Stage_I,genes_n_Stage_II=genes_n_Stage_II,genes_n_Stage_III=genes_n_Stage_III))
 }
