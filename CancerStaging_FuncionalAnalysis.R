@@ -95,3 +95,19 @@ all_anotation_results<-all_anotation_results[which(all_anotation_results$p.adjus
 # Save TSV file with genes from Stage3
 write_tsv(all_anotation_results, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
 
+# For each term
+for (term in unique(all_anotation_results$ID))
+{
+  # All the genes are take
+  gene_IDs<-all_anotation_results[all_anotation_results$ID==term,"geneID"]
+
+  # For each gene, repeat the line
+  for (gene in unlist(strsplit(gene_IDs,"/",fixed=T)) )
+  {
+    print(gene)
+  }
+}
+
+
+
+
