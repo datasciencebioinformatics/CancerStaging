@@ -50,15 +50,6 @@ rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entre
 rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
 rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
 
-symgbol_genes_rankData_stage_I   <- genes_rankData_stage_I
-symgbol_genes_rankData_stage_II  <- genes_rankData_stage_II
-symgbol_genes_rankData_stage_III <- genes_rankData_stage_III
-
-rownames(expr_stage_I_symbol)   <- genes_rankData_stage_I[rownames(expr_stage_I),"hgnc_symbol"]
-rownames(expr_stage_II_symbol)  <- genes_rankData_stage_II[rownames(expr_stage_II),"hgnc_symbol"]
-rownames(expr_stage_III_symbol) <- genes_rankData_stage_III[rownames(expr_stage_III),"hgnc_symbol"]
-
-
 geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
 geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
