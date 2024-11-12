@@ -19,9 +19,9 @@ colnames(ids_stage_II)  <-c("gene_id","ENTREZID","SYMBOL")
 colnames(ids_stage_III) <-c("gene_id","ENTREZID","SYMBOL")
 ########################################################################################################################################
 # Merge genes_unique and ids_stage in the same tables
-genes_Stage_I  <-merge(genes_unique_Stage_I,ids_stage_I,by="gene_id")
-genes_Stage_II <-merge(genes_unique_Stage_II,ids_stage_II,by="gene_id")
-genes_Stage_III<-merge(genes_unique_Stage_III,ids_stage_III,by="gene_id")
+#genes_Stage_I  <-merge(genes_unique_Stage_I,ids_stage_I,by="gene_id")
+#genes_Stage_II <-merge(genes_unique_Stage_II,ids_stage_II,by="gene_id")
+#genes_Stage_III<-merge(genes_unique_Stage_III,ids_stage_III,by="gene_id")
 
 # Bind all three stages into one
 genes_Stage_ALL<-unique(rbind(ids_stage_I,ids_stage_II,ids_stage_III))
@@ -92,85 +92,6 @@ all_anotation_results<-rbind(go_results_all_Stages,kegg_results_all_Stages,react
 # Filter by p.adjust
 all_anotation_results<-all_anotation_results[which(all_anotation_results$p.adjust <0.05),]
 ######################################################################################################################
-# A data.frame to store all results
-df_all_annotation<-data.frame(ID=c(),p.adjust=c(),Description=c(),geneID=c(), SYMBOL=c(),Count=c(),Stage=c(),Layer=c())
+# Save TSV file with genes from Stage3
+write_tsv(all_anotation_results, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
 
-# For each annotation
-for (annotation in rownames(all_anotation_results))
-{
-
-	# Save all variables
-	ID            <- all_anotation_results[annotation,"ID"]   
-	p.adjust      <- all_anotation_results[annotation,"p.adjust"]   
-	Description   <- all_anotation_results[annotation,"Description"]   
-	geneID        <- all_anotation_results[annotation,"geneID"]   
-	Count         <- all_anotation_results[annotation,"Count"]   
-	Stage         <- all_anotation_results[annotation,"Stage"]   
-	Layer         <- all_anotation_results[annotation,"Layer"]   
-
-	# All genes of stage
-	all_genes_of_annotation<-strsplit(x=geneID,"/",fixed=T)[[1]]
-
-	# For all genes
-	for (genes in all_genes_of_annotation)
-	{
-		# If layer equal to Kegg
-		if(Layer=="KEGG")
-		{
-			# Make the id converstion			
-			gene_symbol<-genes_Stage_ALL[which(genes_Stage_ALL$ENTREZID %in% genes),"SYMBOL"]
-			genes_id<-genes_Stage_ALL[which(genes_Stage_ALL$ENTREZID %in% genes),"gene_id"]
-		}else # If not kegg 
-		{
-			# Make the id converstion			
-			gene_symbol<-genes_Stage_ALL[which(genes_Stage_ALL$SYMBOL %in% genes),"SYMBOL"]
-			genes_id<-genes_Stage_ALL[which(genes_Stage_ALL$SYMBOL %in% genes),"gene_id"]
-		}
-		# gene annotation
-		gene_annotation<-data.frame(ID=ID,p.adjust=p.adjust,Description=Description,geneID=genes_id, SYMBOL=gene_symbol,Count=Count,Stage=Stage,Layer=Layer)
-
-		# df_all_annotation
-		df_all_annotation<-rbind(df_all_annotation,gene_annotation)
-	}	
-}
-#####################################################################################################
-# Sheet 1 - annotate each gene individually
-# ids_stage_I
-# Specify sheet by its name
-annotation_stage_I <- data.frame(read_excel("/home/felipe/Documentos/Fiocruz/MultiOmicsFiocruzCancer/unique_genes_annotation.xlsx", sheet = "Stage I"))
-annotation_stage_II <- data.frame(read_excel("/home/felipe/Documentos/Fiocruz/MultiOmicsFiocruzCancer/unique_genes_annotation.xlsx", sheet = "Stage II"))
-annotation_stage_III <- data.frame(read_excel("/home/felipe/Documentos/Fiocruz/MultiOmicsFiocruzCancer/unique_genes_annotation.xlsx", sheet = "Stage III"))
-
-annotation_stage_I$Stage<-"Stage I"
-annotation_stage_II$Stage<-"Stage II"
-annotation_stage_III$Stage<-"Stage III"
-
-# bind all annotation
-annotation_stages_all<-rbind(annotation_stage_I,annotation_stage_II,annotation_stage_III)
-
-# A filed combining Layer and descriptions
-df_all_annotation$CluterProfiler=paste(df_all_annotation$Layer,":",df_all_annotation$Description,sep="")
-
-# Replace comman by -
-df_all_annotation$CluterProfiler<-gsub(",", "-", df_all_annotation$CluterProfiler)
-
-# Filed to add CluterProfiler
-annotation_stages_all$CluterProfiler<-""
-
-# For ech genes in annotation_stages_all
-for (gene_row in rownames(annotation_stages_all))
-{
-	# Take gene id from gene_row
-	gene<-annotation_stages_all[gene_row,"gene_id"]
-
-	# Add clusterProfiler
-	annotation_stages_all[gene_row,"CluterProfiler"]<-paste(df_all_annotation[which(df_all_annotation$geneID == gene),"CluterProfiler"],collapse=",")
-}
-# Save file 
-write.xlsx(x=annotation_stages_all,file=paste(output_dir,"unique_genes_annotation_clusterProfiler",".xlsx",sep=""), sheet="all_stages", append=FALSE)
-write.xlsx(x=annotation_stage_I,file=paste(output_dir,"unique_genes_annotation_clusterProfiler",".xlsx",sep=""), sheet="Stage I", append=TRUE)
-write.xlsx(x=annotation_stage_II,file=paste(output_dir,"unique_genes_annotation_clusterProfiler",".xlsx",sep=""), sheet="Stage II", append=TRUE)
-write.xlsx(x=annotation_stage_III,file=paste(output_dir,"unique_genes_annotation_clusterProfiler",".xlsx",sep=""), sheet="Stage III", append=TRUE)
-#####################################################################################################
-# Specify sheet by its name
-annotation_stage_all <- data.frame(read_excel("/home/felipe/Documentos/Fiocruz/MultiOmicsFiocruzCancer/unique_genes_annotation_clusterProfiler_Genecards.xlsx"))
