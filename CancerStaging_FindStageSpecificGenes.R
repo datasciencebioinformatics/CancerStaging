@@ -23,7 +23,7 @@ list_stage_specific_genes<-c()
 # for each  normalization scheme
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 
 for (normalization_scheme in normalization_schemes)
 {
