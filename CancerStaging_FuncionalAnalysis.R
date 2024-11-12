@@ -95,18 +95,70 @@ all_anotation_results<-all_anotation_results[which(all_anotation_results$p.adjus
 # Save TSV file with genes from Stage3
 write_tsv(all_anotation_results, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
 
+# Table wth
+df_genes_terms<-data.frame(ID=c(),p.adjust=c(), Description=c(), geneID=c(), Count=c(),Stage=c(),Layer=c(),gene=c())
+
 # For each term
 for (term in unique(all_anotation_results$ID))
 {
   # All the genes are take
   gene_IDs<-all_anotation_results[all_anotation_results$ID==term,"geneID"]
 
+  ID            = all_anotation_results[all_anotation_results$ID==term,"ID"]
+  p.adjust      = all_anotation_results[all_anotation_results$ID==term,"p.adjust"]
+  Description   = all_anotation_results[all_anotation_results$ID==term,"Description"]
+  geneID        = all_anotation_results[all_anotation_results$ID==term,"geneID"]
+  Count         = all_anotation_results[all_anotation_results$ID==term,"Count"]
+  Stage         = all_anotation_results[all_anotation_results$ID==term,"Stage"]
+  Layer         = all_anotation_results[all_anotation_results$ID==term,"Layer"]  
+
   # For each gene, repeat the line
   for (gene in unlist(strsplit(gene_IDs,"/",fixed=T)) )
   {
-    print(gene)
+    # Table wth
+    df_genes_terms<-rbind(df_genes_terms,data.frame(ID=ID,p.adjust=p.adjust, Description=Description, geneID=geneID, Count=Count,Stage=Stage,Layer=Layer,gene=gene))
   }
 }
+
+# Take the 3 most abundat layers from each stage
+# First, spearate per stage
+df_genes_terms_stage_I   <-df_genes_terms[df_genes_terms$Stage=="Stage I",]
+df_genes_terms_stage_II  <-df_genes_terms[df_genes_terms$Stage=="Stage II",]
+df_genes_terms_stage_III <-df_genes_terms[df_genes_terms$Stage=="Stage III",]
+
+# Second, separate by 
+tabble_terms_GO_Stage_I       <-table(df_genes_terms_stage_I[df_genes_terms_stage_I$Layer=="GO","ID"])
+tabble_terms_KEGG_Stage_I     <-table(df_genes_terms_stage_I[df_genes_terms_stage_I$Layer=="KEGG","ID"])
+tabble_terms_Reactome_Stage_I <-table(df_genes_terms_stage_I[df_genes_terms_stage_I$Layer=="Reactome","ID"])
+
+# Second, separate by 
+tabble_terms_GO_Stage_II       <-table(df_genes_terms_stage_II[df_genes_terms_stage_II$Layer=="GO","ID"])
+tabble_terms_KEGG_Stage_II     <-table(df_genes_terms_stage_II[df_genes_terms_stage_II$Layer=="KEGG","ID"])
+tabble_terms_Reactome_Stage_II <-table(df_genes_terms_stage_II[df_genes_terms_stage_II$Layer=="Reactome","ID"])
+
+# Second, separate by 
+tabble_terms_GO_Stage_III       <-table(df_genes_terms_stage_III[df_genes_terms_stage_III$Layer=="GO","ID"])
+tabble_terms_KEGG_Stage_III     <-table(df_genes_terms_stage_III[df_genes_terms_stage_III$Layer=="KEGG","ID"])
+tabble_terms_Reactome_Stage_III <-table(df_genes_terms_stage_III[df_genes_terms_stage_III$Layer=="Reactome","ID"])
+
+tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I)]
+tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I)]
+tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I)]
+
+tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II)]
+tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II)]
+tabble_terms_KEGG_Stage_II<-tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II)]
+
+tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III)]
+tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III)]
+tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III)]
+
+# Order the three most abundant terms by pad
+
+
+
+
+
 
 
 
