@@ -1,5 +1,5 @@
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 #######################################################################################################################################
 # A script to caluclate entropy from lists of genes from each stage
 #######################################################################################################################################
