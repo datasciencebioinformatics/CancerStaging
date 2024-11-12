@@ -4,7 +4,7 @@
 # FPKM, TPM  - take these as robust.
 # Paramter to set the normalization_scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
