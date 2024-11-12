@@ -51,7 +51,7 @@ merge_interactome_gene_symbol<-merge(x=Table2_interactoma, y=df_gene_id_symbol, 
 #############################################################################################################################
 # for each  normalization scheme
 normalization_schemes<-c("tpm","fpkm","tmm","rpkm","tpm_calc")
-normalization_schemes<-c("tpm","tmm")
+normalization_schemes<-c("tpm")
 
 for (normalization_scheme in normalization_schemes)
 {	
