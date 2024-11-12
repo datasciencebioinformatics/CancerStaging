@@ -1,4 +1,5 @@
 library("msigdb")
+library("msigdbr")
 library("fgsea")
 
 # Load mart tables
@@ -8,30 +9,34 @@ mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
 # use the custom accessor to select a specific version of MSigDB
 msigdb.hs = getMsigdb(org = 'hs', id = 'EZID', version = '7.4')
 
+# Use also the msigdb
+pathwaysDF <- msigdbr("human", category="H")
+
+# Retrieve the pathways
+pathways <- split(as.character(pathwaysDF$entrez_gene), pathwaysDF$gs_name)
+
+
+
 # retrieeve the hallmarks gene sets
 # 50 hallmarks
 hallmarks_gene_set<-subsetCollection(msigdb.hs, 'h')
 
-# log2FC of genes for stages, I, II, III
-df_rankData_stage_I   <- na.omit(df_FC[selected_genes_Stage_I_gene,c("Gene","FC")])
-df_rankData_stage_II  <- na.omit(df_FC[selected_genes_Stage_II_gene,c("Gene","FC")])
-df_rankData_stage_III <- na.omit(df_FC[selected_genes_Stage_III_gene,c("Gene","FC")]) 
+# First, I will load the expression table   	
+expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_I_gene,sample_stage_I])
+expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_II_gene,sample_stage_II])
+expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_III_gene,sample_stage_III])
 
-vc_rankData_stage_I   <- log(df_rankData_stage_I$FC,2)
-vc_rankData_stage_II  <- log(df_rankData_stage_II$FC,2)
-vc_rankData_stage_III <- log(df_rankData_stage_III$FC,2)
+expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
+expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
+expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
 
-names(vc_rankData_stage_I)   <- df_rankData_stage_I$Gene
-names(vc_rankData_stage_II)  <- df_rankData_stage_II$Gene
-names(vc_rankData_stage_III) <- df_rankData_stage_III$Gene
+genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I),mart=mart)
+genes_rankData_stage_II    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II),mart=mart)
+genes_rankData_stage_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_III),mart=mart)
 
-genes_rankData_stage_I    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=names(vc_rankData_stage_I),mart=mart)
-genes_rankData_stage_II   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=names(vc_rankData_stage_II),mart=mart)
-genes_rankData_stage_III  <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=names(vc_rankData_stage_III),mart=mart)
-
-genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% names(vc_rankData_stage_I),]
-genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% names(vc_rankData_stage_II),]
-genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% names(vc_rankData_stage_III),]
+genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% rownames(expr_stage_I),]
+genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% rownames(expr_stage_II),]
+genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% rownames(expr_stage_III),]
 
 genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
 genes_rankData_stage_II  <- genes_rankData_stage_II[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
@@ -41,14 +46,42 @@ rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
 rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
 rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
 
-names(vc_rankData_stage_I)   <- genes_rankData_stage_I[names(vc_rankData_stage_I),"entrezgene_id"]
-names(vc_rankData_stage_II)  <- genes_rankData_stage_II[names(vc_rankData_stage_II),"entrezgene_id"]
-names(vc_rankData_stage_III) <- genes_rankData_stage_III[names(vc_rankData_stage_III),"entrezgene_id"]
+rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entrezgene_id"]
+rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
+rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
+
+geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
+geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
+geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
+
+# Filter padj
+geseca_Stage_I[geseca_Stage_I$padj<0.05,]
+geseca_Stage_II[geseca_Stage_II$padj<0.05,]
+geseca_Stage_III[geseca_Stage_III$padj<0.05,]
+
+# For each hallmark
+for (hallmarks in names(pathways))
+{
+  # Take the genes
+  pathways[[hallmarks]]
+
+  # Take number of genes from this ptahway on stage I
+  genes_Stage_I<-paste(rownames(expr_stage_I)[rownames(expr_stage_I) %in% pathways[[hallmarks]]],collapse=" , ")
+  genes_Stage_II<-paste(rownames(expr_stage_II)[rownames(expr_stage_II) %in% pathways[[hallmarks]]],collapse=" , ")
+  genes_Stage_III<-paste(rownames(expr_stage_III)[rownames(expr_stage_III) %in% pathways[[hallmarks]]],collapse=" , ")
+
+  # Take number of genes from this ptahway on stage I
+  genes_n_Stage_I<-sum(rownames(expr_stage_I) %in% pathways[[hallmarks]])
+  genes_n_Stage_II<-sum(rownames(expr_stage_II) %in% pathways[[hallmarks]])
+  genes_n_Stage_III<-sum(rownames(expr_stage_III) %in% pathways[[hallmarks]])
+
+  print(data.frame(hallmark=hallmarks,genes_Stage_I=genes_Stage_I,genes_Stage_II=genes_Stage_II,genes_Stage_III=genes_Stage_III))
+  print(data.frame(hallmark=hallmarks,genes_n_Stage_I=genes_n_Stage_I,genes_n_Stage_II=genes_n_Stage_II,genes_n_Stage_III=genes_n_Stage_III))
+}
+
+
 
 # check the hallmarks against the paper
-fgseaRes_stage_I   <- fgsea(hallmarks_gene_set, vc_rankData_stage_I, minSize = 15, maxSize = 500)
-fgseaRes_stage_II  <- fgsea(hallmarks_gene_set, vc_rankData_stage_II, minSize = 15, maxSize = 500)
-fgseaRes_stage_III <- fgsea(hallmarks_gene_set, vc_rankData_stage_III, minSize = 15, maxSize = 500)
 
 # Perform gene set enrichment analysis
 # Install msigdb packages.
