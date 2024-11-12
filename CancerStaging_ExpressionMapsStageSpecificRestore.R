@@ -8,6 +8,8 @@ normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_sche
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
 list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
 ###########################################################################################################
+normalization_schemes<-c("tpm")
+
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {     
