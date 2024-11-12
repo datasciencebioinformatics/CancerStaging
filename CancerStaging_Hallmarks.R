@@ -106,6 +106,9 @@ results_hallmark<-results_hallmark[,c("hallmarks","symbol_Stage_I","genes_n_Stag
 # Save TSV file with genes from Stage3
 write_tsv(results_hallmark, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
 
+write_tsv(geseca_Stage_I, paste(output_dir,"/hallmarks_genes_stage_I.tsv",sep=""))
+write_tsv(geseca_Stage_II, paste(output_dir,"/hallmarks_genes_stage_II.tsv",sep=""))
+write_tsv(geseca_Stage_III, paste(output_dir,"/hallmarks_genes_stage_III.tsv",sep=""))
 
 
 # check the hallmarks against the paper
