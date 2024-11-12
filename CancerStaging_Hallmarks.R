@@ -68,15 +68,15 @@ geseca_Stage_I[geseca_Stage_I$padj<0.05,]
 geseca_Stage_II[geseca_Stage_II$padj<0.05,]
 geseca_Stage_III[geseca_Stage_III$padj<0.05,]
 
+# Table with results
+results_hallmark=data.frame(hallmarks=c(),genes_n_Stage_I=c(),genes_per_Stage_I=c(),genes_n_Stage_II=c(),genes_per_Stage_II=c(),genes_n_Stage_III=c(),genes_per_Stage_III=c(),symbol_Stage_I=c(),symbol_Stage_II=c(),symbol_Stage_III=c())
+
 # For each hallmark
 for (hallmarks in names(pathways))
 {
-  # Take the genes
-  pathways[[hallmarks]]
-
   symbol_Stage_I<-paste(genes_rankData_stage_I[rownames(expr_stage_I) %in% pathways[[hallmarks]],"hgnc_symbol"],collapse=" , ")
   symbol_Stage_II<-paste(genes_rankData_stage_II[rownames(expr_stage_II) %in% pathways[[hallmarks]],"hgnc_symbol"],collapse=" , ")
-  symbol_Stage_III<-genes_rankData_stage_III[rownames(expr_stage_III) %in% pathways[[hallmarks]],"hgnc_symbol"]
+  symbol_Stage_III<-paste(genes_rankData_stage_III[rownames(expr_stage_III) %in% pathways[[hallmarks]],"hgnc_symbol"],collapse=" , ")
 
   # Take number of genes from this ptahway on stage I
   genes_Stage_I<-paste(rownames(expr_stage_I)[rownames(expr_stage_I) %in% pathways[[hallmarks]]],collapse=" , ")
@@ -88,10 +88,31 @@ for (hallmarks in names(pathways))
   genes_n_Stage_II<-sum(rownames(expr_stage_II) %in% pathways[[hallmarks]])
   genes_n_Stage_III<-sum(rownames(expr_stage_III) %in% pathways[[hallmarks]])
 
-  print(data.frame(hallmark=hallmarks,symbol_Stage_I=symbol_Stage_I,symbol_Stage_II=symbol_Stage_II,symbol_Stage_III=hallmarks))
-  print(data.frame(hallmark=hallmarks,genes_Stage_I=genes_Stage_I,genes_Stage_II=genes_Stage_II,genes_Stage_III=genes_Stage_III))
-  print(data.frame(hallmark=hallmarks,genes_n_Stage_I=genes_n_Stage_I,genes_n_Stage_II=genes_n_Stage_II,genes_n_Stage_III=genes_n_Stage_III))
+ # Take number of genes from this ptahway on stage I
+  genes_percentage_Stage_I<-genes_n_Stage_I/length(rownames(expr_stage_I))
+  genes_percentage_Stage_II<-genes_n_Stage_II/length(rownames(expr_stage_II))
+  genes_percentage_Stage_III<-genes_n_Stage_III/length(rownames(expr_stage_III))
+      
+  # If pathway has representation
+  if(genes_n_Stage_I+genes_n_Stage_II+genes_n_Stage_III>0)
+  {
+    # Table with results
+    results_hallmark<-rbind(results_hallmark,data.frame(hallmarks=hallmarks,
+                 genes_n_Stage_I=genes_n_Stage_I,
+                 genes_per_Stage_I=genes_percentage_Stage_I,
+                 genes_n_Stage_II=genes_n_Stage_II,
+                 genes_per_Stage_II=genes_percentage_Stage_II,
+                 genes_n_Stage_III=genes_n_Stage_III,
+                 genes_per_Stage_III=genes_percentage_Stage_III,
+                 symbol_Stage_I=symbol_Stage_I,
+                 symbol_Stage_II=symbol_Stage_II,
+                 symbol_Stage_III=symbol_Stage_III))
+  }  
 }
+colnames(results_hallmark)<-results_hallmark[,c("hallmarks","symbol_Stage_I","genes_n_Stage_I","genes_per_Stage_I","symbol_Stage_II","genes_n_Stage_II","genes_per_Stage_II","symbol_Stage_III","genes_n_Stage_III","genes_per_Stage_III")]
+
+# Save TSV file with genes from Stage3
+write_tsv(results_hallmark, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
 
 
 
