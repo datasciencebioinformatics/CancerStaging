@@ -55,9 +55,9 @@ geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
 
 # Filter padj
-geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<0.05,]
-geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<0.05,]
-geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<0.05,]
+#geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<0.05,]
+#geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<0.05,]
+#geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<0.05,]
 
 # Table with results
 results_hallmark=data.frame(hallmarks=c(),genes_n_Stage_I=c(),genes_per_Stage_I=c(),genes_n_Stage_II=c(),genes_per_Stage_II=c(),genes_n_Stage_III=c(),genes_per_Stage_III=c(),symbol_Stage_I=c(),symbol_Stage_II=c(),symbol_Stage_III=c())
