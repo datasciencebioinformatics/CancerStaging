@@ -232,6 +232,9 @@ for (term in table_terms_all_Stages$Var1)
   # Store genes
   table_terms_all_Stages[table_terms_all_Stages$Var1==term,"Genes"]<-unique(paste(df_genes_terms[df_genes_terms$ID==term,"gene"],collapse=", "))
 }
+# Save TSV file with genes from Stage3
+write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
+
 
 
 
