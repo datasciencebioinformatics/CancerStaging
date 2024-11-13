@@ -93,7 +93,7 @@ all_anotation_results<-rbind(go_results_all_Stages,kegg_results_all_Stages,react
 all_anotation_results<-all_anotation_results[which(all_anotation_results$p.adjust <0.05),]
 ######################################################################################################################
 # Save TSV file with genes from Stage3
-write_tsv(all_anotation_results, paste(output_dir,"/hallmarks_genes.tsv",sep=""))
+write_tsv(all_anotation_results, paste(output_dir,"/all_anotation_results.tsv",sep=""))
 
 # Table wth
 df_genes_terms<-data.frame(ID=c(),p.adjust=c(), Description=c(), geneID=c(), Count=c(),Stage=c(),Layer=c(),gene=c())
@@ -119,6 +119,22 @@ for (term in unique(all_anotation_results$ID))
     df_genes_terms<-rbind(df_genes_terms,data.frame(ID=ID,p.adjust=p.adjust, Description=Description, geneID=geneID, Count=Count,Stage=Stage,Layer=Layer,gene=gene))
   }
 }
+######################################################################################################################
+# Translate kegg back to symbols
+# Convert ids
+ids_stage_kegg      <-bitr(df_genes_terms[df_genes_terms$Layer=="KEGG","gene"], fromType = "ENTREZID", toType = c("SYMBOL"), OrgDb="org.Hs.eg.db")
+
+# Match the ids
+df_match_ids<-data.frame(ENTREZ=df_genes_terms[df_genes_terms$Layer=="KEGG","gene"],SYMOBL="")
+
+# For each id
+for (ENTREZ in df_match_ids$ENTREZ)
+{
+  print(ENTREZ)
+  df_match_ids[which(df_match_ids$ENTREZ==ENTREZ),"SYMOBL"]<-ids_stage_kegg[ids_stage_kegg$ENTREZ==ENTREZ,"SYMBOL"]    
+}
+# I must match ids_stage_kegg with 
+df_genes_terms[df_genes_terms$Layer=="KEGG","gene"]<-df_match_ids$SYMOBL
 ######################################################################################################################
 # Take the 3 most abundat layers from each stage
 # First, spearate per stage
@@ -177,7 +193,7 @@ tabble_terms_KEGG_Stage_III$Padj<-all_anotation_results[tabble_terms_KEGG_Stage_
 tabble_terms_Reactome_Stage_I$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_I$Var1,"p.adjust"]
 tabble_terms_Reactome_Stage_II$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_II$Var1,"p.adjust"]
 tabble_terms_Reactome_Stage_III$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_III$Var1,"p.adjust"]
-
+######################################################################################################################
 tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),][1:3,]
 tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:3,]
 tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),][1:3,]
@@ -190,6 +206,37 @@ tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms
 tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:3,]
 tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:3,]
 ######################################################################################################################
+# Merge all layers
+tabble_terms_all_Stage_I<-rbind(rbind(tabble_terms_GO_Stage_I,tabble_terms_Reactome_Stage_I),tabble_terms_KEGG_Stage_I)
+tabble_terms_all_Stage_II<-rbind(rbind(tabble_terms_GO_Stage_II,tabble_terms_Reactome_Stage_II),tabble_terms_KEGG_Stage_II)
+tabble_terms_all_Stage_III<-rbind(rbind(tabble_terms_GO_Stage_III,tabble_terms_Reactome_Stage_III),tabble_terms_KEGG_Stage_III)
+
+# Merge all layers
+tabble_terms_all_Stage_I$Stage<-"Stage I"
+tabble_terms_all_Stage_II$Stage<-"Stage II"
+tabble_terms_all_Stage_III$Stage<-"Stage III"
+
+# Merge all stages
+table_terms_all_Stages<-rbind(tabble_terms_all_Stage_I,tabble_terms_all_Stage_II,tabble_terms_all_Stage_III)
+
+# Add list of genes
+table_terms_all_Stages$Description<-""
+table_terms_all_Stages$Genes<-""
+
+# For each term, take the genes
+for (term in table_terms_all_Stages$Var1)
+{
+  # Store genes
+  table_terms_all_Stages[table_terms_all_Stages$Var1==term,"Description"]<-unique(df_genes_terms[df_genes_terms$ID==term,"Description"])
+  
+  # Store genes
+  table_terms_all_Stages[table_terms_all_Stages$Var1==term,"Genes"]<-unique(paste(df_genes_terms[df_genes_terms$ID==term,"gene"],collapse=", "))
+}
+
+
+
+
+
 
 
 
