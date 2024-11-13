@@ -119,7 +119,7 @@ for (term in unique(all_anotation_results$ID))
     df_genes_terms<-rbind(df_genes_terms,data.frame(ID=ID,p.adjust=p.adjust, Description=Description, geneID=geneID, Count=Count,Stage=Stage,Layer=Layer,gene=gene))
   }
 }
-
+######################################################################################################################
 # Take the 3 most abundat layers from each stage
 # First, spearate per stage
 df_genes_terms_stage_I   <-df_genes_terms[df_genes_terms$Stage=="Stage I",]
@@ -189,7 +189,7 @@ tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEG
 tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),][1:3,]
 tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:3,]
 tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:3,]
-
+######################################################################################################################
 
 
 
