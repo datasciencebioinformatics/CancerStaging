@@ -234,14 +234,6 @@ for (term in table_terms_all_Stages$Var1)
 }
 # Save TSV file with genes from Stage3
 write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
-
-
-
-
-
-
-
-
-
-
-
+######################################################################################################################
+# Take all terms from STAGE I
+stage_I_Terms<-
