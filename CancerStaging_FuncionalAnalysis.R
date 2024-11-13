@@ -178,17 +178,17 @@ tabble_terms_Reactome_Stage_I$Padj<-all_anotation_results[tabble_terms_Reactome_
 tabble_terms_Reactome_Stage_II$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_II$Var1,"p.adjust"]
 tabble_terms_Reactome_Stage_III$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_III$Var1,"p.adjust"]
 
-tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),]
-tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),]
-tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),]
+tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),][1:3,]
+tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:3,]
+tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),][1:3,]
 
-tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),]
-tabble_terms_KEGG_Stage_II<-tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II$Freq),]
-tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),]
+tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),][1:3,]
+tabble_terms_KEGG_Stage_II<-tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II$Freq),][1:3,]
+tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),][1:3,]
 
-tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),]
-tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),]
-tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),]
+tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),][1:3,]
+tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:3,]
+tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:3,]
 
 
 
