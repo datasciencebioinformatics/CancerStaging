@@ -193,6 +193,38 @@ tabble_terms_KEGG_Stage_III$Padj<-all_anotation_results[tabble_terms_KEGG_Stage_
 tabble_terms_Reactome_Stage_I$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_I$Var1,"p.adjust"]
 tabble_terms_Reactome_Stage_II$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_II$Var1,"p.adjust"]
 tabble_terms_Reactome_Stage_III$Padj<-all_anotation_results[tabble_terms_Reactome_Stage_III$Var1,"p.adjust"]
+
+
+######################################################################################################################
+# Merge all layers
+tabble_terms_all_Stage_I<-rbind(rbind(tabble_terms_GO_Stage_I,tabble_terms_Reactome_Stage_I))
+tabble_terms_all_Stage_II<-rbind(tabble_terms_GO_Stage_II,tabble_terms_KEGG_Stage_II)
+tabble_terms_all_Stage_III<-rbind(tabble_terms_GO_Stage_III,tabble_terms_Reactome_Stage_III)
+
+# Merge all layers
+tabble_terms_all_Stage_I$Stage<-"Stage I"
+tabble_terms_all_Stage_II$Stage<-"Stage II"
+tabble_terms_all_Stage_III$Stage<-"Stage III"
+
+# Merge all stages
+table_terms_all_Stages<-rbind(tabble_terms_all_Stage_I,tabble_terms_all_Stage_II,tabble_terms_all_Stage_III)
+
+# Add list of genes
+table_terms_all_Stages$Description<-""
+table_terms_all_Stages$Genes<-""
+
+# For each term, take the genes
+for (term in table_terms_all_Stages$Var1)
+{
+  # Store genes
+  table_terms_all_Stages[table_terms_all_Stages$Var1==term,"Description"]<-unique(df_genes_terms[df_genes_terms$ID==term,"Description"])
+  
+  # Store genes
+  table_terms_all_Stages[table_terms_all_Stages$Var1==term,"Genes"]<-unique(paste(df_genes_terms[df_genes_terms$ID==term,"gene"],collapse=", "))
+}
+# Save TSV file with genes from Stage3
+write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
+######################################################################################################################
 ######################################################################################################################
 tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),][1:3,]
 tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:3,]
