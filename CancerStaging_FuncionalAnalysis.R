@@ -236,4 +236,13 @@ for (term in table_terms_all_Stages$Var1)
 write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
 ######################################################################################################################
 # Take all terms from STAGE I
-stage_I_Terms<-
+stage_I_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage I","ID"]
+stage_II_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage II","ID"]
+stage_III_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage III","ID"]
+
+# Take the insersection from the three stages
+
+# Take the most significants of the first stage
+# Take the most significants of the second stage
+# Take the most significants of the third stage
+
