@@ -198,18 +198,18 @@ tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$
 tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:3,]
 tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),][1:3,]
 
-tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),][1:3,]
+#tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),][1:3,]
 tabble_terms_KEGG_Stage_II<-tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II$Freq),][1:3,]
-tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),][1:3,]
+#tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),][1:3,]
 
 tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),][1:3,]
-tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:3,]
-tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:3,]
+#tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:3,]
+#tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:3,]
 ######################################################################################################################
 # Merge all layers
-tabble_terms_all_Stage_I<-rbind(rbind(tabble_terms_GO_Stage_I,tabble_terms_Reactome_Stage_I),tabble_terms_KEGG_Stage_I)
-tabble_terms_all_Stage_II<-rbind(rbind(tabble_terms_GO_Stage_II,tabble_terms_Reactome_Stage_II),tabble_terms_KEGG_Stage_II)
-tabble_terms_all_Stage_III<-rbind(rbind(tabble_terms_GO_Stage_III,tabble_terms_Reactome_Stage_III),tabble_terms_KEGG_Stage_III)
+tabble_terms_all_Stage_I<-rbind(rbind(tabble_terms_GO_Stage_I,tabble_terms_Reactome_Stage_I))
+tabble_terms_all_Stage_II<-rbind(tabble_terms_GO_Stage_II,tabble_terms_KEGG_Stage_II)
+tabble_terms_all_Stage_III<-rbind(tabble_terms_GO_Stage_III,tabble_terms_Reactome_Stage_III)
 
 # Merge all layers
 tabble_terms_all_Stage_I$Stage<-"Stage I"
