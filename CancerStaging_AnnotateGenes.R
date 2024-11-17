@@ -46,6 +46,36 @@ for (normalization_scheme in normalization_schemes)
 
   write_tsv(genes_rankData_stage_I,     paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","unique_stage_I",".tsv",sep=""))
   write_tsv(genes_rankData_stage_II,   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","unique_stage_II",".tsv",sep=""))
-  write_tsv(genes_rankData_stage_III, paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","unique_stage_III",".tsv",sep=""))  
+  write_tsv(genes_rankData_stage_III,  paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","unique_stage_III",".tsv",sep=""))  
   
 }
+
+# Take the gene os each stage
+stage_I_genes  <-list_stage_specific_genes[["tpm_stage_I"]][list_stage_specific_genes[["tpm_stage_I"]]$Category=="Per stage genes",]
+stage_II_genes  <-list_stage_specific_genes[["tpm_stage_II"]][list_stage_specific_genes[["tpm_stage_II"]]$Category=="Per stage genes",]
+stage_III_genes  <-list_stage_specific_genes[["tpm_stage_III"]][list_stage_specific_genes[["tpm_stage_III"]]$Category=="Per stage genes",]
+
+rownames(stage_I_genes)<-stage_I_genes$gene
+rownames(stage_II_genes)<-stage_II_genes$gene
+rownames(stage_III_genes)<-stage_III_genes$gene
+
+colnames(stage_I_genes)[1]<-c("ensembl_gene_id")
+colnames(stage_II_genes)[1]<-c("ensembl_gene_id")
+colnames(stage_III_genes)[1]<-c("ensembl_gene_id")
+
+genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol","description"),values=rownames(selected_genes_Stage_I_data),mart=mart)
+genes_rankData_stage_II    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol","description"),values=rownames(selected_genes_Stage_II_data),mart=mart)
+genes_rankData_stage_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol","description"),values=rownames(selected_genes_Stage_III_data),mart=mart)
+
+genes_rankData_stage_I<-merge(stage_I_genes,genes_rankData_stage_I,by="ensembl_gene_id")
+genes_rankData_stage_II<-merge(stage_II_genes,genes_rankData_stage_II,by="ensembl_gene_id")
+genes_rankData_stage_III<-merge(stage_III_genes,genes_rankData_stage_III,by="ensembl_gene_id")
+
+genes_rankData_stage_I <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
+genes_rankData_stage_II <- genes_rankData_stage_I[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
+genes_rankData_stage_III <- genes_rankData_stage_I[match(unique(genes_rankData_stage_III$ensembl_gene_id), genes_rankData_stage_III$ensembl_gene_id),]
+
+write_tsv(genes_rankData_stage_I,     paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_I",".tsv",sep=""))
+write_tsv(genes_rankData_stage_II,   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_II",".tsv",sep=""))
+write_tsv(genes_rankData_stage_III,  paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_III",".tsv",sep=""))  
+
