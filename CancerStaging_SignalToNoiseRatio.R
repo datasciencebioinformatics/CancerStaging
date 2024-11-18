@@ -91,4 +91,3 @@ write_tsv(selected_genes, paste(output_dir,"/selected_genes.tsv",sep=""))
 
 # Take selected genes
 selected_genes<-df_FC[which(df_FC$FC>100 & df_FC$Mean_normal<=10),]
-
