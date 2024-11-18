@@ -22,34 +22,42 @@ pathways <- split(as.character(pathwaysDF$entrez_gene), pathwaysDF$gs_name)
 hallmarks_gene_set<-subsetCollection(msigdb.hs, 'h')
 
 # First, I will load the expression table   	
+# Take the expression of genes from sameples of each stage
 expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_I_gene,sample_stage_I])
 expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_II_gene,sample_stage_II])
 expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_III_gene,sample_stage_III])
 
+# Omit lines with NA
 expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
 expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
 expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
 
+# Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
 genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I),mart=mart)
 genes_rankData_stage_II    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II),mart=mart)
 genes_rankData_stage_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_III),mart=mart)
 
+# Next, Take the annotation for each genes
 genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% rownames(expr_stage_I),]
 genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% rownames(expr_stage_II),]
 genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% rownames(expr_stage_III),]
 
+# Take the first occurance of each ensembl_gene_id 
 genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
 genes_rankData_stage_II  <- genes_rankData_stage_II[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
 genes_rankData_stage_III <- genes_rankData_stage_III[match(unique(genes_rankData_stage_III$ensembl_gene_id), genes_rankData_stage_III$ensembl_gene_id),]
 
+# Set the rownames as the ensembl_gene_id
 rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
 rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
 rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
 
+# Set the rownames entrezgene_id
 rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entrezgene_id"]
 rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
 rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
 
+# Compute the geseca
 geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
 geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
@@ -83,6 +91,12 @@ for (hallmarks in names(pathways))
   genes_percentage_Stage_I<-genes_n_Stage_I/length(rownames(expr_stage_I))
   genes_percentage_Stage_II<-genes_n_Stage_II/length(rownames(expr_stage_II))
   genes_percentage_Stage_III<-genes_n_Stage_III/length(rownames(expr_stage_III))
+
+  # Take number of genes from this ptahway on stage I
+  padj_Stage_I<-genes_n_Stage_I/length(rownames(expr_stage_I))
+  padj_Stage_II<-genes_n_Stage_II/length(rownames(expr_stage_II))
+  padj_Stage_III<-genes_n_Stage_III/length(rownames(expr_stage_III))
+  
       
   # If pathway has representation
   if(genes_n_Stage_I+genes_n_Stage_II+genes_n_Stage_III>0)
@@ -97,7 +111,10 @@ for (hallmarks in names(pathways))
                  genes_per_Stage_III=genes_percentage_Stage_III,
                  symbol_Stage_I=symbol_Stage_I,
                  symbol_Stage_II=symbol_Stage_II,
-                 symbol_Stage_III=symbol_Stage_III))
+                 symbol_Stage_III=symbol_Stage_III,m
+                 padj_stage_I=
+                                                       
+                                                       ))
   }  
 }
 # results_hallmark
