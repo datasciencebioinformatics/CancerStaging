@@ -226,17 +226,17 @@ for (term in table_terms_all_Stages$Var1)
 write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_terms_Stages.tsv",sep=""))
 ######################################################################################################################
 ######################################################################################################################
-tabble_terms_GO_Stage_I<-tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),][1:10,]
-tabble_terms_GO_Stage_II<-tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:10,]
-tabble_terms_GO_Stage_III<-tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),][1:10,]
+tabble_terms_GO_Stage_I<-na.omit(tabble_terms_GO_Stage_I[order(-tabble_terms_GO_Stage_I$Freq),][1:10,])
+tabble_terms_GO_Stage_II<-na.omit(tabble_terms_GO_Stage_II[order(-tabble_terms_GO_Stage_II$Freq),][1:10,])
+tabble_terms_GO_Stage_III<-na.omit(tabble_terms_GO_Stage_III[order(-tabble_terms_GO_Stage_III$Freq),][1:10,])
 
-#tabble_terms_KEGG_Stage_I<-tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),][1:10,]
-tabble_terms_KEGG_Stage_II<-tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II$Freq),][1:10,]
-#tabble_terms_KEGG_Stage_III<-tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),][1:10,]
+#tabble_terms_KEGG_Stage_I<-na.omit(tabble_terms_KEGG_Stage_I[order(-tabble_terms_KEGG_Stage_I$Freq),][1:10,])
+tabble_terms_KEGG_Stage_II<-na.omit(tabble_terms_KEGG_Stage_II[order(-tabble_terms_KEGG_Stage_II$Freq),][1:10,])
+#tabble_terms_KEGG_Stage_III<-na.omit(tabble_terms_KEGG_Stage_III[order(-tabble_terms_KEGG_Stage_III$Freq),][1:10,])
 
-tabble_terms_Reactome_Stage_I<-tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),][1:10,]
-#tabble_terms_Reactome_Stage_II<-tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:10,]
-#tabble_terms_Reactome_Stage_III<-tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:10,]
+tabble_terms_Reactome_Stage_I<-na.omit(tabble_terms_Reactome_Stage_I[order(-tabble_terms_Reactome_Stage_I$Freq),][1:10,])
+#tabble_terms_Reactome_Stage_II<-na.omit(tabble_terms_Reactome_Stage_II[order(-tabble_terms_Reactome_Stage_II$Freq),][1:10,])
+#tabble_terms_Reactome_Stage_III<-na.omit(tabble_terms_Reactome_Stage_III[order(-tabble_terms_Reactome_Stage_III$Freq),][1:10,])
 ######################################################################################################################
 # Merge all layers
 tabble_terms_all_Stage_I<-rbind(rbind(tabble_terms_GO_Stage_I,tabble_terms_Reactome_Stage_I))
@@ -267,6 +267,10 @@ for (term in table_terms_all_Stages$Var1)
 # Save TSV file with genes from Stage3
 write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
 ######################################################################################################################
+# Organize this table to see differences
+# Colllums to represent each stage
+
+######################################################################################################################
 # Take all terms from STAGE I
 stage_I_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage I","ID"]
 stage_II_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage II","ID"]
@@ -277,4 +281,3 @@ stage_III_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage III","ID"]
 # Take the most significants of the first stage
 # Take the most significants of the second stage
 # Take the most significants of the third stage
-
