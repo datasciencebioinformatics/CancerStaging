@@ -36,6 +36,9 @@ for (normalization_scheme in normalization_schemes)
 	
 	# First, I will load the expression table   	
 	normalized_expression_table<-na.omit(df_reads_count_all_projects[[normalization_scheme]])
+
+	# Take only genes up-regulated in tumor
+	normalized_statistic_table<-normalized_statistic_table[rownames(normalized_statistic_table),]
 	
 	# for each pair of stage.
 	for (comparisson_index in rownames(df_table_comparisson))
