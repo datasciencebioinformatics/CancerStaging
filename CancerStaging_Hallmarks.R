@@ -63,9 +63,84 @@ geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
 
 # Filter padj
-#geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<0.05,]
-#geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<0.05,]
-#geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<0.05,]
+geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<0.05,]
+geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<0.05,]
+geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<0.05,]
+
+geseca_Stage_I$Stage<-"Stage I"
+geseca_Stage_II$Stage<-"Stage II"
+geseca_Stage_III$Stage<-"Stage III"
+
+# Combine the queries for the three stages
+geseca_all_stage<-rbind(geseca_Stage_I,geseca_Stage_II,geseca_Stage_III)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Table with results
 results_hallmark=data.frame(hallmarks=c(),genes_n_Stage_I=c(),genes_per_Stage_I=c(),genes_n_Stage_II=c(),genes_per_Stage_II=c(),genes_n_Stage_III=c(),genes_per_Stage_III=c(),symbol_Stage_I=c(),symbol_Stage_II=c(),symbol_Stage_III=c())
@@ -111,10 +186,7 @@ for (hallmarks in names(pathways))
                  genes_per_Stage_III=genes_percentage_Stage_III,
                  symbol_Stage_I=symbol_Stage_I,
                  symbol_Stage_II=symbol_Stage_II,
-                 symbol_Stage_III=symbol_Stage_III,m
-                 padj_stage_I=
-                                                       
-                                                       ))
+                 symbol_Stage_III=symbol_Stage_III))
   }  
 }
 # results_hallmark
