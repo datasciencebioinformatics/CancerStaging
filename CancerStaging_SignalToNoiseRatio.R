@@ -43,7 +43,7 @@ normal_samples<-colData_normal$sample_id
 
 # Data.frame
 df_FC<-data.frame(Gene=c(),Mean_normal=c(),sd_normal=c(),Mean_tumor=c(),sd_tumor=c(),FC=c(),Mean_Stage_I=c(),
- sd_Stage_I=c(),Mean_Stage_II=c(), sd_Stage_II=c(), Mean_Stage_II=c(), sd_Stage_III=c())
+ sd_Stage_I=c(),FC_Stage_I=c(),Mean_Stage_II=c(), sd_Stage_II=c(),FC_Stage_I=c(), Mean_Stage_II=c(), sd_Stage_III=c(),FC_Stage_III=c())
  
 # For each genes in the tabe
 for (gene in names(rowMeans_normalized_expression_table))
@@ -74,11 +74,14 @@ for (gene in names(rowMeans_normalized_expression_table))
 	#mean_Stage_III<-mean_Stage_III[mean_Stage_III > list_threshold_filters[[normalization_scheme]]]
 	
 	FC=mean_Stage_tumor/mean_Stage_normal	
+	FC_Stage_I  =mean_Stage_I/mean_Stage_normal	
+	FC_Stage_II =mean_Stage_II/mean_Stage_normal	
+	FC_Stage_III=mean_Stage_III/mean_Stage_normal	
 	
 	if(length(mean_Stage_tumor) && length(mean_Stage_normal) && length(mean_Stage_I) && length(mean_Stage_II) && length(mean_Stage_III) )
 	{		
 		df_FC<-rbind(df_FC,data.frame(Gene=gene,Mean_normal=mean_Stage_normal,sd_normal=sd_Stage_normal,Mean_tumor=mean_Stage_I,sd_tumor=sd_Stage_tumor,FC=FC,Mean_Stage_I=mean_Stage_I,
-	 sd_Stage_I=sd_Stage_I,Mean_Stage_II=mean_Stage_II, sd_Stage_II=sd_Stage_II, Mean_Stage_III=mean_Stage_III, sd_Stage_III=sd_Stage_III))			
+	 sd_Stage_I=sd_Stage_I,FC_Stage_I=FC_Stage_I,Mean_Stage_II=mean_Stage_II, sd_Stage_II=sd_Stage_II,FC_Stage_II=FC_Stage_II, Mean_Stage_III=mean_Stage_III, sd_Stage_III=sd_Stage_III,FC_Stage_III=FC_Stage_III))			
 	}	
 }
 # Set rownames
