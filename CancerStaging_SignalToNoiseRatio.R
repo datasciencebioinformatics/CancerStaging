@@ -63,15 +63,15 @@ for (gene in names(rowMeans_normalized_expression_table))
 	sd_Stage_III   <-sd(as.vector(unlist(normalized_expression_table[gene,sample_stage_III])))	
 	
 	# Filter by threshold_filters
-	mean_Stage_tumor<-mean_Stage_tumor[mean_Stage_tumor > list_threshold_filters[[normalization_scheme]]]
+	#mean_Stage_tumor<-mean_Stage_tumor[mean_Stage_tumor > list_threshold_filters[[normalization_scheme]]]
 
 	# Filter by threshold_filters
-	mean_Stage_normal<-mean_Stage_normal[mean_Stage_normal > list_threshold_filters[[normalization_scheme]]]
+	#mean_Stage_normal<-mean_Stage_normal[mean_Stage_normal > list_threshold_filters[[normalization_scheme]]]
 	
 	# Filter by threshold_filters
-	mean_Stage_I<-mean_Stage_I[mean_Stage_I > list_threshold_filters[[normalization_scheme]]]
-	mean_Stage_II<-mean_Stage_II[mean_Stage_II > list_threshold_filters[[normalization_scheme]]]	
-	mean_Stage_III<-mean_Stage_III[mean_Stage_III > list_threshold_filters[[normalization_scheme]]]
+	#mean_Stage_I<-mean_Stage_I[mean_Stage_I > list_threshold_filters[[normalization_scheme]]]
+	#mean_Stage_II<-mean_Stage_II[mean_Stage_II > list_threshold_filters[[normalization_scheme]]]	
+	#mean_Stage_III<-mean_Stage_III[mean_Stage_III > list_threshold_filters[[normalization_scheme]]]
 	
 	FC=mean_Stage_tumor/mean_Stage_normal	
 	
