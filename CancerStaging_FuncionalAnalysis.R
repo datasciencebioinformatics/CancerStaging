@@ -267,9 +267,9 @@ for (term in table_terms_all_Stages$Var1)
 # Save TSV file with genes from Stage3
 write_tsv(table_terms_all_Stages, paste(output_dir,"/table_terms_all_Stages.tsv",sep=""))
 ######################################################################################################################
+# To DO : 19-November2024
 # Organize this table to see differences
 # Colllums to represent each stage
-
 ######################################################################################################################
 # Take all terms from STAGE I
 stage_I_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage I","ID"]
