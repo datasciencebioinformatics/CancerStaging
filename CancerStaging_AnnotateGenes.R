@@ -146,7 +146,15 @@ table_stage_I_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage
 table_stage_II_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_II_gene,])
 table_stage_III_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_III_gene,])
 
+table_stage_I_genes$FC<-table_stage_I_genes$FC_Stage_I
+table_stage_II_genes$FC<-table_stage_II_genes$FC_Stage_II
+table_stage_III_genes$FC<-table_stage_III_genes$FC_Stage_III
+
+table_stage_I_genes<-table_stage_I_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
+table_stage_II_genes<-table_stage_II_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
+table_stage_III_genes<-table_stage_III_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
+
 write_tsv(table_tumor_genes,   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_tumor_genes",".tsv",sep=""))
-write_tsv(na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_I_gene,]),   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_I",".tsv",sep=""))
-write_tsv(na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_II_gene,]),  paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_II",".tsv",sep=""))
-write_tsv(na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_III_gene,]), paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_III",".tsv",sep=""))
+write_tsv(na.omit(table_stage_I_genes),   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_I",".tsv",sep=""))
+write_tsv(na.omit(table_stage_II_genes),  paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_II",".tsv",sep=""))
+write_tsv(na.omit(table_stage_III_genes), paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_III",".tsv",sep=""))
