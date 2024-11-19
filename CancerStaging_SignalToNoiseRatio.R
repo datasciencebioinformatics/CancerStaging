@@ -80,7 +80,7 @@ for (gene in names(rowMeans_normalized_expression_table))
 	
 	if(length(mean_Stage_tumor) && length(mean_Stage_normal) && length(mean_Stage_I) && length(mean_Stage_II) && length(mean_Stage_III) )
 	{		
-		df_FC<-rbind(df_FC,data.frame(Gene=gene,Mean_normal=mean_Stage_normal,sd_normal=sd_Stage_normal,Mean_tumor=mean_Stage_I,sd_tumor=sd_Stage_tumor,FC=FC,Mean_Stage_I=mean_Stage_I,
+		df_FC<-rbind(df_FC,data.frame(Gene=gene,Mean_normal=mean_Stage_normal,sd_normal=sd_Stage_normal,Mean_tumor=mean_Stage_tumor,sd_tumor=sd_Stage_tumor,FC=FC,Mean_Stage_I=mean_Stage_I,
 	 sd_Stage_I=sd_Stage_I,FC_Stage_I=FC_Stage_I,Mean_Stage_II=mean_Stage_II, sd_Stage_II=sd_Stage_II,FC_Stage_II=FC_Stage_II, Mean_Stage_III=mean_Stage_III, sd_Stage_III=sd_Stage_III,FC_Stage_III=FC_Stage_III))			
 	}	
 }
