@@ -42,6 +42,9 @@ for (normalization_scheme in normalization_schemes)
   # Merge tumor and normal and samples
   tissue_type<-rbind(tumor_samnples,normal_samnples)
 
+  # Store normalized table
+	normalized_table<-df_reads_count_all_projects[[normalized_table_names]][unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),tissue_type$sample_id]
+
   # Melt data.frame
   melt_normalized_table_pca<-melt(normalized_table_pca)
 
@@ -51,8 +54,8 @@ for (normalization_scheme in normalization_schemes)
   # Merge information
   melt_normalized_table_pca<-merge(melt_normalized_table_pca,tissue_type,by="sample_id")
 
-
-  pca_res_df_genes_tumor <- prcomp(melt_normalized_table_pca[,c("TPM")], scale. = TRUE) 
+  # calculate the pca
+  pca_res_df_genes_tumor <- prcomp(normalized_table, scale. = TRUE) 
   autoplot(pca_res_df_genes_tumor, data = melt_normalized_table_pca, colour = 'tissue_type')
 
   
