@@ -1,3 +1,15 @@
+# All tumor and control samples
+colData_tumor  <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Primary Tumor",])
+colData_normal <-unique(merged_data_patient_info_count[merged_data_patient_info_count$Sample.Type=="Solid Tissue Normal",])
+                                                                                                                                     #
+# Vector with each stage                                                                                                              #
+stages_str<-c("stage_I","stage_II","stage_III")                                                                                       #
+                                                                                                                                      #
+# Samples of each stage stored in colData                                                                                             #
+sample_stage_I  <-unique(colData_tumor[colData_tumor$stages=="Stage I","sample_id"])                                                          #
+sample_stage_II <-unique(colData_tumor[colData_tumor$stages=="Stage II","sample_id"])                                                         #
+sample_stage_III<-unique(colData_tumor[colData_tumor$stages=="Stage III","sample_id"])                                                        #
+sample_normal   <-unique(colData_normal[,"sample_id"])      
 ####################################################################################################################################################
 # Interactomes_GC3_T2.csv file has 15650 entries. The number of annotated genes with gene length geneLength_ENTREZID_ENSEMBL is 14609. Among these, 14726 are common to Interactomes_GC3_T2 and geneLength_ENTREZID_ENSEMBL and will be used to create the maps. 
 # Consitency - check filters meticulously.
@@ -32,37 +44,41 @@ for (normalization_scheme in normalization_schemes)
   stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=unique_stage_I,Stage_II=unique_stage_II,Stage_III=unique_stage_III), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
   stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=selected_genes_Stage_I_gene,Stage_II=selected_genes_Stage_II_gene,Stage_III=selected_genes_Stage_III_gene), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
 
-  # Subset taqble
-  merged_data_patient_analysis<-merged_data_patient_info[merged_data_patient_info$stages %in% c("Stage I","Stage II","Stage III"),]
+  #############################################################################################################################################################################  
+  # List of used genes
+  genes<-unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
 
-  # Split normal and tumor samples
-  tumor_samnples<-unique(data.frame(sample_id=merged_data_patient_analysis[merged_data_patient_analysis$tissue_type=="Tumor","sample_id",""],tissue_type="Tumor"))
-  normal_samnples<-unique(data.frame(sample_id=merged_data_patient_analysis[merged_data_patient_analysis$tissue_type=="Normal","sample_id"],tissue_type="Normal"))
+  # List of considered samples
+  samples<-c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)
 
-  # Merge tumor and normal and samples
-  tissue_type<-rbind(tumor_samnples,normal_samnples)
+	# Store normalized table
+	normalized_table<-df_reads_count_all_projects[[normalized_table_names]][genes,samples]
 
-  # Store normalized table
-  normalized_table<-df_reads_count_all_projects[[normalized_table_names]][unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),tissue_type$sample_id]
+  # Merge merged_data_patient_sel
+  merged_data_patient_sel<-unique(merged_data_patient_info[merged_data_patient_info$sample_id %in% colnames(normalized_table),c("Sample.Type","stages","sample_id")])  
 
-  # Melt data.frame
-  melt_normalized_table_pca<-melt(normalized_table_pca)
+  # Set rownames
+  rownames(merged_data_patient_sel)<-merged_data_patient_sel$sample_id
+    
+  # Tanspose RPKM table                                                                                                                                                               #
+  #transporse_normalized_table<-data.frame(t(normalized_table[,c(paired_sample_df$normal,paired_sample_df$tumor)]))                                                                                                                        #
+  transporse_normalized_table<-data.frame(t(normalized_table))                                                                                                                        #
+                                                                                                                                                                                    #
+  # Calculate prcomp for stage                                                                                                                                                        #
+  pca_res_tumor_normal   <- prcomp(transporse_normalized_table, scale. = TRUE)                                                                                                              #
 
-  # Rename colllumns
-  colnames(melt_normalized_table_pca)<-c("ENSEMBL","sample_id","TPM")
+  # Rename collumns
+  colnames(merged_data_patient_sel)[]<-"tumor_normal"
 
-  # Merge information
-  melt_normalized_table_pca<-merge(melt_normalized_table_pca,tissue_type,by="sample_id")
-
-  # calculate the pca
-  pca_res_df_genes_tumor <- prcomp(normalized_table, scale. = TRUE) 
-  autoplot(pca_res_df_genes_tumor, data = melt_normalized_table_pca, colour = 'tissue_type')
-
+  # Plot PCA tumor versus normal                                                                                                                                                      #
+  plot_res_tumor_normal <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")                                                                      #
   
   # FindClusters_resolution
-  png(filename=paste(output_dir,"Ven_Diagrams.png",sep=""), width = 28, height = 14, res=600, units = "cm")
-    grid.arrange(stages_I_II_III, stages_I_II_III_unique, nrow = 1)
+  png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 16, height = 16, res=600, units = "cm")
+    plot_res_tumor_normal
   dev.off()
+
+  
   #############################################################################################################################
   write_tsv(selected_genes_Stage_I_data[unique_stage_I,],     paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_I",".tsv",sep=""))
   write_tsv(selected_genes_Stage_II_data[unique_stage_II,],   paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","unique_stage_II",".tsv",sep=""))
