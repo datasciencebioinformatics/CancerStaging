@@ -66,24 +66,24 @@ for (normalization_scheme in normalization_schemes)
     pathway_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway',pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
     
     # Data.frame results
-    df_ALL_Stages<-data.frame(go_ALL_Stages)
-    kegg_ALL_Stages<-data.frame(kegg_ALL_Stages)
-    pathway_ALL_Stages<-data.frame(pathway_ALL_Stages)
+    df_GO_Stages<-data.frame(go_ALL_Stages)
+    df_kegg_Stages<-data.frame(kegg_ALL_Stages)
+    df_pathway_Stages<-data.frame(pathway_ALL_Stages)
     ########################################################################################################################################
     # For each line, convert entrez ID to gene symbol
-    for (go_term in rownames(df_ALL_Stages))
+    for (go_term in rownames(df_GO_Stages))
     {
       # Take the entrez id line
-      entrez_ids<-go_ALL_Stages[go_term,"geneID"]  
+      entrez_ids<-df_GO_Stages[go_term,"geneID"]  
     
       entrez_ids<-as.vector(paste(bitr(unlist(strsplit(entrez_ids,split="/",fixed=T)), fromType = "ENTREZID", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")$SYMBOL,collapse=", ")  )
     
       # Replace entrez by gene symbol
-      df_ALL_Stages[go_term,"geneID"] <-entrez_ids
+      df_GO_Stages[go_term,"geneID"] <-entrez_ids
     }
     ########################################################################################################################################
     # Save TSV file with genes from Stage3
-    write_tsv(df_ALL_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
+    write_tsv(df_GO_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
     ########################################################################################################################################
 }  
 
