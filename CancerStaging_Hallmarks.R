@@ -28,9 +28,9 @@ expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selec
 expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_III_gene,sample_stage_III])
 
 # Omit lines with NA
-expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
-expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
-expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
+#expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
+#expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
+#expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
 
 # Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
 genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I),mart=mart)
@@ -74,13 +74,7 @@ geseca_Stage_III$Stage<-"Stage III"
 # Combine the queries for the three stages
 geseca_all_stage<-rbind(geseca_Stage_I,geseca_Stage_II,geseca_Stage_III)
 
-
-
-
-
-
-
-
+write_tsv(geseca_all_stage, paste(output_dir,"/geseca_all_stage.tsv",sep=""))
 
 
 
