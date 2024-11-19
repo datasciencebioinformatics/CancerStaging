@@ -42,7 +42,14 @@ for (normalization_scheme in normalization_schemes)
   #######################################################################################################################################
   # Select stages 
   stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=unique_stage_I,Stage_II=unique_stage_II,Stage_III=unique_stage_III), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
-  stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=selected_genes_Stage_I_gene,Stage_II=selected_genes_Stage_II_gene,Stage_III=selected_genes_Stage_III_gene), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
+  stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=selected_genes_Stage_I_gene,Stage_II=selected_genes_Stage_II_gene,Stage_III=selected_genes_Stage_III_gene), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none") + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())+theme_bw() +theme(axis.line = element_line(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank()) 
+
+	
+
+	# FindClusters_resolution
+	png(filename=paste(output_dir,"stages_I_II_III_unique.png",sep=""), width = 12.0, height = 12, res=800, units = "cm")
+		stages_I_II_III_unique
+	dev.off()	
 
   #############################################################################################################################################################################  
 	# List of used genes
@@ -52,7 +59,8 @@ for (normalization_scheme in normalization_schemes)
 	samples<-c(sample_stage_I,sample_stage_II,sample_stage_III,sample_normal)
 	
 	# Store normalized table
-	normalized_table<-df_reads_count_all_projects[[normalized_table_names]][genes,samples]
+	normalized_table      <-df_reads_count_all_projects[[normalized_table_names]][genes,samples]
+	normalized_table_paired<-df_reads_count_all_projects[[normalized_table_names]][genes,c(paired_sample_df$normal,paired_sample_df$tumor)]
 	
 	# Merge merged_data_patient_sel
 	merged_data_patient_sel<-unique(merged_data_patient_info[merged_data_patient_info$sample_id %in% colnames(normalized_table),c("Sample.Type","stages","sample_id")])  
@@ -60,21 +68,23 @@ for (normalization_scheme in normalization_schemes)
 	# Set rownames
 	rownames(merged_data_patient_sel)<-merged_data_patient_sel$sample_id
 	
-	# Tanspose RPKM table                                                                                                                                                               #
-	#transporse_normalized_table<-data.frame(t(normalized_table[,c(paired_sample_df$normal,paired_sample_df$tumor)]))                                                                                                                        #
+	# Tanspose RPKM table                                                                                                                                                               #	
 	transporse_normalized_table<-data.frame(t(normalized_table))                                                                                                                        #
+	transporse_normalized_table_paired<-data.frame(t(normalized_table_paired))                                                                                                                        #
 																			    #
 	# Calculate prcomp for stage                                                                                                                                                        #
 	pca_res_tumor_normal   <- prcomp(transporse_normalized_table, scale. = TRUE)                                                                                                              #
+	pca_res_tumor_normal_paired   <- prcomp(transporse_normalized_table_paired, scale. = TRUE)                                                                                                              #
 	
 	# Rename collumns
 	colnames(merged_data_patient_sel)[]<-"tumor_normal"
 	
 	# Plot PCA tumor versus normal                                                                                                                                                      #
-	plot_res_tumor_normal <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")                                                                      #
-	
+	plot_res_tumor_normal        <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")               + scale_color_manual(values=c("#E69F00", "#56B4E9"))
+	plot_res_tumor_normal_paired <- autoplot(pca_res_tumor_normal_paired, data = merged_data_patient_sel[rownames(transporse_normalized_table_paired),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A" )+ scale_color_manual(values=c("#999999", "#E69F00"))                                                            
+		
 	# FindClusters_resolution
-	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 16, height = 16, res=600, units = "cm")
+	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 12.0, height = 12, res=800, units = "cm")
 		plot_res_tumor_normal
 	dev.off()
 	
