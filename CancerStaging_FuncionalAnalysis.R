@@ -32,7 +32,7 @@ rownames(genes_Stage_ALL)<-genes_Stage_ALL$ENTREZID
 # EnrichGO to obtain GO annotation, minGSSize = 3
 # Translate kegg back to symbols
 # Convert ids
-go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 5, pvalueCutoff = 0.05)
+go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
 
 # Data.frame results
 df_ALL_Stages<-data.frame(go_ALL_Stages)
@@ -49,7 +49,9 @@ for (go_term in rownames(df_ALL_Stages))
   df_ALL_Stages[go_term,"geneID"] <-entrez_ids
 }
 ########################################################################################################################################
-
+# Save TSV file with genes from Stage3
+write_tsv(df_ALL_Stages, paste(output_dir,"/df_ALL_GO_Stages",sep=""))
+########################################################################################################################################
   
 
 
