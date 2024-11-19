@@ -30,9 +30,17 @@ genes_Stage_ALL<-unique(rbind(ids_stage_I,ids_stage_II,ids_stage_III))
 rownames(genes_Stage_ALL)<-genes_Stage_ALL$ENTREZID
 ########################################################################################################################################
 # EnrichGO to obtain GO annotation, minGSSize = 3
-go_ALL_Stage_I    <- enrichGO(gene = ids_stage_I$SYMBOL,  OrgDb  = org.Hs.eg.db,      ont = "ALL", pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
-go_ALL_Stage_II   <- enrichGO(gene = ids_stage_II$SYMBOL, OrgDb  = org.Hs.eg.db,      ont = "ALL",  pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
-go_ALL_Stage_III  <- enrichGO(gene = ids_stage_III$SYMBOL,OrgDb  = org.Hs.eg.db,      ont = "ALL",   pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
+# Translate kegg back to symbols
+# Convert ids
+go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='MF', OrgDb='org.Hs.eg.db')
+kegg_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichKEGG')
+reactome_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway')
+
+
+
+go_ALL_Stage_I    <- enrichGO(gene = ids_stage_I$SYMBOL,  OrgDb  = org.Hs.eg.db,      ont = "MF", pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
+go_ALL_Stage_II   <- enrichGO(gene = ids_stage_II$SYMBOL, OrgDb  = org.Hs.eg.db,      ont = "MF",  pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
+go_ALL_Stage_III  <- enrichGO(gene = ids_stage_III$SYMBOL,OrgDb  = org.Hs.eg.db,      ont = "MF",   pAdjustMethod = "BH",readable = TRUE,keyType = "SYMBOL", minGSSize = 3)
 ########################################################################################################################################
 # enrichKEGG to obtain KEGG annotation, minGSSize = 3
 kegg_ALL_Stage_I    <- enrichKEGG(gene = ids_stage_I$ENTREZ,  organism     = 'hsa', minGSSize = 3)
