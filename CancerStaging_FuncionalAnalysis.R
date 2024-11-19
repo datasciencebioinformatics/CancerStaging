@@ -50,7 +50,7 @@ for (go_term in rownames(df_ALL_Stages))
 }
 ########################################################################################################################################
 # Save TSV file with genes from Stage3
-write_tsv(df_ALL_Stages, paste(output_dir,"/df_ALL_GO_Stages",sep=""))
+write_tsv(df_ALL_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
 ########################################################################################################################################
   
 
