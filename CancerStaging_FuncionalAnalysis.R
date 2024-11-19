@@ -33,6 +33,8 @@ rownames(genes_Stage_ALL)<-genes_Stage_ALL$ENTREZID
 # Translate kegg back to symbols
 # Convert ids
 go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+kegg_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichKEGG',pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+pathway_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway',pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
 
 # Data.frame results
 df_ALL_Stages<-data.frame(go_ALL_Stages)
