@@ -32,9 +32,9 @@ rownames(genes_Stage_ALL)<-genes_Stage_ALL$ENTREZID
 # EnrichGO to obtain GO annotation, minGSSize = 3
 # Translate kegg back to symbols
 # Convert ids
-go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='MF', OrgDb='org.Hs.eg.db')
-kegg_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichKEGG')
-reactome_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway')
+go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='MF', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 3)
+kegg_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichKEGG', pAdjustMethod = "BH", minGSSize = 3)
+reactome_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway', pAdjustMethod = "BH",, minGSSize = 3)
 
 
 
