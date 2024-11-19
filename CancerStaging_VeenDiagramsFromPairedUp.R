@@ -43,7 +43,7 @@ for (normalization_scheme in normalization_schemes)
   tissue_type<-rbind(tumor_samnples,normal_samnples)
 
   # Store normalized table
-	normalized_table<-df_reads_count_all_projects[[normalized_table_names]][unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),tissue_type$sample_id]
+  normalized_table<-df_reads_count_all_projects[[normalized_table_names]][unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),tissue_type$sample_id]
 
   # Melt data.frame
   melt_normalized_table_pca<-melt(normalized_table_pca)
