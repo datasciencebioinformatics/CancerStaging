@@ -197,9 +197,12 @@ for (normalization_scheme in normalization_schemes)
     i3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=AveExp, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()  + xlim(0, 10000) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
     i4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()  + xlim(0, 10000)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
 
+    p1<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 50) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") 
+    p2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +  theme_bw()    + xlim(0, 100) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   +   scale_y_continuous(labels = scales::percent) + ylab("") 
+    
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper.png",sep=""), width = 20, height = 10, res=1200, units = "cm")            
-          ggarrange(h1, h2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper.png",sep=""), width = 20, height = 12, res=1200, units = "cm")            
+          ggarrange(p1, p2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
     dev.off()        
 
     
