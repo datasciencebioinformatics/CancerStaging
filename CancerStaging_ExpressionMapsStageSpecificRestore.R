@@ -187,8 +187,8 @@ for (normalization_scheme in normalization_schemes)
             print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
     
-    h1<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages, after_stat(count))) + geom_density() +   theme_bw()     + xlim(0, 50) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
-    h2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages, after_stat(count))) +geom_density() +  theme_bw()    + xlim(0, 100)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    h1<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages, after_stat(count))) + geom_density() +   theme_bw()     + xlim(0, 50) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + ggtitle("A")
+    h2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages, after_stat(count))) +geom_density() +  theme_bw()    + xlim(0, 100)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + ggtitle("B")
     h3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=AveExp, color=Stages, after_stat(count))) + geom_density() +  theme_bw()  + xlim(0, 10000) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
     h4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages, after_stat(count))) + geom_density() +  theme_bw()  + xlim(0, 10000) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
 
@@ -196,9 +196,31 @@ for (normalization_scheme in normalization_schemes)
     i2<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()    + xlim(0, 100) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
     i3<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=AveExp, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()  + xlim(0, 10000) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
     i4<-ggplot(unique(Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","AveExp","Conections","Stages")]), aes(x=Conections, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20)  +  theme_bw()  + xlim(0, 10000)  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper.png",sep=""), width = 20, height = 10, res=1200, units = "cm")            
+          ggarrange(h1, h2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
+    dev.off()        
+
     
     # FindClusters_resolution               
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 25, height = 10, res=600, units = "cm")            
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 30, height = 15, res=600, units = "cm")            
+          plot<-ggarrange(h1, h2, h3,h4,i1, i2, i3, i4, nrow = 2, ncol=4, common.legend = TRUE, legend="bottom") 
+          annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
+    dev.off()        
+
+    #########################################################################################################################################
+    # Implementing the Z score formula in R is quite straightforward. 
+    # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
+    # sd calculates the standard deviation in R.
+    # weighted average    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 10, height = 20, res=1200, units = "cm")            
+          plot<-ggarrange(h1, h2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
+    dev.off()        
+
+    
+    # FindClusters_resolution               
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_unique_histogram.png",sep=""), width = 30, height = 15, res=600, units = "cm")            
           plot<-ggarrange(h1, h2, h3,h4,i1, i2, i3, i4, nrow = 2, ncol=4, common.legend = TRUE, legend="bottom") 
           annotate_figure(plot, top = text_grob(paste(TCGA_project,normalization_scheme,sep=" "), face = "bold", size = 14))  
     dev.off()        
@@ -208,6 +230,27 @@ for (normalization_scheme in normalization_schemes)
     # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
     # sd calculates the standard deviation in R.
     # weighted average
+    # Z-score for AveExp_expression
+    # Z-score for AveExp_expression       
+    m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m2<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage II Expr. ",sep=""))      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m3<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage III Expr. ",sep=""))      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+
+    # Arrange density plot
+    density_plot<-ggarrange(m1, m2, m3, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")
+  
+    m4 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()            + ggtitle(paste("T2 All points: ", normalization_scheme,sep=""))                   +  stat_compare_means(comparisons = my_comparisons, method = "t.test")  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m5 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()    + ggtitle(paste("Connectivity All points: ", normalization_scheme,sep="")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")          + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m6 <- ggplot(expression_table_normalized_melt, aes(x=Stages, y=AveExp)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()        + ggtitle(paste("Expr. All points: ", normalization_scheme,sep=""))          +  stat_compare_means(comparisons = my_comparisons, method = "t.test")        + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+
+    # Arrange density plot
+    boxplots_plot<-ggarrange(m4, m5, m6, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")    
+  
+    m7<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))    + geom_point(aes(colour=AveExp),size=3)   +  theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))+  xlim(0, 50)     + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m8<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_point(aes(colour=AveExp),size=3)  +  theme_bw() + ggtitle(paste(normalization_scheme,   ": All points Stage II Expr. ",sep=""))+ xlim(0, 50)       + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+    m9<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp),size=3) + theme_bw() + ggtitle(paste(normalization_scheme,  ": All points Stage III Expr. ",sep=""))+ xlim(0, 50)         + ylim(10,40) +  guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)     + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
+
+ 
     # Z-score for AveExp_expression
     # Z-score for AveExp_expression       
     m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle(paste(normalization_scheme,    ": All points Stage I Expr. ",sep=""))      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  
