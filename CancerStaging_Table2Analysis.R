@@ -1,3 +1,12 @@
+library("xlsx")
+
+
+# Set Table4.xlsx
+Table4 <-data.frame(read_excel("/home/felipe/Downloads/Table4.xlsx", skip = 1))
+
+# Set rownames
+rownames(Table4)<-Table4$ENSEMBL
+
 # Table 2 analysis
 normalization_scheme<-"tpm"
 
