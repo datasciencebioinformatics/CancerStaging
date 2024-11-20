@@ -47,7 +47,7 @@ for (normalization_scheme in normalization_schemes)
 	
 
 # FindClusters_resolution
-png(filename=paste(output_dir,"stages_I_II_III_unique.png",sep=""), width = 12.0, height = 12, res=800, units = "cm")
+png(filename=paste(output_dir,"stages_I_II_III_unique.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
 	stages_I_II_III_unique
 dev.off()	
 
@@ -84,7 +84,7 @@ dev.off()
 	plot_res_tumor_normal_paired <- autoplot(pca_res_tumor_normal_paired, data = merged_data_patient_sel[rownames(transporse_normalized_table_paired),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A" )+ scale_color_manual(values=c("#999999", "#E69F00"))                                                            
 		
 	# FindClusters_resolution
-	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 12.0, height = 12, res=800, units = "cm")
+	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
 		plot_res_tumor_normal
 	dev.off()
 	
