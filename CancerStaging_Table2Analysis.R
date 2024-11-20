@@ -7,6 +7,9 @@ Table4 <-data.frame(read_excel("/home/felipe/Downloads/Table4.xlsx", skip = 1))
 # Set rownames
 rownames(Table4)<-Table4$ENSEMBL
 
+# Set colnames
+colnames(Table4)[1]<-"ensembl_gene_id"
+
 # Table 2 analysis
 normalization_scheme<-"tpm"
 
@@ -21,4 +24,16 @@ unique_stage_I    =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_sta
 unique_stage_II   =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
 unique_stage_III  =intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
 
-rownames(df_reads_count_all_projects) %in% tumor_genes
+selected_genes<-rownames(df_reads_count_all_projects[["tpm"]])[rownames(df_reads_count_all_projects[["tpm"]]) %in% tumor_genes]
+
+# Select genes
+selected_genes_table<-genes_rankData_stage_all_genes[selected_genes,]
+
+# Merge table
+selected_genes_table<-merge(selected_genes_table,Table4,by="ensembl_gene_id")
+
+# Write table
+write_tsv(selected_genes_table,     paste(output_dir,"/selected_genes_table_Table2_",normalization_scheme,".tsv",sep=""))
+
+
+
