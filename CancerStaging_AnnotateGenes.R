@@ -150,6 +150,12 @@ genes_rankData_stage_all_genes_merged<-merge(Interactomes_GC3_T2_merged, genes_r
 # genes_rankData_stage_all_genes_merged
 write_tsv(genes_rankData_stage_all_genes_merged,   paste(output_dir,"/tumor_genes_statistics",normalization_scheme,".tsv",sep=""))
 
+Table3<-genes_rankData_stage_all_genes[genes_rankData_stage_all_genes$FC>=50 & genes_rankData_stage_all_genes$Mean_normal<=10,]
+
+# Save TSV file with genes from Stage3
+write_tsv(Table3, paste(output_dir,"/Table3.tsv",sep=""))
+
+
 
 # Check tumor table
 table_tumor_genes  <-na.omit(genes_rankData_stage_all_genes)
