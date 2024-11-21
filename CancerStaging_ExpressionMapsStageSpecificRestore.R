@@ -35,6 +35,11 @@ for (normalization_scheme in normalization_schemes)
     unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
     unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
 
+    #ENSEMBL_ids_stage_I<-unique_stage_I
+    #ENSEMBL_ids_stage_II<-unique_stage_II
+    #ENSEMBL_ids_stage_II<-unique_stage_III
+    
+
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged_Stage_I   <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_I,]
     Interactomes_GC3_T2_merged_Stage_II  <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_II,]
@@ -72,6 +77,11 @@ for (normalization_scheme in normalization_schemes)
     Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[unique_stage_I,])
     Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[unique_stage_II,])
     Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[unique_stage_III,])
+
+    Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,])
+    
     
     # Merge Stages
     Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
