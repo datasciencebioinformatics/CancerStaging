@@ -1,10 +1,18 @@
 ###########################################################################################################
+# Coments here.
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization_Carels.R")
+###########################################################################################################
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                   #
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                       #
 ###########################################################################################################
 # Restore the object                                                                                      #
 Interactomes_GC3_T2_merged <-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))    #
-normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_schemes.rds",sep=""))         #
+#normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_schemes.rds",sep=""))         #
 df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
 list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
 ###########################################################################################################
@@ -17,6 +25,10 @@ for (normalization_scheme in normalization_schemes)
     genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
     genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
     genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+
+    unique_stage_I  =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_stages_III)),genes_stages_I)
+    unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
+    unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
   
     # Take also expression data from the normalization scheme set by "normalization_scheme"
     expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
@@ -31,14 +43,9 @@ for (normalization_scheme in normalization_schemes)
     ENSEMBL_ids_stage_II <-unique(intersect(rownames(expression_table_normalized_stage_II), Interactomes_GC3_T2_merged$ENSEMBL))
     ENSEMBL_ids_stage_III<-unique(intersect(rownames(expression_table_normalized_stage_III),Interactomes_GC3_T2_merged$ENSEMBL))
     
-    unique_stage_I  =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_stages_III)),genes_stages_I)
-    unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
-    unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
-
-    #ENSEMBL_ids_stage_I<-unique_stage_I
-    #ENSEMBL_ids_stage_II<-unique_stage_II
-    #ENSEMBL_ids_stage_II<-unique_stage_III
-    
+    ENSEMBL_ids_stage_I<-unique_stage_I
+    ENSEMBL_ids_stage_II<-unique_stage_II
+    ENSEMBL_ids_stage_III<-unique_stage_III
 
     # Set AveExp to zero Interactomes_GC3_T2_merged
     Interactomes_GC3_T2_merged_Stage_I   <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_I,]
@@ -55,9 +62,9 @@ for (normalization_scheme in normalization_schemes)
     Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[ENSEMBL_ids_stage_III,])     
 
     # Calculate the average expression for the epression of each g
-    #Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,"AveExp"]<-rowMeans(expression_table_normalized_stage_I[unique_stage_I,])
-    #Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,"AveExp"]<-rowMeans(expression_table_normalized_stage_II[unique_stage_II,])
-    #Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[unique_stage_III,])     
+    Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,"AveExp"]<-rowMeans(expression_table_normalized_stage_I[unique_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,"AveExp"]<-rowMeans(expression_table_normalized_stage_II[unique_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[unique_stage_III,])     
     
 
     Interactomes_GC3_T2_merged_Stage_I$Stages<-"Stage I"
@@ -67,20 +74,17 @@ for (normalization_scheme in normalization_schemes)
     # Visualize: Specify the comparisons you want
     my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"))
 
-    unique_stage_I  =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_stages_III)),genes_stages_I)
-    unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
-    unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
 
     # Data frame to store genes and stages                                                                    #
     df_genes_stage<-data.frame(Genes=c(),Stage=c())      
 
-    #Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[unique_stage_I,])
-    #Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[unique_stage_II,])
-    #Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[unique_stage_III,])
+    Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[unique_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[unique_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[unique_stage_III,])
 
-    Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,])
-    Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,])
-    Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,])
+    #Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,])
+    #Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,])
+    #Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,])
     
     
     # Merge Stages
@@ -148,7 +152,7 @@ for (normalization_scheme in normalization_schemes)
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
     # FindClusters_resolution          
-    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_unique_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off() 
