@@ -87,10 +87,5 @@ for (gene in names(rowMeans_normalized_expression_table))
 # Set rownames
 rownames(df_FC)<-df_FC$Gene
 
-selected_genes<-df_FC[df_FC$FC>=50 & df_FC$Mean_normal<=10,]
-
-# Save TSV file with genes from Stage3
-write_tsv(selected_genes, paste(output_dir,"/selected_genes.tsv",sep=""))
-
 # Take selected genes
 selected_genes<-df_FC[which(df_FC$FC>100 & df_FC$Mean_normal<=10),]
