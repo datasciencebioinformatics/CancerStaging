@@ -140,6 +140,17 @@ genes_rankData_stage_all_genes <- genes_rankData_stage_all_genes[match(unique(ge
 # Set rownames
 rownames(genes_rankData_stage_all_genes)<-genes_rankData_stage_all_genes$ensembl_gene_id
 
+# Set colnames
+colnames(Interactomes_GC3_T2_merged)[4]<-"ensembl_gene_id"
+
+# Set genes_rankData_stage_all_genes
+genes_rankData_stage_all_genes_merged<-merge(Interactomes_GC3_T2_merged, genes_rankData_stage_all_genes,by="ensembl_gene_id")
+
+
+# genes_rankData_stage_all_genes_merged
+write_tsv(genes_rankData_stage_all_genes_merged,   paste(output_dir,"/tumor_genes_statistics",normalization_scheme,".tsv",sep=""))
+
+
 # Check tumor table
 table_tumor_genes  <-na.omit(genes_rankData_stage_all_genes)
 table_stage_I_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_I_gene,])
