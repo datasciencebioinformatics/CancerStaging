@@ -1,12 +1,4 @@
 ###########################################################################################################
-# Coments here.
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization_Carels.R")
-###########################################################################################################
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                   #
 source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                       #
 ###########################################################################################################
