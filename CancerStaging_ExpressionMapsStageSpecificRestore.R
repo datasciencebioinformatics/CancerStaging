@@ -81,6 +81,127 @@ for (normalization_scheme in normalization_schemes)
     
     # Merge Stages
     Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
+    ###########################################################################################################    
+    # Three countour plots will be created
+    # One with the average expression
+    # Second with the expression per patient
+    # Third with the z-score 
+    # Conections, T2, AvgExpression
+    # Combine AvgExpression, Conections, T2
+    # harmonic mean
+    # z-core : Composite Scores
+    # Implementing the Z score formula in R is quite straightforward. 
+    # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
+    # sd calculates the standard deviation in R.
+    # weighted average
+    # Z-score for AveExp_expression
+    # Z-score for AveExp_expression  
+    # Z-score for AveExp_expression
+    # Z-score for AveExp_expression       
+    m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage I")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("F")
+    m2<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage II")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("G")  
+    m3<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage III")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("H")  
+    
+    # Arrange density plot
+    density_plot<-ggarrange(m1, m2, m3, nrow = 1,ncol = 3, common.legend = TRUE, legend="none")
+    
+    m7<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, T2, z = AveExp))    + geom_point(aes(colour=AveExp),size=3)   +  theme_bw() + ggtitle("Stage I")+  xlim(0, 50)     + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("A")
+    m8<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, T2, z = AveExp))   + geom_point(aes(colour=AveExp),size=3)  +  theme_bw() + ggtitle("Stage II")+ xlim(0, 50)       + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("B")
+    m9<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp),size=3) + theme_bw() + ggtitle("Stage III")+ xlim(0, 50)         + ylim(10,40) +  guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)     + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow") + ggtitle("C")
+
+    # Arrange density plot
+    dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
+  
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle("Stage I")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("D")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage II")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12)) + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("E")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage III")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + scale_colour_gradient(low = "red", high = "yellow") + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("F")
+
+    # Arrange density plot
+    countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
+      
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_unique_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+            ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
+            #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()
+
+}
+
+
+
+
+
+# For each normlization normalization_scheme
+for (normalization_scheme in normalization_schemes)
+{     
+    # genes_stages_I
+    genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+
+    unique_stage_I  =intersect(setdiff(genes_stages_I, c(genes_stages_II,genes_stages_III)),genes_stages_I)
+    unique_stage_II =intersect(setdiff(genes_stages_II, c(genes_stages_I,genes_stages_III)),genes_stages_II)
+    unique_stage_III=intersect(setdiff(genes_stages_III, c(genes_stages_I,genes_stages_II)),genes_stages_III)
+  
+    # Take also expression data from the normalization scheme set by "normalization_scheme"
+    expression_table_normalized<-df_reads_count_all_projects[[normalization_scheme]]
+
+    # Stage specific genes from each stage
+    expression_table_normalized_stage_I  <-expression_table_normalized[genes_stages_I,list_of_comparisson[["sample_stage_I"]]]
+    expression_table_normalized_stage_II <-expression_table_normalized[genes_stages_II,list_of_comparisson[["sample_stage_II"]]]
+    expression_table_normalized_stage_III<-expression_table_normalized[genes_stages_III,list_of_comparisson[["sample_stage_III"]]]    
+
+    # ENSEMBL_ids
+    ENSEMBL_ids_stage_I  <-unique(intersect(rownames(expression_table_normalized_stage_I),  Interactomes_GC3_T2_merged$ENSEMBL))
+    ENSEMBL_ids_stage_II <-unique(intersect(rownames(expression_table_normalized_stage_II), Interactomes_GC3_T2_merged$ENSEMBL))
+    ENSEMBL_ids_stage_III<-unique(intersect(rownames(expression_table_normalized_stage_III),Interactomes_GC3_T2_merged$ENSEMBL))
+    
+    ENSEMBL_ids_stage_I<-unique_stage_I
+    ENSEMBL_ids_stage_II<-unique_stage_II
+    ENSEMBL_ids_stage_III<-unique_stage_III
+
+    # Set AveExp to zero Interactomes_GC3_T2_merged
+    Interactomes_GC3_T2_merged_Stage_I   <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_I,]
+    Interactomes_GC3_T2_merged_Stage_II  <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_II,]
+    Interactomes_GC3_T2_merged_Stage_III <-Interactomes_GC3_T2_merged[ENSEMBL_ids_stage_III,]
+  
+    Interactomes_GC3_T2_merged_Stage_I$AveExp<-0
+    Interactomes_GC3_T2_merged_Stage_II$AveExp<-0
+    Interactomes_GC3_T2_merged_Stage_III$AveExp<-0
+    
+    # Calculate the average expression for the epression of each g
+    Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,"AveExp"]<-rowMeans(expression_table_normalized_stage_I[ENSEMBL_ids_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,"AveExp"]<-rowMeans(expression_table_normalized_stage_II[ENSEMBL_ids_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[ENSEMBL_ids_stage_III,])     
+
+    # Calculate the average expression for the epression of each g
+    Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,"AveExp"]<-rowMeans(expression_table_normalized_stage_I[unique_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,"AveExp"]<-rowMeans(expression_table_normalized_stage_II[unique_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,"AveExp"]<-rowMeans(expression_table_normalized_stage_III[unique_stage_III,])     
+    
+
+    Interactomes_GC3_T2_merged_Stage_I$Stages<-"Stage I"
+    Interactomes_GC3_T2_merged_Stage_II$Stages<-"Stage II"
+    Interactomes_GC3_T2_merged_Stage_III$Stages<-"Stage III"
+    #########################################################################################################################################
+    # Visualize: Specify the comparisons you want
+    my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"))
+
+
+    # Data frame to store genes and stages                                                                    #
+    df_genes_stage<-data.frame(Genes=c(),Stage=c())      
+
+    Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[unique_stage_I,])
+    Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[unique_stage_II,])
+    Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[unique_stage_III,])
+
+    #Interactomes_GC3_T2_merged_Stage_I<-na.omit(Interactomes_GC3_T2_merged_Stage_I[ENSEMBL_ids_stage_I,])
+    #Interactomes_GC3_T2_merged_Stage_II<-na.omit(Interactomes_GC3_T2_merged_Stage_II[ENSEMBL_ids_stage_II,])
+    #Interactomes_GC3_T2_merged_Stage_III<-na.omit(Interactomes_GC3_T2_merged_Stage_III[ENSEMBL_ids_stage_III,])
+    
+    
+    # Merge Stages
+    Interactomes_GC3_T2_merged_all<-na.omit(rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II, Interactomes_GC3_T2_merged_Stage_III))  
     ###########################################################################################################
     # Take ensembl ids
     ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
@@ -147,7 +268,19 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_unique_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
-    dev.off() 
+    dev.off()
+
+}
+
+
+
+
+
+
+
+
+
+
 
     m4 <- ggplot(Interactomes_GC3_T2_merged_all, aes(x=Stages, y=T2)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()            + ggtitle(paste("T2", normalization_scheme,sep=" : "))                   +  stat_compare_means(comparisons = my_comparisons, method = "t.test")  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))
     m5 <- ggplot(Interactomes_GC3_T2_merged_all, aes(x=Stages, y=Conections)) +  geom_violin(trim=FALSE) + stat_summary(fun.data="mean_sdl", geom="crossbar", width=0.2,color="red" )+ theme_bw()    + ggtitle(paste("Connectivity", normalization_scheme,sep=" : ")) +  stat_compare_means(comparisons = my_comparisons, method = "t.test")          + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12)) 
