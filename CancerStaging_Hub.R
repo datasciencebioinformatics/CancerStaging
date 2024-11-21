@@ -105,7 +105,7 @@ intersect_conectivity_stage_I_III<-intersect_conectivity_stage_I_III[which(inter
 intersect_conectivity_stage_II_III<-intersect_conectivity_stage_II_III[which(intersect_conectivity_stage_II_III>75)]
 
 # Because therapy is intended to maximize the patient comfort we also filtered out genes whose expression was larger than ~10 in the control since targeting drugs could affect the healthy tissue in case of basal expression.
-selected_genes<-df_FC[df_FC$Mean_normal<=4.1,]
+selected_genes<-genes_rankData_stage_all_genes[genes_rankData_stage_all_genes$Mean_normal<=10.0,]
 
 # Store conectivity
 df_selected_conectivity_stage_I_II<-data.frame(Gene=intersect_conectivity_stage_I_II[intersect_conectivity_stage_I_II %in% selected_genes$Gene])
