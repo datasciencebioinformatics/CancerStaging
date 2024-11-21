@@ -125,7 +125,154 @@ for (normalization_scheme in normalization_schemes)
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
 
+
+
+    ###########################################################################################################
+    # Take ensembl ids
+    ENSEMBL_IDs<-intersect(rownames(Interactomes_GC3_T2_merged_all),rownames(expression_table_normalized))
+
+    # Copy the epxression table
+    expression_table_normalized_cp<-expression_table_normalized[ENSEMBL_IDs,]
+
+    # Add ENSEMBL to the table
+    expression_table_normalized_cp$ENSEMBL<-rownames(expression_table_normalized_cp)
+
+    # Melt table
+    expression_table_normalized_melt<-melt(expression_table_normalized_cp,ids="ENSEMBL")
+
+    # Merge tables
+    expression_table_normalized_melt<-merge(expression_table_normalized_melt,Interactomes_GC3_T2_merged_all,by="ENSEMBL")
+
+    # Rename collumns
+    colnames(expression_table_normalized_melt)[3]<-normalization_scheme
+
+    # Take values from each stage
+    Interactomes_GC3_T2_merged_Stage_I_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage I",]
+    Interactomes_GC3_T2_merged_Stage_II_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage II",]
+    Interactomes_GC3_T2_merged_Stage_III_patient<-expression_table_normalized_melt[expression_table_normalized_melt$Stages == "Stage III",]
+    #########################################################################################################################################
+
+    ###########################################################################################################    
+    # Three countour plots will be created
+    # One with the average expression
+    # Second with the expression per patient
+    # Third with the z-score 
+    # Conections, T2, AvgExpression
+    # Combine AvgExpression, Conections, T2
+    # harmonic mean
+    # z-core : Composite Scores
+    # Implementing the Z score formula in R is quite straightforward. 
+    # To reuse code, we will create a function called calculate_z using the mean and sd base functions to calculate Z. 
+    # sd calculates the standard deviation in R.
+    # weighted average
+    # Z-score for AveExp_expression
+    # Z-score for AveExp_expression  
+    # Z-score for AveExp_expression
+    # Z-score for AveExp_expression  
+    
+    m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage I")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("F") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m2<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage II")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("G") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m3<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage III")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("H") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+    
+    # Arrange density plot
+    density_plot<-ggarrange(m1, m2, m3, nrow = 1,ncol = 3, common.legend = TRUE, legend="none")
+    
+    m7<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))    + geom_point(aes(colour=AveExp),size=3)   +  theme_bw() + ggtitle("Stage I")+  xlim(0, 50)     + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("A") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m8<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_point(aes(colour=AveExp),size=3)  +  theme_bw() + ggtitle("Stage II")+ xlim(0, 50)       + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("B") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m9<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp),size=3) + theme_bw() + ggtitle("Stage III")+ xlim(0, 50)         + ylim(10,40) +  guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)     + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow") + ggtitle("C") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+
+    # Arrange density plot
+    dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
+  
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle("Stage I")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("D") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage II")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12)) + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("E") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage III")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + scale_colour_gradient(low = "red", high = "yellow") + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("F") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+
+    # Arrange density plot
+    countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
+      
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+            ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
+            #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()
+
+    m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage I")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("A") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m2<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage II")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("B") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m3<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage III")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("C") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+    
+    # Arrange density plot
+    density_plot<-ggarrange(m1, m2, m3, nrow = 1,ncol = 3, common.legend = TRUE, legend="none")
+    
+
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 10, res=600, units = "cm")  
+            ggarrange(density_plot,  nrow = 1,ncol = 1, common.legend = TRUE, legend="bottom")
+            #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
