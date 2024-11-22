@@ -28,9 +28,9 @@ expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selec
 expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][selected_genes_Stage_III_gene,sample_stage_III])
 
 # Omit lines with NA
-#expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
-#expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
-#expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
+expr_stage_I<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_I,sample_stage_I])
+expr_stage_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_II,sample_stage_II])
+expr_stage_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][unique_stage_III,sample_stage_III])
 
 # Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
 genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I),mart=mart)
@@ -63,16 +63,16 @@ geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
 geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
 
 # Filter padj
-geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<0.05,]
-geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<0.05,]
-geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<0.05,]
+geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<=0.05,]
+geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<=0.05,]
+geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<=0.05,]
 
-geseca_Stage_I$Stage<-"Stage I"
+#geseca_Stage_I$Stage<-"Stage I"
 geseca_Stage_II$Stage<-"Stage II"
 geseca_Stage_III$Stage<-"Stage III"
 
 # Combine the queries for the three stages
-geseca_all_stage<-rbind(geseca_Stage_I,geseca_Stage_II,geseca_Stage_III)
+merged_pathways<-merge(merge(geseca_Stage_I,geseca_Stage_II,by="pathway", all=TRUE),geseca_Stage_III,by="pathway", all=TRUE)
 
 write_tsv(geseca_all_stage, paste(output_dir,"/geseca_all_stage.tsv",sep=""))
 
@@ -81,10 +81,37 @@ write_tsv(geseca_all_stage, paste(output_dir,"/geseca_all_stage.tsv",sep=""))
 
 
 
+##############################################################################################################
+tumor_genes<-unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
+tumor_samples<-c(sample_stage_I,sample_stage_II,sample_stage_III)
+
+# Expression of tumor genes
+expr_stage_tumor<-na.omit(df_reads_count_all_projects[[normalization_scheme]][tumor_genes,tumor_samples])
+
+# Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
+genes_rankData_tumor     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_tumor),mart=mart)
+
+# Next, Take the annotation for each genes
+genes_rankData_tumor   <-genes_rankData_tumor[genes_rankData_tumor$ensembl_gene_id %in% rownames(expr_stage_tumor),]
+
+# Take the first occurance of each ensembl_gene_id 
+genes_rankData_tumor   <- genes_rankData_tumor[match(unique(genes_rankData_tumor$ensembl_gene_id), genes_rankData_tumor$ensembl_gene_id),]
+
+# Set the rownames as the ensembl_gene_id
+rownames(genes_rankData_tumor)<-genes_rankData_tumor$ensembl_gene_id
+
+# Set the rownames entrezgene_id
+rownames(genes_rankData_tumor)   <- genes_rankData_tumor[rownames(genes_rankData_tumor),"entrezgene_id"]
+
+# Set the rownames entrezgene_id
+rownames(expr_stage_tumor)   <- genes_rankData_tumor[rownames(genes_rankData_tumor),"entrezgene_id"]
+
+# Compute the geseca
+geseca_Stage_tumor   <- data.frame(geseca(pathways, expr_stage_tumor))
 
 
-
-
+# Filter padj
+geseca_Stage_tumor  <-geseca_Stage_tumor[geseca_Stage_tumor$padj<0.05,]
 
 
 
