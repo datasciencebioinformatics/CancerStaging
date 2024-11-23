@@ -61,7 +61,8 @@ for (normalization_scheme in normalization_schemes)
 
     Interactomes_GC3_T2_merged_Stage_I$Stages<-"Stage I"
     Interactomes_GC3_T2_merged_Stage_II$Stages<-"Stage II"
-    Interactomes_GC3_T2_merged_Stage_III$Stages<-"Stage III"
+    Interactomes_GC3_T2_merged_Stage_III$Stage
+Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]s<-"Stage III"
     #########################################################################################################################################
     # Visualize: Specify the comparisons you want
     my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"))
@@ -219,13 +220,19 @@ for (normalization_scheme in normalization_schemes)
 Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
 
 # Rreplace values
-Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_mvalu8es$T2/sum(Interactomes_GC3_T2_mvalu8es$T2)
-Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_mvalu8es$GC3/sum(Interactomes_GC3_T2_mvalu8es$GC3)
-
-ggplot(df, aes(x = x)) + geom_histogram(aes(y = ..density..),olour = 1, fill = "white") +
+Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_values$T2/sum(Interactomes_GC3_T2_values$T2)
+Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_values$GC3/sum(Interactomes_GC3_T2_values$GC3)
 
 # Plot the histograms
-p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A") +   scale_x_continuous(labels = scales::percent)   
+p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A") +   scale_x_continuous(labels = scales::percent)   + facet_grid(rows = vars(Stages))
+p2<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("B") +   scale_x_continuous(labels = scales::percent)   + facet_grid(rows = vars(Stages))
+
+# FindClusters_resolution
+png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper_density.png",sep=""), width = 20, height = 12, res=1200, units = "cm")                                                         
+      ggarrange(p1, p2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
+dev.off()      
+
+
 p2<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("B") +   scale_x_continuous(labels = scales::percent)  
 
 # Plot the histograms
@@ -242,10 +249,6 @@ png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_sche
       ggarrange(p1, p2, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
 dev.off()      
 
-# FindClusters_resolution
-png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper_density.png",sep=""), width = 20, height = 12, res=1200, units = "cm")                                                         
-      ggarrange(p3, p4, nrow = 1, ncol=2, common.legend = TRUE, legend="bottom") 
-dev.off()      
 
 
 
