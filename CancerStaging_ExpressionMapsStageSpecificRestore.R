@@ -211,11 +211,37 @@ for (normalization_scheme in normalization_schemes)
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 10, res=600, units = "cm")  
             ggarrange(density_plot,  nrow = 1,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
-    dev.off()
+    dev.off()   
 
 }
 
+# Take the values of the table  
+Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
 
+# Rreplace values
+Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_mvalu8es$T2/sum(Interactomes_GC3_T2_mvalu8es$T2)
+Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_mvalu8es$GC3/sum(Interactomes_GC3_T2_mvalu8es$GC3)
+
+ggplot(df, aes(x = x)) + geom_histogram(aes(y = ..density..),olour = 1, fill = "white") +
+
+# Plot the histograms
+p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A") +   scale_x_continuous(labels = scales::percent)   
+p2<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("B") +   scale_x_continuous(labels = scales::percent)  
+
+# Plot the histograms
+p3<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_line(stat = "density") +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + ggtitle("C") +   scale_x_continuous(labels = scales::percent)   
+p4<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) +  geom_line(stat = "density")  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + ggtitle("D") +   scale_x_continuous(labels = scales::percent)  
+
+# FindClusters_resolution               
+png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper.png",sep=""), width = 20, height = 24, res=1200, units = "cm")            
+      ggarrange(p1, p2,p3, p4, nrow = 2, ncol=2, common.legend = TRUE, legend="bottom") 
+dev.off()        
+
+
+
+
+
+ 
 
 
 
