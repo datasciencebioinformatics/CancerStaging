@@ -120,6 +120,7 @@ for (normalization_scheme in normalization_schemes)
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
     # FindClusters_resolution          
+    # Supplmental_Figure
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_unique_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
@@ -191,7 +192,8 @@ for (normalization_scheme in normalization_schemes)
     # Arrange density plot
     countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
       
-    # FindClusters_resolution          
+    # FindClusters_resolution
+    # Supplmental_Figure
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
