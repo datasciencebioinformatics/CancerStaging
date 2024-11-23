@@ -197,6 +197,24 @@ Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC
     # Supplmental_Figure
     png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
             ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
+            #print(annotatem7<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))    + geom_point(aes(colour=AveExp),size=3)   +  theme_bw() + ggtitle("Stage I")+  xlim(0, 50)     + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("A") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m8<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_point(aes(colour=AveExp),size=3)  +  theme_bw() + ggtitle("Stage II")+ xlim(0, 50)       + ylim(10,40) + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow")   + ggtitle("B") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m9<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  + geom_point(aes(colour=AveExp),size=3) + theme_bw() + ggtitle("Stage III")+ xlim(0, 50)         + ylim(10,40) +  guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)     + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(0, 40, by = 10), limits = c(10, 40))   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + scale_colour_gradient(low = "red", high = "yellow") + geom_hline(yintercept=30, colour="yellow") + ggtitle("C") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+
+    # Arrange density plot
+    dotplot_plot<-ggarrange(m7, m8, m9, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")        
+  
+    m10<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   +  theme_bw() + ggtitle("Stage I")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE)) + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("D") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m11<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage II")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))   + scale_colour_gradient(low = "red", high = "yellow")   + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12)) + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("E") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m12<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))  +  theme_bw() + ggtitle("Stage III")   + geom_density_2d(bin=10)      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)  + scale_y_continuous(minor_breaks = seq(0, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40)) + scale_colour_gradient(low = "red", high = "yellow") + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + theme(legend.position = "none") + geom_hline(yintercept=30, colour="yellow") + ggtitle("F") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+
+    # Arrange density plot
+    countour_plot<-ggarrange(m10, m11, m12, nrow = 1,ncol = 3, common.legend = TRUE, legend="bottom")            
+      
+    # FindClusters_resolution
+    # Supplmental_Figure
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 30, res=600, units = "cm")  
+            ggarrange(dotplot_plot, countour_plot, density_plot,  nrow = 3,ncol = 1, common.legend = TRUE, legend="bottom")
             #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
     dev.off()
 
@@ -220,12 +238,39 @@ Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC
 Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
 
 # Rreplace values
-Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_values$T2/sum(Interactomes_GC3_T2_values$T2)
-Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_values$GC3/sum(Interactomes_GC3_T2_values$GC3)
+#Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_values$T2/sum(Interactomes_GC3_T2_values$T2)
+#Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_values$GC3/sum(Interactomes_GC3_T2_values$GC3)
 
 # Plot the histograms
-p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A") +   scale_x_continuous(labels = scales::percent)   + facet_grid(rows = vars(Stages))
-p2<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("B") +   scale_x_continuous(labels = scales::percent)   + facet_grid(rows = vars(Stages))
+p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()     + xlim(0, 1) + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A")  + facet_grid(rows = vars(Stages))_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()
+
+    m1<-ggplot(Interactomes_GC3_T2_merged_Stage_I_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage I")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("A") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_I_patient$T2), colour="red")
+    m2<-ggplot(Interactomes_GC3_T2_merged_Stage_II_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage II")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("B") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_II_patient$T2), colour="red")
+    m3<-ggplot(Interactomes_GC3_T2_merged_Stage_III_patient, aes(Conections, T2, z = AveExp))   + geom_density_2d_filled() + theme_bw() + ggtitle("Stage III")      + guides(x = guide_axis(minor.ticks = TRUE),y = guide_axis(minor.ticks = TRUE))  + ylim(10,40)  + xlim(0, 50)   + scale_y_continuous(minor_breaks = seq(10, 40, by = 1), breaks = seq(10, 40, by = 10), limits = c(10, 40))  + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))   + geom_hline(yintercept=30, colour="yellow") + theme(legend.position = "none") + ggtitle("C") + geom_hline(yintercept=mean(Interactomes_GC3_T2_merged_Stage_III_patient$T2), colour="red")
+    
+    # Arrange density plot
+    density_plot<-ggarrange(m1, m2, m3, nrow = 1,ncol = 3, common.legend = TRUE, legend="none")
+    
+
+    # FindClusters_resolution          
+    png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_Stage_all_T2_perPatient_patient_paper.png",sep=""), width = 30, height = 10, res=600, units = "cm")  
+            ggarrange(density_plot,  nrow = 1,ncol = 1, common.legend = TRUE, legend="bottom")
+            #print(annotate_figure(plot, top = text_grob(TCGA_project, face = "bold", size = 14)))
+    dev.off()   
+
+}
+
+# Take the values of the table  
+Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
+
+# Rreplace values
+#Interactomes_GC3_T2_values$T2<-Interactomes_GC3_T2_values$T2/sum(Interactomes_GC3_T2_values$T2)
+#Interactomes_GC3_T2_values$GC3<-Interactomes_GC3_T2_values$GC3/sum(Interactomes_GC3_T2_values$GC3)
+
+# Plot the histograms
+p1<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=T2, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()      + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("A")  + facet_grid(rows = vars(Stages))
+p2<-ggplot(unique(Interactomes_GC3_T2_values[,c("ENSEMBL","T2","GC3","Conections","Stages")]), aes(x=GC3, color=Stages)) + geom_histogram(fill="white", alpha=0.5, position="identity", bins=20, aes(y = after_stat(count / sum(count))))  +   theme_bw()    + theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size=12), axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12))  +   scale_y_continuous(labels = scales::percent)  + ylab("relative frequency (%)") + ggtitle("B")  + facet_grid(rows = vars(Stages))
 
 # FindClusters_resolution
 png(filename=paste(output_dir,"countour_T2_Coonections_melt_",normalization_scheme,"_",TCGA_project,"_paper_density.png",sep=""), width = 20, height = 12, res=1200, units = "cm")                                                         
