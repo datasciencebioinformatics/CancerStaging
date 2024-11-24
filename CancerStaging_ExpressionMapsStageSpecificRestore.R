@@ -61,8 +61,11 @@ for (normalization_scheme in normalization_schemes)
 
     Interactomes_GC3_T2_merged_Stage_I$Stages<-"Stage I"
     Interactomes_GC3_T2_merged_Stage_II$Stages<-"Stage II"
-    Interactomes_GC3_T2_merged_Stage_III$Stage
-Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]s<-"Stage III"
+    Interactomes_GC3_T2_merged_Stage_III$Stages<-"Stage III"
+
+    Interactomes_GC3_T2_merged_all<-rbind(Interactomes_GC3_T2_merged_Stage_I,Interactomes_GC3_T2_merged_Stage_II,Interactomes_GC3_T2_merged_Stage_III)
+    
+    Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
     #########################################################################################################################################
     # Visualize: Specify the comparisons you want
     my_comparisons <- list( c("Stage I", "Stage II"), c("Stage I", "Stage III"), c("Stage II", "Stage III"))
@@ -792,7 +795,7 @@ for (normalization_scheme in normalization_schemes)
 
     # Arrange density plot
     boxplots_plot<-ggarrange(m4, m5, m6, m7, nrow = 1,ncol = 4, common.legend = TRUE, legend="bottom")    
-
+Interactomes_GC3_T2_values<-Interactomes_GC3_T2_merged_all[,c("ENSEMBL","T2","GC3","Conections","Stages")]
 
 
     # FindClusters_resolution          
