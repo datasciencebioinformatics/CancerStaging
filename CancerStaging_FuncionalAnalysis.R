@@ -156,7 +156,6 @@ for (normalization_scheme in normalization_schemes)
     go_ALL_classes_Stage_II<-go_ALL_classes_Stage_II[go_ALL_classes_Stage_II$p.adjust<=0.05,]
     go_ALL_classes_Stage_III<-go_ALL_classes_Stage_III[go_ALL_classes_Stage_III$p.adjust<=0.05,]
     
-
     go_ALL_classes_Stage_I$Stage<-"Stage I"
     go_ALL_classes_Stage_II$Stage<-"Stage II"
     go_ALL_classes_Stage_III$Stage<-"Stage III"
@@ -167,24 +166,34 @@ for (normalization_scheme in normalization_schemes)
     # Set rownames
     rownames(merge_all_classes_results)<-merge_all_classes_results$ID
 
-    # For each ID
-    for (GO_term in merge_all_classes_results$ID)
+    # Filter collumns
+    merge_all_classes_results<-merge_all_classes_results[,c("Stage","Cluster","Description","p.adjust","geneID")]    
+
+    # For each line, convert entrez ID to gene symbol
+    for (go_term in rownames(merge_all_classes_results))
     {
-        Stage       <-merge_all_classes_results[GO_term,"Stage"]
-        Gene_class  <-merge_all_classes_results[GO_term,"Cluster"]
-        ONTOLOGY    <-merge_all_classes_results[GO_term,"ONTOLOGY"]
-        ID          <-merge_all_classes_results[GO_term,"ID"]      
-        Description <-merge_all_classes_results[GO_term,"Description"]       
-        p.adjust    <-merge_all_classes_results[GO_term,"p.adjust"]   
-        geneID      <-merge_all_classes_results[GO_term,"geneID"]   
-
-        # Table to store results
-        df_class_functional_analysis<-rbind(df_class_functional_analysis,data.frame(Stage=Stage,Gene_class=Gene_class,ONTOLOGY=ONTOLOGY,ID=ID,Description=Description,p.adjust=p.adjust,geneID=geneID))        
-    }
-
-     
+      # Take the entrez id line
+      entrez_ids<-merge_all_classes_results[go_term,"geneID"]  
+    
+      entrez_ids<-as.vector(paste(bitr(unlist(strsplit(entrez_ids,split="/",fixed=T)), fromType = "ENTREZID", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")$SYMBOL,collapse=", ")  )
+    
+      # Replace entrez by gene symbol
+      merge_all_classes_results[go_term,"geneID"] <-entrez_ids
+    }    
+    ########################################################################################################################################
+    # Save TSV file with genes from Stage3
+    write_tsv(merge_all_classes_results, paste(output_dir,"/merge_all_classes_results.tsv",sep=""))
+    ########################################################################################################################################
     
 
+    
+    
+    
+    
+    
+    
+    
+    
     ########################################################################################################################################
     # EnrichGO to obtain GO annotation, minGSSize = 3
     # Translate kegg back to symbols
