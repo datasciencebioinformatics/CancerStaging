@@ -80,8 +80,8 @@ for (normalization_scheme in normalization_schemes)
 	colnames(merged_data_patient_sel)[]<-"tumor_normal"
 	
 	# Plot PCA tumor versus normal                                                                                                                                                      #
-	plot_res_tumor_normal        <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")               + scale_color_manual(values=c("#E69F00", "#56B4E9"))
-	plot_res_tumor_normal_paired <- autoplot(pca_res_tumor_normal_paired, data = merged_data_patient_sel[rownames(transporse_normalized_table_paired),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A" )+ scale_color_manual(values=c("#999999", "#E69F00"))                                                            
+	plot_res_tumor_normal        <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")               + scale_color_manual(values=c("#E69F00", "#56B4E9")) + theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),, axis.title.x = element_text(size = 16)) + theme(legend.text=element_text(size=16))
+
 	
 	# FindClusters_resolution
 	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
