@@ -21,37 +21,37 @@ normalization_schemes<-c("tpm")
 # For each normlization normalization_scheme
 for (normalization_scheme in normalization_schemes)
 {
-  #######################################################################################################################################
-  # Path to files of selected_genes                                                                                                             # 
-  # genes_stages_I
-  selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
-  selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
-  selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
-
-  rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
-  rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
-  rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
-
-  selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
-  selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
-  selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
-  #######################################################################################################################################                                                                                                                                     #
-  unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
-  unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
-  unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
-  #######################################################################################################################################
-  # Select stages 
-  stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=unique_stage_I,Stage_II=unique_stage_II,Stage_III=unique_stage_III), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
-  stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=selected_genes_Stage_I_gene,Stage_II=selected_genes_Stage_II_gene,Stage_III=selected_genes_Stage_III_gene), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none") + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())+theme_bw() +theme(axis.line = element_line(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank())  + ggtitle("B") 
-
+	#######################################################################################################################################
+	# Path to files of selected_genes                                                                                                             # 
+	# genes_stages_I
+	selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
+	selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
+	selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
 	
-
-# FindClusters_resolution
-png(filename=paste(output_dir,"stages_I_II_III_unique.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
-	stages_I_II_III_unique
-dev.off()	
-
-  #############################################################################################################################################################################  
+	rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
+	rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
+	rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
+	
+	selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
+	selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
+	selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
+	#######################################################################################################################################                                                                                                                                     #
+	unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
+	unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
+	unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
+	#######################################################################################################################################
+	# Select stages 
+	stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=unique_stage_I,Stage_II=unique_stage_II,Stage_III=unique_stage_III), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none")
+	stages_I_II_III_unique<-ggVennDiagram(list(Stage_I=selected_genes_Stage_I_gene,Stage_II=selected_genes_Stage_II_gene,Stage_III=selected_genes_Stage_III_gene), label_alpha = 0.9,set_color = c("grey50","grey50","grey50")) +  scale_fill_gradient(low = "white", high = "white") + theme_bw() + ggtitle("Stages I, II and III")+ guides(fill="none") + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())+theme_bw() +theme(axis.line = element_line(colour = "black"), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), panel.background = element_blank())  + ggtitle("B") 
+	
+	
+	
+	# FindClusters_resolution
+	png(filename=paste(output_dir,"stages_I_II_III_unique.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
+		stages_I_II_III_unique
+	dev.off()	
+	
+	#############################################################################################################################################################################  
 	# List of used genes
 	genes<-unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
 	
@@ -71,7 +71,7 @@ dev.off()
 	# Tanspose RPKM table                                                                                                                                                               #	
 	transporse_normalized_table<-data.frame(t(normalized_table))                                                                                                                        #
 	transporse_normalized_table_paired<-data.frame(t(normalized_table_paired))                                                                                                                        #
-																			    #
+																		    #
 	# Calculate prcomp for stage                                                                                                                                                        #
 	pca_res_tumor_normal   <- prcomp(transporse_normalized_table, scale. = TRUE)                                                                                                              #
 	pca_res_tumor_normal_paired   <- prcomp(transporse_normalized_table_paired, scale. = TRUE)                                                                                                              #
@@ -82,7 +82,7 @@ dev.off()
 	# Plot PCA tumor versus normal                                                                                                                                                      #
 	plot_res_tumor_normal        <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")               + scale_color_manual(values=c("#E69F00", "#56B4E9"))
 	plot_res_tumor_normal_paired <- autoplot(pca_res_tumor_normal_paired, data = merged_data_patient_sel[rownames(transporse_normalized_table_paired),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A" )+ scale_color_manual(values=c("#999999", "#E69F00"))                                                            
-		
+	
 	# FindClusters_resolution
 	png(filename=paste(output_dir,"plot_res_tumor_normal.png",sep=""), width = 12.0, height = 12, res=1600, units = "cm")
 		plot_res_tumor_normal
