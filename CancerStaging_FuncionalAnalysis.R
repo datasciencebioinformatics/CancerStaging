@@ -93,7 +93,128 @@ for (normalization_scheme in normalization_schemes)
 
 
 
+# For each normlization normalization_scheme
+for (normalization_scheme in normalization_schemes)
+{   
+    #######################################################################################################################################  
+    # genes_stages_I
+    genes_stages_I    <-read.table(file = paste("/home/felipe/Documents/github/CancerStaging/stage_I_classification_GC3.tsv",sep=""), sep = '\t', header = TRUE)[,1:10]
+    genes_stages_II   <-read.table(file = paste("/home/felipe/Documents/github/CancerStaging/stage_II_classification_GC3.tsv",sep=""), sep = '\t', header = TRUE)[,1:10]
+    genes_stages_III  <-read.table(file = paste("/home/felipe/Documents/github/CancerStaging/stage_III_classification_GC3.tsv",sep=""), sep = '\t', header = TRUE)[,1:10]    
+    #######################################################################################################################################  
+    # ids_stage_I - all ENSEMBL anotated using bitr
+    ids_stage_I      <-bitr(genes_stages_I$ENSEMBL, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_II     <-bitr(genes_stages_II$ENSEMBL, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_III    <-bitr(genes_stages_III$ENSEMBL, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ########################################################################################################################################
+    ########################################################################################################################################
+    # Merge genes_unique and ids_stage in the same tables
+    genes_Stage_I  <-merge(genes_stages_I,ids_stage_I,by="ENSEMBL")
+    genes_Stage_II <-merge(genes_stages_II,ids_stage_II,by="ENSEMBL")
+    genes_Stage_III<-merge(genes_stages_III,ids_stage_III,by="ENSEMBL")
 
+    # Split genes by class
+    class_L_stage_I=genes_Stage_I[which(genes_Stage_I$class=="L"),"entrezgene_id"]
+    class_H1_stage_I=genes_Stage_I[which(genes_Stage_I$class=="H1"),"entrezgene_id"]
+    class_H2_H3_stage_I=genes_Stage_I[which(genes_Stage_I$class=="H2+H3"),"entrezgene_id"]
+
+    # Split genes by class
+    class_L_stage_II=genes_Stage_II[which(genes_Stage_II$class=="L"),"entrezgene_id"]
+    class_H1_stage_II=genes_Stage_II[which(genes_Stage_II$class=="H1"),"entrezgene_id"]
+    class_H2_H3_stage_II=genes_Stage_II[which(genes_Stage_II$class=="H2+H3"),"entrezgene_id"]    
+
+    # Split genes by class
+    class_L_stage_III=genes_Stage_III[which(genes_Stage_II$class=="L"),"entrezgene_id"]
+    class_H1_stage_III=genes_Stage_III[which(genes_Stage_II$class=="H1"),"entrezgene_id"]
+    class_H2_H3_stage_III=genes_Stage_III[which(genes_Stage_II$class=="H2+H3"),"entrezgene_id"]        
+
+    # Compare GOP
+    go_ALL_classes_Stage_I = compareCluster(list(class_L=class_L_stage_I,class_H1=class_H1_stage_I, class_H2_H3=class_H2_H3_stage_I), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+    go_ALL_classes_Stage_II = compareCluster(list(class_L=class_L_stage_II,class_H1=class_H1_stage_II, class_H2_H3=class_H2_H3_stage_II), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+    go_ALL_classes_Stage_III = compareCluster(list(class_L=class_L_stage_III,class_H1=class_H1_stage_III, class_H2_H3=class_H2_H3_stage_III), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+
+    # Table to store results
+    df_class_functional_analysis<-data.frame(Stage=c(),Gene_class=c(),ONTOLOGY=c(),ID=c(),Description=c(),p.adjust=c(),geneID=c())
+
+    # Convert to data.frame
+    go_ALL_classes_Stage_I<-data.frame(go_ALL_classes_Stage_I)
+    go_ALL_classes_Stage_II<-data.frame(go_ALL_classes_Stage_II)
+    go_ALL_classes_Stage_III<-data.frame(go_ALL_classes_Stage_III)    
+
+    # Convert to data.frame
+    go_ALL_classes_Stage_I<-data.frame(go_ALL_classes_Stage_I)
+    go_ALL_classes_Stage_II<-data.frame(go_ALL_classes_Stage_II)
+    go_ALL_classes_Stage_III<-data.frame(go_ALL_classes_Stage_III)    
+
+    # Filter by count of genes annotated to the term and by padj <= 0.05
+    go_ALL_classes_Stage_I<-go_ALL_classes_Stage_I[go_ALL_classes_Stage_I$Count>=2,]
+    go_ALL_classes_Stage_II<-go_ALL_classes_Stage_II[go_ALL_classes_Stage_II$Count>=2,]
+    go_ALL_classes_Stage_III<-go_ALL_classes_Stage_III[go_ALL_classes_Stage_III$Count>=2,]
+
+    # by padj
+    go_ALL_classes_Stage_I<-go_ALL_classes_Stage_I[go_ALL_classes_Stage_I$p.adjust<=0.05,]
+    go_ALL_classes_Stage_II<-go_ALL_classes_Stage_II[go_ALL_classes_Stage_II$p.adjust<=0.05,]
+    go_ALL_classes_Stage_III<-go_ALL_classes_Stage_III[go_ALL_classes_Stage_III$p.adjust<=0.05,]
+    
+
+    go_ALL_classes_Stage_I$Stage<-"Stage I"
+    go_ALL_classes_Stage_II$Stage<-"Stage II"
+    go_ALL_classes_Stage_III$Stage<-"Stage III"
+
+    # Merge tables
+    merge_all_classes_results<-rbind(go_ALL_classes_Stage_I,go_ALL_classes_Stage_II,go_ALL_classes_Stage_III)
+
+    # Set rownames
+    rownames(merge_all_classes_results)<-merge_all_classes_results$ID
+
+    # For each ID
+    for (GO_term in merge_all_classes_results$ID)
+    {
+        Stage       <-merge_all_classes_results[GO_term,"Stage"]
+        Gene_class  <-merge_all_classes_results[GO_term,"Cluster"]
+        ONTOLOGY    <-merge_all_classes_results[GO_term,"ONTOLOGY"]
+        ID          <-merge_all_classes_results[GO_term,"ID"]      
+        Description <-merge_all_classes_results[GO_term,"Description"]       
+        p.adjust    <-merge_all_classes_results[GO_term,"p.adjust"]   
+        geneID      <-merge_all_classes_results[GO_term,"geneID"]   
+
+        # Table to store results
+        df_class_functional_analysis<-rbind(df_class_functional_analysis,data.frame(Stage=Stage,Gene_class=Gene_class,ONTOLOGY=ONTOLOGY,ID=ID,Description=Description,p.adjust=p.adjust,geneID=geneID))        
+    }
+
+     
+    
+
+    ########################################################################################################################################
+    # EnrichGO to obtain GO annotation, minGSSize = 3
+    # Translate kegg back to symbols
+    # Convert ids
+    go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+    kegg_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichKEGG',pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+    pathway_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichPathway',pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+
+    
+    # Data.frame results
+    df_GO_Stages<-data.frame(go_ALL_Stages)
+    df_kegg_Stages<-data.frame(kegg_ALL_Stages)
+    df_pathway_Stages<-data.frame(pathway_ALL_Stages)
+    ########################################################################################################################################
+    # For each line, convert entrez ID to gene symbol
+    for (go_term in rownames(df_GO_Stages))
+    {
+      # Take the entrez id line
+      entrez_ids<-df_GO_Stages[go_term,"geneID"]  
+    
+      entrez_ids<-as.vector(paste(bitr(unlist(strsplit(entrez_ids,split="/",fixed=T)), fromType = "ENTREZID", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")$SYMBOL,collapse=", ")  )
+    
+      # Replace entrez by gene symbol
+      df_GO_Stages[go_term,"geneID"] <-entrez_ids
+    }
+    ########################################################################################################################################
+    # Save TSV file with genes from Stage3
+    write_tsv(df_GO_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
+    ########################################################################################################################################
+}  
 
 
 
@@ -463,3 +584,4 @@ stage_III_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage III","ID"]
 # Take the most significants of the first stage
 # Take the most significants of the second stage
 # Take the most significants of the third stage
+
