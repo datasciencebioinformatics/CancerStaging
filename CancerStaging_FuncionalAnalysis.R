@@ -124,9 +124,9 @@ for (normalization_scheme in normalization_schemes)
     class_H2_H3_stage_II=genes_Stage_II[which(genes_Stage_II$class=="H2+H3"),"entrezgene_id"]    
 
     # Split genes by class
-    class_L_stage_III=genes_Stage_III[which(genes_Stage_II$class=="L"),"entrezgene_id"]
-    class_H1_stage_III=genes_Stage_III[which(genes_Stage_II$class=="H1"),"entrezgene_id"]
-    class_H2_H3_stage_III=genes_Stage_III[which(genes_Stage_II$class=="H2+H3"),"entrezgene_id"]        
+    class_L_stage_III=genes_Stage_III[which(genes_Stage_III$class=="L"),"entrezgene_id"]
+    class_H1_stage_III=genes_Stage_III[which(genes_Stage_III$class=="H1"),"entrezgene_id"]
+    class_H2_H3_stage_III=genes_Stage_III[which(genes_Stage_III$class=="H2+H3"),"entrezgene_id"]        
 
     # Compare GOP
     go_ALL_classes_Stage_I = compareCluster(list(class_L=class_L_stage_I,class_H1=class_H1_stage_I, class_H2_H3=class_H2_H3_stage_I), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
