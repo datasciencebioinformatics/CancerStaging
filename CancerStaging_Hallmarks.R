@@ -400,3 +400,4 @@ geseca_Stage_II_III$Stage<-"Intersection II_III"
     # Convert ids
     go_ALL_Stages = compareCluster(list(stages_I_II=genes_rankData_stage_I_II$ENTREZID,stages_I_III=genes_rankData_stage_I_III$ENTREZID, stages_II_III=genes_rankData_stage_II_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
 
+    write_tsv(data.frame(go_ALL_Stages), paste(output_dir,"/go_ALL_Stages_intersection.tsv",sep=""))
