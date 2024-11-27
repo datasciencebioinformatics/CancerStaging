@@ -354,10 +354,10 @@ geseca_Stage_I_III  <- data.frame(geseca(pathways, expr_stage_I_III))
 geseca_Stage_II_III <- data.frame(geseca(pathways, expr_stage_II_III))
 
 # Filter padj
-geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<=0.05,]
-geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<=0.05,]
-geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<=0.05,]
+geseca_Stage_I_II  <-geseca_Stage_I_II[geseca_Stage_I_II$padj<=0.05,]
+geseca_Stage_I_III <-geseca_Stage_I_III[geseca_Stage_I_III$padj<=0.05,]
+geseca_Stage_II_III<-geseca_Stage_II_III[geseca_Stage_II_III$padj<=0.05,]
 
-geseca_Stage_I$Stage<-"Stage I"
-geseca_Stage_II$Stage<-"Stage II"
-geseca_Stage_III$Stage<-"Stage III"
+geseca_Stage_I_II$Stage<-"Inbtersection I_II"
+geseca_Stage_I_III$Stage<-"Inbtersection I_III"
+geseca_Stage_II_III$Stage<-"Intersection II_III"
