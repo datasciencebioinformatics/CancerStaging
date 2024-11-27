@@ -334,14 +334,14 @@ genes_rankData_stage_I_III  <-genes_rankData_stage_I_III[genes_rankData_stage_I_
 genes_rankData_stage_II_III <-genes_rankData_stage_II_III[genes_rankData_stage_II_III$ensembl_gene_id %in% rownames(expr_stage_II_III),]
 
 # Take the first occurance of each ensembl_gene_id 
-genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
-genes_rankData_stage_II  <- genes_rankData_stage_II[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
-genes_rankData_stage_III <- genes_rankData_stage_III[match(unique(genes_rankData_stage_III$ensembl_gene_id), genes_rankData_stage_III$ensembl_gene_id),]
+genes_rankData_stage_I_II   <- genes_rankData_stage_I_II[match(unique(genes_rankData_stage_I_II$ensembl_gene_id), genes_rankData_stage_I_II$ensembl_gene_id),]
+genes_rankData_stage_I_III  <- genes_rankData_stage_I_III[match(unique(genes_rankData_stage_I_III$ensembl_gene_id), genes_rankData_stage_I_III$ensembl_gene_id),]
+genes_rankData_stage_II_III <- genes_rankData_stage_II_III[match(unique(genes_rankData_stage_II_III$ensembl_gene_id), genes_rankData_stage_II_III$ensembl_gene_id),]
 
 # Set the rownames as the ensembl_gene_id
-rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
-rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
-rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
+rownames(genes_rankData_stage_I_II)<-genes_rankData_stage_I_II$ensembl_gene_id
+rownames(genes_rankData_stage_I_III)<-genes_rankData_stage_I_III$ensembl_gene_id
+rownames(genes_rankData_stage_II_III)<-genes_rankData_stage_II_III$ensembl_gene_id
 
 # Set the rownames entrezgene_id
 rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entrezgene_id"]
