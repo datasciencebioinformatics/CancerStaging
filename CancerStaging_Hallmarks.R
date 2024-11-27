@@ -329,9 +329,9 @@ genes_rankData_stage_I_III    <- getBM(filters= "ensembl_gene_id", attributes= c
 genes_rankData_stage_II_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II_III),mart=mart)
 
 # Next, Take the annotation for each genes
-genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% rownames(expr_stage_I),]
-genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% rownames(expr_stage_II),]
-genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% rownames(expr_stage_III),]
+genes_rankData_stage_I_II   <-genes_rankData_stage_I_II[genes_rankData_stage_I_II$ensembl_gene_id %in% rownames(expr_stage_I_II),]
+genes_rankData_stage_I_III  <-genes_rankData_stage_I_III[genes_rankData_stage_I_III$ensembl_gene_id %in% rownames(expr_stage_I_III),]
+genes_rankData_stage_II_III <-genes_rankData_stage_II_III[genes_rankData_stage_II_III$ensembl_gene_id %in% rownames(expr_stage_II_III),]
 
 # Take the first occurance of each ensembl_gene_id 
 genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
