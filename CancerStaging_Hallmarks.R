@@ -361,3 +361,42 @@ geseca_Stage_II_III<-geseca_Stage_II_III[geseca_Stage_II_III$padj<=0.05,]
 geseca_Stage_I_II$Stage<-"Inbtersection I_II"
 geseca_Stage_I_III$Stage<-"Inbtersection I_III"
 geseca_Stage_II_III$Stage<-"Intersection II_III"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################################################################################################
+    ########################################################################################################################################
+    # ids_stage_I - all ENSEMBL anotated using bitr
+    ids_stage_I      <-bitr(genes_ids_stage_I, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_II     <-bitr(genes_ids_stage_II, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_III    <-bitr(genes_ids_stage_III, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+
+    genes_rankData_stage_I_II
+    ########################################################################################################################################
+    # Set colnames,  gene_id, ENTREZID, SYMBOL
+    colnames(genes_rankData_stage_I_II)   <-c("gene_id","SYMBOL","ENTREZID","SYMBOL_2")
+    colnames(genes_rankData_stage_I_III)  <-c("gene_id","SYMBOL","ENTREZID","SYMBOL_2")
+    colnames(genes_rankData_stage_II_III) <-c("gene_id","SYMBOL","ENTREZID","SYMBOL_2")
+    ########################################################################################################################################    
+    # And set rownames(genes_Stage_ALL)
+    rownames(genes_Stage_ALL)<-genes_Stage_ALL$ENTREZID
+    ########################################################################################################################################
+    # EnrichGO to obtain GO annotation, minGSSize = 3
+    # Translate kegg back to symbols
+    # Convert ids
+    go_ALL_Stages = compareCluster(list(stages_I_II=genes_rankData_stage_I_II$ENTREZID,stages_I_III=genes_rankData_stage_I_III$ENTREZID, stages_II_III=genes_rankData_stage_II_III$ENTREZID), fun='enrichGO', ont='all', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)
+
