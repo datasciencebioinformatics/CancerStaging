@@ -344,14 +344,14 @@ rownames(genes_rankData_stage_I_III)<-genes_rankData_stage_I_III$ensembl_gene_id
 rownames(genes_rankData_stage_II_III)<-genes_rankData_stage_II_III$ensembl_gene_id
 
 # Set the rownames entrezgene_id
-rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entrezgene_id"]
-rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
-rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
+rownames(expr_stage_I_II)   <- genes_rankData_stage_I_II[rownames(expr_stage_I_II),"entrezgene_id"]
+rownames(expr_stage_I_III)  <- genes_rankData_stage_I_III[rownames(expr_stage_I_III),"entrezgene_id"]
+rownames(expr_stage_II_III) <- genes_rankData_stage_II_III[rownames(expr_stage_II_III),"entrezgene_id"]
 
 # Compute the geseca
-geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
-geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
-geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
+geseca_Stage_I_II   <- data.frame(geseca(pathways, expr_stage_I_II))
+geseca_Stage_I_III  <- data.frame(geseca(pathways, expr_stage_I_III))
+geseca_Stage_II_III <- data.frame(geseca(pathways, expr_stage_II_III))
 
 # Filter padj
 geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<=0.05,]
