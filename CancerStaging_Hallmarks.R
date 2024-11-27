@@ -225,3 +225,139 @@ write_tsv(geseca_Stage_III, paste(output_dir,"/hallmarks_genes_stage_III.tsv",se
 # Genes from stage III   (numGene, n)    : number of genes of this stage associated to Hallmark X.
 # Genes from stage III   (%)             : percentage of genes of this stage associated to Hallmark X.
 # Stage III minus I      (Δ)             : number of genes enriched in stage III minus number of genes enriched in stage I
+###############################################################################################################################3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######################################################################################################################################
+# Path to files of selected_genes                                                                                                             # 
+# genes_stages_I
+selected_genes_Stage_I_data    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_II_data   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE) #
+selected_genes_Stage_III_data  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE) #
+
+rownames(selected_genes_Stage_I_data)<-selected_genes_Stage_I_data$gene
+rownames(selected_genes_Stage_II_data)<-selected_genes_Stage_II_data$gene
+rownames(selected_genes_Stage_III_data)<-selected_genes_Stage_III_data$gene
+
+selected_genes_Stage_I_gene      <- selected_genes_Stage_I_data$gene
+selected_genes_Stage_II_gene     <- selected_genes_Stage_II_data$gene
+selected_genes_Stage_III_gene    <- selected_genes_Stage_III_data$gene
+#######################################################################################################################################                                                                                                                                    
+genes_I_II_not_III<-setdiff(intersect(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene),selected_genes_Stage_III_gene)
+genes_I_III_not_II<-setdiff(intersect(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene),selected_genes_Stage_II_gene)
+genes_II_III_not_I<-setdiff(intersect(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene),selected_genes_Stage_I_gene)
+
+
+# Take gene ids
+gene_conversion<-bitr(rownames(Interactomes_GC3_T2_merged), fromType="ENSEMBL", toType=c("ENTREZID","SYMBOL"), org.Hs.eg.db, drop = TRUE)
+
+# Take gene ids
+gene_conversion <- gene_conversion[match(unique(gene_conversion$ENSEMBL), gene_conversion$ENSEMBL),]
+
+# Set rownames
+rownames(gene_conversion)<-gene_conversion$ENSEMBL
+
+# Merge frames
+Interactomes_GC3_T2_merged_bck<-merge(Interactomes_GC3_T2_merged,gene_conversion,by="ENSEMBL")
+
+# Set rownames
+rownames(Interactomes_GC3_T2_merged_bck)<-Interactomes_GC3_T2_merged_bck$ENSEMBL
+
+write_tsv(Interactomes_GC3_T2_merged_bck[genes_I_II_not_III,], paste(output_dir,"/genes_I_II_not_III.tsv",sep=""))
+write_tsv(Interactomes_GC3_T2_merged_bck[genes_I_III_not_II,], paste(output_dir,"/genes_I_III_not_II.tsv",sep=""))
+write_tsv(Interactomes_GC3_T2_merged_bck[genes_II_III_not_I,], paste(output_dir,"/genes_II_III_not_I.tsv",sep=""))
+#######################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Omit lines with NA
+expr_stage_I_II<-na.omit(df_reads_count_all_projects[[normalization_scheme]][genes_I_II_not_III,c(sample_stage_I,sample_stage_II)])
+expr_stage_I_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][genes_I_III_not_II,c(sample_stage_I,sample_stage_III)])
+expr_stage_II_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][genes_II_III_not_I,c(sample_stage_II,sample_stage_III)])
+
+# Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
+genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_II),mart=mart)
+genes_rankData_stage_II    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_III),mart=mart)
+genes_rankData_stage_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II_III),mart=mart)
+
+# Next, Take the annotation for each genes
+genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% rownames(expr_stage_I),]
+genes_rankData_stage_II  <-genes_rankData_stage_II[genes_rankData_stage_II$ensembl_gene_id %in% rownames(expr_stage_II),]
+genes_rankData_stage_III <-genes_rankData_stage_III[genes_rankData_stage_III$ensembl_gene_id %in% rownames(expr_stage_III),]
+
+# Take the first occurance of each ensembl_gene_id 
+genes_rankData_stage_I   <- genes_rankData_stage_I[match(unique(genes_rankData_stage_I$ensembl_gene_id), genes_rankData_stage_I$ensembl_gene_id),]
+genes_rankData_stage_II  <- genes_rankData_stage_II[match(unique(genes_rankData_stage_II$ensembl_gene_id), genes_rankData_stage_II$ensembl_gene_id),]
+genes_rankData_stage_III <- genes_rankData_stage_III[match(unique(genes_rankData_stage_III$ensembl_gene_id), genes_rankData_stage_III$ensembl_gene_id),]
+
+# Set the rownames as the ensembl_gene_id
+rownames(genes_rankData_stage_I)<-genes_rankData_stage_I$ensembl_gene_id
+rownames(genes_rankData_stage_II)<-genes_rankData_stage_II$ensembl_gene_id
+rownames(genes_rankData_stage_III)<-genes_rankData_stage_III$ensembl_gene_id
+
+# Set the rownames entrezgene_id
+rownames(expr_stage_I)   <- genes_rankData_stage_I[rownames(expr_stage_I),"entrezgene_id"]
+rownames(expr_stage_II)  <- genes_rankData_stage_II[rownames(expr_stage_II),"entrezgene_id"]
+rownames(expr_stage_III) <- genes_rankData_stage_III[rownames(expr_stage_III),"entrezgene_id"]
+
+# Compute the geseca
+geseca_Stage_I   <- data.frame(geseca(pathways, expr_stage_I))
+geseca_Stage_II  <- data.frame(geseca(pathways, expr_stage_II))
+geseca_Stage_III <- data.frame(geseca(pathways, expr_stage_III))
+
+# Filter padj
+geseca_Stage_I  <-geseca_Stage_I[geseca_Stage_I$padj<=0.05,]
+geseca_Stage_II <-geseca_Stage_II[geseca_Stage_II$padj<=0.05,]
+geseca_Stage_III<-geseca_Stage_III[geseca_Stage_III$padj<=0.05,]
+
+geseca_Stage_I$Stage<-"Stage I"
+geseca_Stage_II$Stage<-"Stage II"
+geseca_Stage_III$Stage<-"Stage III"
