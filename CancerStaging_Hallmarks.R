@@ -324,9 +324,9 @@ expr_stage_I_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][ge
 expr_stage_II_III<-na.omit(df_reads_count_all_projects[[normalization_scheme]][genes_II_III_not_I,c(sample_stage_II,sample_stage_III)])
 
 # Take for each ensembl_gene_id the entrezgene_accession, entrezgene_id, hgnc_symbol
-genes_rankData_stage_I     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_II),mart=mart)
-genes_rankData_stage_II    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_III),mart=mart)
-genes_rankData_stage_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II_III),mart=mart)
+genes_rankData_stage_I_II     <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_II),mart=mart)
+genes_rankData_stage_I_III    <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_I_III),mart=mart)
+genes_rankData_stage_II_III   <- getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","entrezgene_accession","entrezgene_id","hgnc_symbol"),values=rownames(expr_stage_II_III),mart=mart)
 
 # Next, Take the annotation for each genes
 genes_rankData_stage_I   <-genes_rankData_stage_I[genes_rankData_stage_I$ensembl_gene_id %in% rownames(expr_stage_I),]
