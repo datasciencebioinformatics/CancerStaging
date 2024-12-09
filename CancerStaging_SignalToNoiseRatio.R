@@ -1,15 +1,4 @@
 ###################################################################################################################################################
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreateMetadataFromGDCFiles.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadInteractomeData.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadExpressionData.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_ExpressionDataNormalization_Carels.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_CreatePairedSamplesTumorNormal.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_FindTumorGenes.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_Filters.R")
-source("/home/felipe/Documents/github/CancerStaging/CancerStaging_VeenDiagramsFromPairedUp.R")
-###################################################################################################################################################
 #Moreover, through investigation of biomarkers in up-regulated genes, we found 52 genes with fold changes larger than 50 in tumor, and average TPM ≤ 10 (Table S1). In table 2, we present the biomarkers whose fold change is ≥100 and average TPM ≤ 2, which should warrant significant signal-to-noise ratio (Figure 2). The markers that met these criteria had average T`PM ≥ 100.
 normalization_scheme<-"tpm"
 ###################################################################################################################################################
