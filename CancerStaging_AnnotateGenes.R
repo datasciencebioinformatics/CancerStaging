@@ -23,32 +23,10 @@ colnames(Interactomes_GC3_T2_merged)[4]<-"ensembl_gene_id"
 # Set genes_rankData_stage_all_genes
 genes_rankData_stage_all_genes_merged<-merge(Interactomes_GC3_T2_merged, genes_rankData_stage_all_genes,by="ensembl_gene_id")
 
-
 # genes_rankData_stage_all_genes_merged
-write_tsv(genes_rankData_stage_all_genes_merged,   paste(output_dir,"/tumor_genes_statistics",normalization_scheme,".tsv",sep=""))
+write_tsv(genes_rankData_stage_all_genes_merged,   paste(output_dir,"/Table_S3.tsv",sep=""))
 
 Table3<-genes_rankData_stage_all_genes[genes_rankData_stage_all_genes$FC>=50 & genes_rankData_stage_all_genes$Mean_normal<=10,]
 
 # Save TSV file with genes from Stage3
-write_tsv(Table3, paste(output_dir,"/Table3.tsv",sep=""))
-
-
-
-# Check tumor table
-table_tumor_genes  <-na.omit(genes_rankData_stage_all_genes)
-table_stage_I_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_I_gene,])
-table_stage_II_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_II_gene,])
-table_stage_III_genes<-na.omit(genes_rankData_stage_all_genes[selected_genes_Stage_III_gene,])
-
-table_stage_I_genes$FC<-table_stage_I_genes$FC_Stage_I
-table_stage_II_genes$FC<-table_stage_II_genes$FC_Stage_II
-table_stage_III_genes$FC<-table_stage_III_genes$FC_Stage_III
-
-table_stage_I_genes<-table_stage_I_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
-table_stage_II_genes<-table_stage_II_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
-table_stage_III_genes<-table_stage_III_genes[,c("ensembl_gene_id","Mean_normal","sd_normal","Mean_tumor","sd_tumor","FC","Mean_Stage_I","sd_Stage_I","Mean_Stage_II","sd_Stage_II","Mean_Stage_III","sd_Stage_III","entrezgene_accession","entrezgene_id","hgnc_symbol","description")]
-
-write_tsv(table_tumor_genes,   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_tumor_genes",".tsv",sep=""))
-write_tsv(na.omit(table_stage_I_genes),   paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_I",".tsv",sep=""))
-write_tsv(na.omit(table_stage_II_genes),  paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_II",".tsv",sep=""))
-write_tsv(na.omit(table_stage_III_genes), paste(output_dir,"/FindStageSpecificGenes_annotated",normalization_scheme,"_","all_stage_III",".tsv",sep=""))
+write_tsv(Table3, paste(output_dir,"/Table8.tsv",sep=""))
