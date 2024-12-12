@@ -35,6 +35,14 @@ Table8<-genes_rankData_stage_all_genes_merged[genes_rankData_stage_all_genes_mer
 # Save TSV file with genes from Stage3
 write_tsv(Table8, paste(output_dir,"/Table8.tsv",sep=""))
 #########################################################################################################
+# Format table 8
+Table8_ensembl<-unique(genes_rankData_stage_all_genes_merged[genes_rankData_stage_all_genes_merged$FC>=50 & genes_rankData_stage_all_genes_merged$Mean_normal<=10,c("ensembl_gene_id")])
+
+# Ven diagram genes
+ven_diagram_genes<-unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
+#########################################################################################################
+genes_rankData_stage_all_genes_merged
+#########################################################################################################
 # Format table S3
 genes_rankData_stage_all_genes_merged$FC5 <-"NO"
 genes_rankData_stage_all_genes_merged$FC10<-"NO"
