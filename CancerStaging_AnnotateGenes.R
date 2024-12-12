@@ -41,7 +41,7 @@ Table8_ensembl<-unique(genes_rankData_stage_all_genes_merged[genes_rankData_stag
 # Ven diagram genes
 ven_diagram_genes<-unique(c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene,selected_genes_Stage_III_gene))
 #########################################################################################################
-genes_rankData_stage_all_genes_merged
+#genes_rankData_stage_all_genes_merged<-genes_rankData_stage_all_genes_merged[genes_rankData_stage_all_genes_merged$ensembl_gene_id %in% ven_diagram_genes,]
 #########################################################################################################
 # Format table S3
 genes_rankData_stage_all_genes_merged$FC5 <-"NO"
