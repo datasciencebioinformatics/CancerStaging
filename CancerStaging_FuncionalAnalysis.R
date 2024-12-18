@@ -594,3 +594,98 @@ stage_III_Terms<-df_genes_terms[df_genes_terms$Stage=="Stage III","ID"]
 # Take the most significants of the second stage
 # Take the most significants of the third stage
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###########################################################################################################
+# Script to generate annotation for genes from each tage and applying simplify                            #
+###########################################################################################################
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_SetupAllParamters.R")                   #
+source("/home/felipe/Documents/github/CancerStaging/CancerStaging_LoadRPackages.R")                       #
+###########################################################################################################
+# Restore the object                                                                                      #
+Interactomes_GC3_T2_merged <-readRDS(file = paste(output_dir,"Interactomes_GC3_T2_merged.rds",sep=""))    #
+normalization_schemes      <-readRDS(file = paste(output_dir,"normalization_schemes.rds",sep=""))         #
+df_reads_count_all_projects<-readRDS(file = paste(output_dir,"df_reads_count_all_projects.rds",sep=""))   #
+list_of_comparisson        <-readRDS(file = paste(output_dir,"list_of_comparisson.rds",sep=""))           #
+###########################################################################################################
+normalization_schemes<-c("tpm")
+
+# For each normlization normalization_scheme
+for (normalization_scheme in normalization_schemes)
+{     
+    # genes_stages_I
+    genes_stages_I    <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_I",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_II   <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_II",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+    genes_stages_III  <-read.table(file = paste(output_dir,"/FindStageSpecificGenes_",normalization_scheme,"_","sample_stage_III",".tsv",sep=""), sep = '\t', header = TRUE)$gene #
+
+    selected_genes_Stage_I_gene      <- genes_stages_I
+    selected_genes_Stage_II_gene     <- genes_stages_II
+    selected_genes_Stage_III_gene    <- genes_stages_III
+    #######################################################################################################################################                                                                                                                                     #
+    unique_stage_I  =intersect(setdiff(selected_genes_Stage_I_gene, c(selected_genes_Stage_II_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_I_gene)
+    unique_stage_II =intersect(setdiff(selected_genes_Stage_II_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_III_gene)),selected_genes_Stage_II_gene)
+    unique_stage_III=intersect(setdiff(selected_genes_Stage_III_gene, c(selected_genes_Stage_I_gene,selected_genes_Stage_II_gene)),selected_genes_Stage_III_gene)
+    #######################################################################################################################################  
+  
+    ############################################################################################################################################
+    # cyrestGET(operation = NULL, parameters = NULL, base.url = "http://localhost:1234")
+    # Analyses with the combination of parameter line 119 of the document Parametrization.xlsx
+    # ≥3	≥1	≤0.05	≥0.85	5456	1798/25	1887/70	1991/182	204/191/1.3396	225/207/1.4054	242/206/1.2978	1276/3819/3.7205	1345/4143/3.7816	1440/4646/3.8299
+    # ENSEMBL ids were converted to ENTREZ ids. enrichGO on org.Hs.eg.db was used (pAdjustMethod = "BH",pvalueCutoff  = 0.05,qvalueCutoff  = 0.05, minGSSize = 3) to anotate 23, 62 and 169 genes from stages I, II and III, respectivelly. Then cnetplot was used to show asociations of genes to top 10 categories.
+    #######################################################################################################################################
+    genes_ids_stage_I<-unique_stage_I
+    genes_ids_stage_II<-unique_stage_II
+    genes_ids_stage_III<-unique_stage_III
+    ########################################################################################################################################
+    # ids_stage_I - all ENSEMBL anotated using bitr
+    ids_stage_I      <-bitr(genes_ids_stage_I, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_II     <-bitr(genes_ids_stage_II, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ids_stage_III    <-bitr(genes_ids_stage_III, fromType = "ENSEMBL", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")
+    ########################################################################################################################################
+    # Set colnames,  gene_id, ENTREZID, SYMBOL
+    colnames(ids_stage_I)   <-c("gene_id","ENTREZID","SYMBOL")
+    colnames(ids_stage_II)  <-c("gene_id","ENTREZID","SYMBOL")
+    colnames(ids_stage_III) <-c("gene_id","ENTREZID","SYMBOL")
+    ########################################################################################################################################
+    # EnrichGO to obtain GO annotation, minGSSize = 3
+    # Translate kegg back to symbols
+    # Convert ids
+    go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='BP', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)    
+
+    
+    # Data.frame results
+    df_GO_Stages<-data.frame(go_ALL_Stages)
+    df_kegg_Stages<-data.frame(kegg_ALL_Stages)
+    df_pathway_Stages<-data.frame(pathway_ALL_Stages)
+    ########################################################################################################################################
+    # For each line, convert entrez ID to gene symbol
+    for (go_term in rownames(df_GO_Stages))
+    {
+      # Take the entrez id line
+      entrez_ids<-df_GO_Stages[go_term,"geneID"]  
+    
+      entrez_ids<-as.vector(paste(bitr(unlist(strsplit(entrez_ids,split="/",fixed=T)), fromType = "ENTREZID", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")$SYMBOL,collapse=", ")  )
+    
+      # Replace entrez by gene symbol
+      df_GO_Stages[go_term,"geneID"] <-entrez_ids
+    }
+    ########################################################################################################################################
+    # Save TSV file with genes from Stage3
+    write_tsv(df_GO_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
+    ########################################################################################################################################
+}  
