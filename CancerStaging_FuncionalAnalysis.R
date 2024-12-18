@@ -665,27 +665,30 @@ for (normalization_scheme in normalization_schemes)
     # EnrichGO to obtain GO annotation, minGSSize = 3
     # Translate kegg back to symbols
     # Convert ids
-    go_ALL_Stages = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='BP', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)    
+    go_ALL_Stages_BP = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='BP', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)    
+    go_ALL_Stages_MF = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='MF', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)        
+    go_ALL_Stages_CC = compareCluster(list(Stage_I=ids_stage_I$ENTREZID,Stage_II=ids_stage_II$ENTREZID, Stage_III=ids_stage_III$ENTREZID), fun='enrichGO', ont='CC', OrgDb='org.Hs.eg.db', pAdjustMethod = "BH", minGSSize = 10, pvalueCutoff = 0.05)            
 
-    
-    # Data.frame results
-    df_GO_Stages<-data.frame(go_ALL_Stages)
-    df_kegg_Stages<-data.frame(kegg_ALL_Stages)
-    df_pathway_Stages<-data.frame(pathway_ALL_Stages)
+    # go_ALL_Stages_BP
+    go_ALL_Stages_BP<-data.frame(simplify(go_ALL_Stages_BP,cutoff = 0.25,by = "p.adjust",select_fun = min,measure = "Wang",semData = NULL))
+    go_ALL_Stages_MF<-data.frame(simplify(go_ALL_Stages_MF,cutoff = 0.25,by = "p.adjust",select_fun = min,measure = "Wang",semData = NULL))
+    go_ALL_Stages_CC<-data.frame(simplify(go_ALL_Stages_CC,cutoff = 0.25,by = "p.adjust",select_fun = min,measure = "Wang",semData = NULL))
+
+    go_ALL_Stages<-rbind(go_ALL_Stages_MF,go_ALL_Stages_CC)
     ########################################################################################################################################
     # For each line, convert entrez ID to gene symbol
-    for (go_term in rownames(df_GO_Stages))
+    for (go_term in rownames(go_ALL_Stages))
     {
       # Take the entrez id line
-      entrez_ids<-df_GO_Stages[go_term,"geneID"]  
+      entrez_ids<-go_ALL_Stages[go_term,"geneID"]  
     
       entrez_ids<-as.vector(paste(bitr(unlist(strsplit(entrez_ids,split="/",fixed=T)), fromType = "ENTREZID", toType = c("ENTREZID","SYMBOL"), OrgDb="org.Hs.eg.db")$SYMBOL,collapse=", ")  )
     
       # Replace entrez by gene symbol
-      df_GO_Stages[go_term,"geneID"] <-entrez_ids
+      go_ALL_Stages[go_term,"geneID"] <-entrez_ids
     }
     ########################################################################################################################################
     # Save TSV file with genes from Stage3
-    write_tsv(df_GO_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
+    write_tsv(go_ALL_Stages, paste(output_dir,"/df_ALL_GO_Stages.tsv",sep=""))
     ########################################################################################################################################
 }  
