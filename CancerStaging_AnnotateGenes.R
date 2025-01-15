@@ -26,6 +26,7 @@ rownames(genes_rankData_stage_all_genes)<-genes_rankData_stage_all_genes$ensembl
 # Set colnames
 colnames(Interactomes_GC3_T2_merged)[4]<-"ensembl_gene_id"
 
+
 # Set genes_rankData_stage_all_genes
 genes_rankData_stage_all_genes_merged<-merge(Interactomes_GC3_T2_merged, genes_rankData_stage_all_genes,by="ensembl_gene_id")
 
