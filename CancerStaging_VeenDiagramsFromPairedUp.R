@@ -79,7 +79,7 @@ for (normalization_scheme in normalization_schemes)
 	
 	# Plot PCA tumor versus normal                                                                                                                                                      #
 	plot_res_tumor_normal        <- autoplot(pca_res_tumor_normal, data = merged_data_patient_sel[rownames(transporse_normalized_table),], colour = 'tumor_normal')+ theme_bw()  + theme(legend.position="bottom") + ggtitle("A")               + scale_color_manual(values=c("#E69F00", "#56B4E9")) + theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),, axis.title.x = element_text(size = 16)) + theme(legend.text=element_text(size=16))
-	plot_res_tumor_normal_2      <- fviz_ellipses(pca_res_tumor_normal, col.ind = merged_data_patient_sel[rownames(transporse_normalized_table),"tumor_normal"],palette = c("#E69F00", "#56B4E9"), col.var = c("#E69F00", "#56B4E9"),addEllipses = TRUE, ellipse.level = 0.95,labels="none",labelsize=0)	
+	plot_res_tumor_normal_2      <- fviz_ellipses(pca_res_tumor_normal, habillage = merged_data_patient_sel[rownames(transporse_normalized_table),"tumor_normal"],palette = c("#E69F00", "#56B4E9"), col.var = c("#E69F00", "#56B4E9"),addEllipses = TRUE, ellipse.level = 0.95,labels="none",labelsize=0,ellipse.type = "confidence)	
 
 	
 	# FindClusters_resolution
