@@ -1,0 +1,17 @@
+# model 3 logistic regression
+mod3 <- train(tumor_stage ~ ., method = 'glm', data = train, trControl = tCtrl, preProcess = c('center', 'scale'))
+
+# predict with mod 3
+pred3 <- predict(mod3, newdata = test)
+
+# confusionMatrix with mod 3
+cfm3 <- confusionMatrix(pred3, test$booking_status)
+
+# first roc curve
+roc1 <- roc(test$booking_status, pred1Probability)
+
+# calculate auc
+auc(roc1)
+
+# plot roc curves
+plot(roc1, col = 'black', lty = 2, main = "ROC", legacy.axes = TRUE, percent = TRUE, xlab = "False Positive Percentage", ylab = "True Positive Percentage", print.auc = TRUE)
