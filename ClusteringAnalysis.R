@@ -1,5 +1,13 @@
+# Add a collumns with the sample id
+transporse_normalized_table$sample_id<-rownames(transporse_normalized_table)
+
+# Merge transporse_normalized_table with metadata
+transporse_normalized_table<-merge(transporse_normalized_table,merged_data_patient_info,by="sample_id")
+
+transporse_normalized_table<-transporse_normalized_table[patients,c(genes,"tissue_type")]
+
 # model 3 logistic regression
-mod3 <- train(tumor_stage ~ ., method = 'glm', data = train, trControl = tCtrl, preProcess = c('center', 'scale'))
+mod3 <- train(tissue_type ~ ., method = 'glm', data = train, trControl = tCtrl, preProcess = c('center', 'scale'))
 
 # predict with mod 3
 pred3 <- predict(mod3, newdata = test)
