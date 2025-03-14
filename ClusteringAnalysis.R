@@ -34,6 +34,13 @@ cfm3 <- confusionMatrix(pred3, testing$tissue_type)
 # first roc curve
 roc1 <- roc(test$booking_status, pred1Probability)
 
+par(pty = "s") # square
+roc(trainning$tissue_type, mod3$fitted.values, plot = TRUE, legacy.axes = TRUE,
+    percent = TRUE, xlab = "False-positives",
+    ylab = "True-positives", col = "#377eb8", lwd = 2,
+    print.auc = TRUE, print.auc.x =45, partial.auc = c(100, 90), 
+    auc.polygon = TRUE, auc.polygon.col = "#377eb850")
+
 # calculate auc
 auc(roc1)
 
