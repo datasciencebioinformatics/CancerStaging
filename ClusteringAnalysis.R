@@ -27,8 +27,9 @@ mod3 <- train(tissue_type ~ ., method = 'glm', data = trainning, trControl = fit
 # predict with mod 3
 pred3 <- predict(mod3, newdata = testing)
 
+##########################################
 # confusionMatrix with mod 3
-cfm3 <- confusionMatrix(pred3, test$booking_status)
+cfm3 <- confusionMatrix(pred3, testing$tissue_type)
 
 # first roc curve
 roc1 <- roc(test$booking_status, pred1Probability)
