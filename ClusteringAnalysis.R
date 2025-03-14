@@ -34,20 +34,12 @@ cfm3 <- confusionMatrix(pred3, testing$tissue_type)
 # first roc curve
 roc1 <- roc(test$booking_status, pred1Probability)
 
+# Plot_raw_vibration_data.png               
+png(filename=paste(output_dir,"Plot_Roc_curve.png",sep=""), width = 15, height = 15, res=600, units = "cm")  
 par(pty = "s") # square
 roc(trainning$tissue_type, mod3$fitted.values, plot = TRUE, legacy.axes = TRUE,
     percent = TRUE, xlab = "False-positives",
     ylab = "True-positives", col = "#377eb8", lwd = 2,
     print.auc = TRUE, print.auc.x =45, partial.auc = c(100, 90), 
     auc.polygon = TRUE, auc.polygon.col = "#377eb850")
-
-# calculate auc
-auc(roc1)
-
-# plot roc curves
-plot(roc1, col = 'black', lty = 2, main = "ROC", legacy.axes = TRUE, percent = TRUE, xlab = "False Positive Percentage", ylab = "True Positive Percentage", print.auc = TRUE)
-
-# Plot_raw_vibration_data.png               
-png(filename=paste(output_dir,"Plot_Roc_curve.png",sep=""), width = 20, height = 30, res=600, units = "cm")  
-plot(roc1, col = 'black', lty = 2, main = "ROC", legacy.axes = TRUE, percent = TRUE, xlab = "False Positive Percentage", ylab = "True Positive Percentage", print.auc = TRUE)
 dev.off()
