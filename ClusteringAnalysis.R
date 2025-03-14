@@ -15,3 +15,8 @@ auc(roc1)
 
 # plot roc curves
 plot(roc1, col = 'black', lty = 2, main = "ROC", legacy.axes = TRUE, percent = TRUE, xlab = "False Positive Percentage", ylab = "True Positive Percentage", print.auc = TRUE)
+
+# Plot_raw_vibration_data.png               
+png(filename=paste(output_dir,"Plot_Roc_curve.png",sep=""), width = 20, height = 30, res=600, units = "cm")  
+plot(roc1, col = 'black', lty = 2, main = "ROC", legacy.axes = TRUE, percent = TRUE, xlab = "False Positive Percentage", ylab = "True Positive Percentage", print.auc = TRUE)
+dev.off()
