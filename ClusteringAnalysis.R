@@ -4,7 +4,7 @@ transporse_normalized_table$sample_id<-rownames(transporse_normalized_table)
 # Merge transporse_normalized_table with metadata
 transporse_normalized_table<-merge(transporse_normalized_table,merged_data_patient_info,by="sample_id")
 
-transporse_normalized_table<-transporse_normalized_table[patients,c(genes,"tissue_type")]
+transporse_normalized_table<-transporse_normalized_table[patient,c(genes,"tissue_type")]
 
 # model 3 logistic regression
 mod3 <- train(tissue_type ~ ., method = 'glm', data = train, trControl = tCtrl, preProcess = c('center', 'scale'))
